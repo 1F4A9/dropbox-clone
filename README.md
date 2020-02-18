@@ -1,15 +1,15 @@
 ## File Structure
 <pre>
-src/<br/>
-├── actions/<br/>
-│<br/>
-├── components/<br/>
-│   <br/>
-├── constants/<br/>
-│   <br/>
-├── reducers/<br/>
-│   <br/>
-└── utilities/<br/>
+src/
+├── actions/
+│
+├── components/
+│   
+├── constants/
+│   
+├── reducers/
+│   
+└── utilities/
 </pre>
 
 ## Available Libraries
