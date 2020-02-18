@@ -1,3 +1,15 @@
+## File Structure
+src/
+├── actions/
+│
+├── components/
+│   
+├── constants/
+│   
+├── reducers/
+│   
+└── utilities/
+
 ## Available Libraries
 
 styled-components
