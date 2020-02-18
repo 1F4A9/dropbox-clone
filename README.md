@@ -1,14 +1,14 @@
 ## File Structure
-src/
-├── actions/
-│
-├── components/
-│   
-├── constants/
-│   
-├── reducers/
-│   
-└── utilities/
+src/<br/>
+├── actions/<br/>
+│<br/>
+├── components/<br/>
+│   <br/>
+├── constants/<br/>
+│   <br/>
+├── reducers/<br/>
+│   <br/>
+└── utilities/<br/>
 
 ## Available Libraries
 
