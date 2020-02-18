@@ -1,4 +1,5 @@
 ## File Structure
+<pre>
 src/<br/>
 ├── actions/<br/>
 │<br/>
@@ -9,6 +10,7 @@ src/<br/>
 ├── reducers/<br/>
 │   <br/>
 └── utilities/<br/>
+</pre>
 
 ## Available Libraries
 
