@@ -1,7 +1,7 @@
 ## Available Libraries
 
-Dropbox Javascript SDK
-Styled-Components
+Dropbox Javascript SDK<br />
+Styled-Components<br />
 
 ## Available Scripts
 
