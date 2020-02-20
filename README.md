@@ -1,9 +1,7 @@
-## File Structure
-
-
 ## Available Libraries
 
-styled-components
+Dropbox Javascript SDK
+Styled-Components
 
 ## Available Scripts
 
