@@ -2,7 +2,7 @@ import { CLIENT_ID } from '../constants/constants';
 import { Dropbox } from 'dropbox'
 
 export const fetchDataFromUser = () => {
-  let dbx = new Dropbox({ accessToken: 'token goes here' });
+  let dbx = new Dropbox({ accessToken: '' });
 
   dbx.usersGetCurrentAccount()
   .then(function(response) {
@@ -23,11 +23,8 @@ export const fetchDataFromUser = () => {
 
 export const fetchAccessesTokenFromUser = () => {
   var dbx = new Dropbox({ clientId: 'kkq9me3flt129yd', fetch: fetch });
-  dbx.getAuthenticationUrl(
-  function(accessToken) {
-      console.log(accessToken);
-  },
-  function() {
-      console.log("failed");
-  });
+  const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
+
+  window.location.href = url;
+  console.log(url)
 }
