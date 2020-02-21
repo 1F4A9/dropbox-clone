@@ -30,9 +30,3 @@ export const fetchAccessesTokenFromUser = () => {
 
   window.location.href = url;
 }
-
-const getTokenFromHash = () => {
-  let token = window.location.hash.split('=');
-  console.log(test)
-  return token[1];
-}
