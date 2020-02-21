@@ -14,15 +14,13 @@ function FileList() {
     })
 
 
-    /* const files = fetchDataFromUser("7ZYGW9rimvUAAAAAAAAGTDCXGHTyh3fb_S5IQADGCWF-kk7-2UxT_uBznJn0gv92");
-    console.log(files);
-    this.setState({
-        files,
-    }) */
+
 
     useEffect(() => {
-        fetchDataFromUser("")
+        fetchDataFromUser()
+
             .then((response) => {
+                console.log(response)
                 updateState({
                     files: response,
                 })
