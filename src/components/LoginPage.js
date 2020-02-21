@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fetchDataFromUser, fetchAccessesTokenFromUser} from '../api/API';
+import { fetchAccessesTokenFromUser } from '../api/API';
 
 function LoginPage() {
 

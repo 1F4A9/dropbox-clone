@@ -22,10 +22,14 @@ export const fetchDataFromUser = () => {
 }
 
 export const fetchAccessesTokenFromUser = () => {
-  var dbx = new Dropbox({ clientId: 'kkq9me3flt129yd', fetch: fetch });
+  var dbx = new Dropbox({ clientId: CLIENT_ID, fetch: fetch });
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
-  
   window.location.href = url;
-  console.log(url)
+}
+
+const getTokenFromHash = () => {
+  let token = window.location.hash.split('=');
+  console.log(test)
+  return token[1];
 }
