@@ -36,5 +36,4 @@ function FileList({ token }) {
     )
 }
 
-
 export default FileList;

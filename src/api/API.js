@@ -29,7 +29,6 @@ export const fetchAccessesTokenFromUser = () => {
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
   window.location.href = url;
-
 }
 
 const getTokenFromHash = () => {
