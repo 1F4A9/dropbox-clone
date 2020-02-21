@@ -30,7 +30,7 @@ function MainPage() {
   return (
     <Container>
       {token ? null : <Redirect to="/login" />}
-      <SideBar token={token} />
+      <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
         <FileList token={token} />
