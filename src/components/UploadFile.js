@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 
-function UploadFile(){
-  const [Url, updateUrl] = useState([]);
+function UploadFile(props){
+  const [token, updateTokenState] = useState(token$.value);
+  const [file, updatefile] = useState([]);
 
-  const handleUpload= () =>{
+  const handleUpload= (files) =>{
     const dropbox = new Dropbox({ accessToken: token$, fetch });
-    dropbox.usersGetCurrentAccount()
-  }
+    console.log(dropbox.filesUpload)
+
 
   const OnUpload = (e) =>{
     e.preventDefault();
