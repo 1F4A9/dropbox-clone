@@ -16,20 +16,25 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ children }) {
+function FileItem({ children, path, getPath }) {
     const [state, updateState] = useState(false)
 
     function toggleCheck() {
         updateState(!state)
+
+    }
+
+    function onClick() {
+        getPath(path);
+
     }
 
     return (
         <Container>
             <div className="name-cont">
-                <p className="file">{children}</p>
+                <p onClick={onClick} className="file">{children}</p>
                 {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
             </div>
-
         </Container>
     )
 }

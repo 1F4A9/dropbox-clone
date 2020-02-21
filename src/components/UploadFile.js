@@ -10,7 +10,6 @@ function UploadFile(props){
     const dropbox = new Dropbox({ accessToken: token$, fetch });
     console.log(dropbox.filesUpload)
 
-  }
 
   const OnUpload = (e) =>{
     e.preventDefault();

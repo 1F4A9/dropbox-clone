@@ -15,4 +15,14 @@ export const fetchAccessesTokenFromUser = () => {
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
   window.location.href = url;
+
+}
+
+export const filesListFolder = (token, path) => {
+  let dbx = new Dropbox({ accessToken: token, fetch: fetch });
+  return dbx.filesListFolder({ path: path })
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
 }
