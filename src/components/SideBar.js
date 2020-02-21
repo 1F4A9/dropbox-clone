@@ -3,8 +3,11 @@ import styled from 'styled-components';
 
 const Container = styled.aside`
   display: flex;
+  flex: 1;
+
   .box {
   }
+
   h1 {
     color: ${props => props.color}
   }
