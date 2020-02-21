@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import UploadFile from '../components/UploadFile';
 
 import LogoutButton from './LogoutButton';
 
@@ -33,7 +34,7 @@ function SideBar() {
     <Container>
       <div className="header">
         <h1>Home</h1>
-        <h1>Upload files</h1>
+        <UploadFile />
         <h1>New folder</h1>
       </div>
       <div className="footer">
