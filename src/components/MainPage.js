@@ -1,5 +1,5 @@
 import React from 'react';
-
+import FileList from "../components/FileList"
 import { fetchDataFromUser } from '../api/API';
 
 function MainPage() {
@@ -10,6 +10,7 @@ function MainPage() {
     <>
       <h1>MAIN PAAAAGE</h1>
       <h2>TODO: Router system för login/main</h2>
+      <FileList></FileList>
     </>
   )
 }
