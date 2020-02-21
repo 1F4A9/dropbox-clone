@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
 import FileList from "../components/FileList"
-=======
->>>>>>> a7122fe622a12d07c48d4384569134404f97d100
 import { fetchDataFromUser } from '../api/API';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';

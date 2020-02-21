@@ -21,7 +21,7 @@ function FileList() {
     }) */
 
     useEffect(() => {
-        fetchDataFromUser("7ZYGW9rimvUAAAAAAAAGTDCXGHTyh3fb_S5IQADGCWF-kk7-2UxT_uBznJn0gv92")
+        fetchDataFromUser("")
             .then((response) => {
                 updateState({
                     files: response,
