@@ -35,7 +35,6 @@ function FileItem({ children, path, getPath }) {
                 <p onClick={onClick} className="file">{children}</p>
                 {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
             </div>
-
         </Container>
     )
 }

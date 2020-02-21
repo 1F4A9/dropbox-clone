@@ -30,10 +30,14 @@ function FileList({ token }) {
         console.log(path)
         filesListFolder(token, path)
             .then((response) => {
+                updateState({
+                    files: response.entries
+                })
                 console.log(response);
             }).catch((err) => {
                 console.error(err);
             })
+
     }
 
     return (
