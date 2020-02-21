@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 /* import { token$, updateToken } from "./Observables/Store"; */
 import { fetchDataFromUser } from "../api/API";
 import styled from "styled-components";
+import { Dropbox } from 'dropbox'
+import { CLIENT_ID } from "../constants/constants"
 
 const Container = styled.div`
 
 `
-function FileList() {
 
+function FileList() {
 
     const [state, updateState] = useState({
         files: [],
@@ -21,7 +23,7 @@ function FileList() {
     }) */
 
     useEffect(() => {
-        fetchDataFromUser("7ZYGW9rimvUAAAAAAAAGTDCXGHTyh3fb_S5IQADGCWF-kk7-2UxT_uBznJn0gv92")
+        fetchDataFromUser("")
             .then((response) => {
                 updateState({
                     files: response,
