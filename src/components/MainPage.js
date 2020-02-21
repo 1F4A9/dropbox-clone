@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { updateToken, token$ } from '../observables/Store';
+import { updateToken, token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
 import FileList from "../components/FileList"
@@ -34,7 +34,7 @@ function MainPage() {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-      <FileList token={token} />
+        <FileList token={token} />
       </main>
 
     </Container>
