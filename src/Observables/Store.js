@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject } from "./node_modules/rxjs";
 
 export const token$ = new BehaviorSubject(localStorage.getItem("token"));
 
