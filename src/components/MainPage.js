@@ -15,6 +15,8 @@ const Container = styled.div`
     display: flex;
     flex: 4;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 `;
 
@@ -32,8 +34,8 @@ function MainPage() {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
+      <FileList token={token} />
       </main>
-      <FileList></FileList>
 
     </Container>
   )
