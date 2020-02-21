@@ -9,6 +9,13 @@ import FileList from "../components/FileList"
 
 const Container = styled.div`
   display: flex;
+  justify-content: center;
+
+  main {
+    display: flex;
+    flex: 4;
+    justify-content: center;
+  }
 `;
 
 function MainPage() {
@@ -23,7 +30,9 @@ function MainPage() {
     <Container>
       {token ? null : <Redirect to="/login" />}
       <SideBar />
-      <h1>MAIN PAAAAGE</h1>
+      <main>
+        <h1>MAIN PAGE CONTENT</h1>
+      </main>
       <FileList></FileList>
 
     </Container>
