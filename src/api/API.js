@@ -3,25 +3,11 @@ import { Dropbox } from 'dropbox'
 
 export const fetchDataFromUser = (token) => {
   let dbx = new Dropbox({ accessToken: token });
-  let list = [];
-
-
-  /*dbx.usersGetCurrentAccount()
-    .then(function (response) {
-      console.log(response);
-
-    })
-    .catch(function (error) {
-      console.error(error);
-    });*/
 
   return dbx.filesListFolder({ path: '' })
     .then(function (response) {
-      /* console.log(response.entries); */
       return response.entries;
-
     });
-
 }
 
 export const fetchAccessesTokenFromUser = () => {
@@ -29,19 +15,12 @@ export const fetchAccessesTokenFromUser = () => {
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
   window.location.href = url;
-}
-
-const getTokenFromHash = () => {
-  let token = window.location.hash.split('=');
-  console.log(test)
-  return token[1];
-}
-
-export const filesListFolder = (token, path) => {
-  let dbx = new Dropbox({ accessToken: token, fetch: fetch });
-  return dbx.filesListFolder({ path: path })
-    .then((response) => {
-      console.log(response);
-      return response;
-    })
+  export const filesListFolder = (token, path) => {
+    let dbx = new Dropbox({ accessToken: token, fetch: fetch });
+    return dbx.filesListFolder({ path: path })
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+  }
 }

@@ -6,7 +6,6 @@ import SideBar from '../components/SideBar';
 import styled from 'styled-components';
 import FileList from "../components/FileList"
 
-
 const Container = styled.div`
   display: flex;
   justify-content: center;
