@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { updateToken, token$ } from '../observables/Store';
+import { Link, Redirect } from 'react-router-dom';
 
-import { fetchDataFromUser } from '../api/API';
 import Aside from '../components/Aside';
 
 function MainPage() {
+  const [token, setToken] = useState(token$.value);
 
-  // fetchDataFromUser(); // denna funktionen console loggar användarens filer och data.
+  useEffect(() => {
+    const subscription = token$.subscribe(setToken);
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <>
+      {token ? null : <Redirect to="/login" />}
       <h1>MAIN PAAAAGE</h1>
       <h2>TODO: Router system för login/main</h2>
       <Aside />
-
     </>
   )
 }
