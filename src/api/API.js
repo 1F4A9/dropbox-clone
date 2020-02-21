@@ -36,3 +36,12 @@ const getTokenFromHash = () => {
   console.log(test)
   return token[1];
 }
+
+export const filesListFolder = (token, path) => {
+  let dbx = new Dropbox({ accessToken: token, fetch: fetch });
+  return dbx.filesListFolder({ path: path })
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+}
