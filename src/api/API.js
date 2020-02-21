@@ -25,6 +25,7 @@ export const fetchAccessesTokenFromUser = () => {
   var dbx = new Dropbox({ clientId: 'kkq9me3flt129yd', fetch: fetch });
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
+  
   window.location.href = url;
   console.log(url)
 }

@@ -6,6 +6,7 @@
 
 Dropbox Javascript SDK<br />
 Styled-Components<br />
+rxjs<br />
 
 ## Available Scripts
 
