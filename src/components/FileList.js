@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Dropbox } from 'dropbox'
-import { CLIENT_ID } from "../constants/constants"
 
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";

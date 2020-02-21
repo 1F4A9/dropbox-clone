@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { updateToken, token$ } from '../Observables/Store';
+import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
 import FileList from "../components/FileList"

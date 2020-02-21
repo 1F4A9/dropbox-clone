@@ -12,7 +12,6 @@ function Auth() {
     updateToken(parsedHash['#access_token'])
 
     setToken(token$.value)
-    // console.log(token)
   }, [])
 
   return (

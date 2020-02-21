@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
-import { updateToken, token$ } from '../Observables/Store';
+import { token$ } from '../Observables/Store';
 
 function UploadFile(){
   const [Url, updateUrl] = useState([]);
