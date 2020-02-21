@@ -29,7 +29,6 @@ const Container = styled.aside`
   }
 `;
 
-
 function SideBar() {
   return (
     <Container>
