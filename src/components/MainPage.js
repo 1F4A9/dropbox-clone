@@ -16,7 +16,6 @@ function MainPage() {
     <Container>
       <SideBar />
       <h1>MAIN PAAAAGE</h1>
-      <h2>TODO: Router system för login/main</h2>
       <FileList></FileList>
 
     </Container>

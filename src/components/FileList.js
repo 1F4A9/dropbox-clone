@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
-/* import { token$, updateToken } from "./Observables/Store"; */
-import { fetchDataFromUser } from "../api/API";
 import styled from "styled-components";
 
-const Container = styled.div`
+import { fetchDataFromUser } from "../api/API";
+import FileItem from "./FileItem";
 
-`
-function FileList() {
+function FileList({ token }) {
 
 
     const [state, updateState] = useState({
         files: [],
     })
 
-
-
-
     useEffect(() => {
-        fetchDataFromUser()
+
+        fetchDataFromUser(token)
 
             .then((response) => {
                 console.log(response)
@@ -35,9 +31,9 @@ function FileList() {
     return (
         <div className="cont" >
             {state.files.map((x) => {
-                return <p key={x.id}>{x.name}</p>;
+                return <FileItem key={x.id}>{x.name}</FileItem>;
             })}
-        </div>
+        </div >
     )
 }
 
