@@ -8,10 +8,6 @@ function UploadFile(){
   const handleUpload= () =>{
     const dropbox = new Dropbox({ accessToken: token$, fetch });
     dropbox.usersGetCurrentAccount()
-    .then(function (response) {
-        updateUser(response.name.given_name);
-      })
-
   }
 
   const OnUpload = (e) =>{
