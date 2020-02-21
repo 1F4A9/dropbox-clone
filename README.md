@@ -7,6 +7,8 @@
 Dropbox Javascript SDK<br />
 Styled-Components<br />
 rxjs<br />
+React-Router-Dom<br />
+query-string<br />
 
 ## Available Scripts
 

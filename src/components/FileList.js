@@ -1,30 +1,21 @@
 import React, { useState, useEffect } from "react";
-/* import { token$, updateToken } from "./Observables/Store"; */
-import { fetchDataFromUser } from "../api/API";
 import styled from "styled-components";
 import { Dropbox } from 'dropbox'
 import { CLIENT_ID } from "../constants/constants"
 
-const Container = styled.div`
+import { fetchDataFromUser } from "../api/API";
+import FileItem from "./FileItem";
 
-`
-
-function FileList() {
+function FileList({ token }) {
 
     const [state, updateState] = useState({
         files: [],
     })
 
-
-    /* const files = fetchDataFromUser("7ZYGW9rimvUAAAAAAAAGTDCXGHTyh3fb_S5IQADGCWF-kk7-2UxT_uBznJn0gv92");
-    console.log(files);
-    this.setState({
-        files,
-    }) */
-
     useEffect(() => {
-        fetchDataFromUser("")
+        fetchDataFromUser(token)
             .then((response) => {
+                console.log(response)
                 updateState({
                     files: response,
                 })
@@ -39,10 +30,11 @@ function FileList() {
     return (
         <div className="cont" >
             {state.files.map((x) => {
-                return <p key={x.id}>{x.name}</p>;
+                return <FileItem key={x.id}>{x.name}</FileItem>;
             })}
-        </div>
+        </div >
     )
 }
+
 
 export default FileList;
