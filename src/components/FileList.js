@@ -36,9 +36,5 @@ function FileList({ token }) {
     )
 }
 
-<<<<<<< HEAD
-export default FileList;
-=======
 
 export default FileList;
->>>>>>> 25075c08a2596e609d12fb843d2b9617f431baf0
