@@ -33,7 +33,7 @@ function MainPage() {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-      <FileList token={token} />
+        <FileList token={token} />
       </main>
 
     </Container>
