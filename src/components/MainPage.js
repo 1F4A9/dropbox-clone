@@ -14,8 +14,11 @@ const Container = styled.div`
     display: flex;
     flex: 4;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
+  }
+
+  h1 {
+    margin: 0px 62px;
   }
 `;
 

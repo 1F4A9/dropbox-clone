@@ -15,6 +15,7 @@ const Container = styled.aside`
   top: 0;
   left: 0;
   background-color: #f7f9fa;
+  color: #202020;
 
   .header {
     display: flex;
