@@ -40,7 +40,16 @@ function FileList({ token }) {
     return (
         <div className="cont" >
             {state.files.map((x) => {
-                return <FileItem getPath={handlePath} path={x.path_lower} id={x.id} key={x.id}>{x.name}</FileItem>;
+                return <FileItem 
+                    files={state.files}
+                    tag={x['.tag']}
+                    getPath={handlePath}
+                    path={x.path_lower} 
+                    id={x.id}
+                    key={x.id}
+                    name={x.name}
+                    >{x.name}
+                </FileItem>;
             })}
         </div >
     )
