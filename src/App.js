@@ -11,9 +11,9 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
-        <Route path="/login/" component={LoginPage}/>
-        <Route path="/auth/" component={Auth}/>
-        <Route exact path="/" component={MainPage}/>
+        <Route path="/login/" component={LoginPage} />
+        <Route path="/auth/" component={Auth} />
+        <Route exact path="/" component={MainPage} />
       </Router>
     </>
   );

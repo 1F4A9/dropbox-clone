@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Router, Link } from "react-router-dom";
 
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
@@ -40,15 +41,16 @@ function FileList({ token }) {
     return (
         <div className="cont" >
             {state.files.map((x) => {
-                return <FileItem 
+                return <FileItem
                     files={state.files}
                     tag={x['.tag']}
                     getPath={handlePath}
-                    path={x.path_lower} 
+                    path={x.path_lower}
                     id={x.id}
                     key={x.id}
                     name={x.name}
-                    >{x.name}
+                >{x.name}
+
                 </FileItem>;
             })}
         </div >

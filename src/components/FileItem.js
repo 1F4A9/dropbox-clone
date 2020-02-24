@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
+import { Router, Link } from "react-router-dom";
+
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import FileItemMeny from './FileItemMeny';
@@ -95,7 +97,7 @@ function FileItem({ children, path, getPath, tag, name }) {
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
-                        <p onClick={onClick} className="file">{children}</p>
+                        <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                     </div>
                 </div>
@@ -103,7 +105,7 @@ function FileItem({ children, path, getPath, tag, name }) {
                     <FileItemMeny />
                 </div>
             </div>
-        </Container>
+        </Container >
     )
 }
 
