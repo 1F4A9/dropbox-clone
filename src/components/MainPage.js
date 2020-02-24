@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import { updateToken, token$ } from "../Observables/Store";
+import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
 import FileList from "../components/FileList"
-
 
 const Container = styled.div`
   display: flex;
@@ -15,8 +14,11 @@ const Container = styled.div`
     display: flex;
     flex: 4;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
+  }
+
+  h1 {
+    margin: 0px 62px;
   }
 `;
 
@@ -34,7 +36,7 @@ function MainPage() {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-      <FileList token={token} />
+        <FileList token={token} />
       </main>
 
     </Container>

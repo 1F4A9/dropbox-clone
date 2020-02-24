@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { updateToken, token$ } from '../Observables/Store';
+import { Redirect } from 'react-router-dom';
+import { token$ } from '../Observables/Store';
 
 import { fetchAccessesTokenFromUser } from '../api/API';
 
@@ -20,4 +20,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage; 
+export default LoginPage;
