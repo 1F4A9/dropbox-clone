@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Dropbox } from 'dropbox'
-import { CLIENT_ID } from "../constants/constants"
+import { Dropbox } from 'dropbox';
+import { CLIENT_ID } from "../constants/constants";
 
 import { fetchDataFromUser } from "../api/API";
+import { Download } from "../api/Download"
 import FileItem from "./FileItem";
 
 function FileList({ token }) {

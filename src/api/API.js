@@ -19,7 +19,7 @@ export const fetchDataFromUser = (token) => {
     .then(function (response) {
       /* console.log(response.entries); */
       return response.entries;
-
+      
     });
 
 }
