@@ -14,7 +14,7 @@ function LoginPage() {
 
   return (
     <>
-      {token ? <Redirect to="/" /> : null}
+      {token ? <Redirect to="/home/" /> : null}
       <button onClick={() => fetchAccessesTokenFromUser()}>OAuth user</button>
     </>
   )

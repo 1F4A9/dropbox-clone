@@ -93,7 +93,7 @@ function FileItem({ children, path, getPath, tag, name, file}) {
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-
+    
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container" onClick={() => Download(file, token)}>

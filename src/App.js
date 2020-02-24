@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 import MainPage from './components/MainPage';
 import LoginPage from './components/LoginPage';
@@ -11,9 +11,12 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
+        <Route exact path="/">
+          <Redirect to="/login/" />
+        </Route>
+        <Route path="/home/" component={MainPage}/>
         <Route path="/login/" component={LoginPage}/>
         <Route path="/auth/" component={Auth}/>
-        <Route exact path="/" component={MainPage}/>
       </Router>
     </>
   );

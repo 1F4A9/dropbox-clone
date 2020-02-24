@@ -16,7 +16,6 @@ export const fetchAccessesTokenFromUser = () => {
   const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
 
   window.location.href = url;
-
 }
 
 export const filesListFolder = (token, path) => {

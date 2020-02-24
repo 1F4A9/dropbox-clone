@@ -5,7 +5,7 @@ export const filterOutIconsToRender = (tag, name) => {
   } else {
 
     let dataFormat = name.split('.')[1];
-    if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg') {
+    if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
       return 'photo';
     }
   }
