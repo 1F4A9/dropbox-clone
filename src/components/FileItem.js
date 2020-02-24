@@ -4,7 +4,7 @@ import { Star, StarBorder } from '@material-ui/icons';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { Download } from "../api/API";
-import FileItemMeny from './FileItemMeny';
+import FileItemMeny from './FileItemDropdown';
 
 const Container = styled.div`
     display: flex;
@@ -21,6 +21,7 @@ const Container = styled.div`
         margin: 0px 50px;
         border-bottom: 1px solid #e6e8eb;
         color: #202020;
+        box-sizing: border-box;
 
         :hover {
             cursor: pointer;
@@ -43,6 +44,7 @@ const Container = styled.div`
     }
 
     .right-content {
+        position: relative;
         display: flex;
         align-items: center;
     }
