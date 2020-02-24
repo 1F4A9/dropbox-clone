@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
+import { Download } from "../api/API";
 import FileItemMeny from './FileItemMeny';
 
 const Container = styled.div`
@@ -72,15 +73,21 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ children, path, getPath, tag, name }) {
+
+
+function FileItem({ children, path, getPath, tag, name, file}) {
+    const token = localStorage.getItem("token");
+
     const [state, updateState] = useState(false)
 
     function toggleCheck() {
         updateState(!state)
     }
 
-    function onClick() {
-        getPath(path);
+    function onClick(e) {
+        if(tag === "folder"){
+            getPath(path);
+        }
     }
 
     function iconsToRender(tag, name) {
@@ -89,13 +96,13 @@ function FileItem({ children, path, getPath, tag, name }) {
 
     return (
         <Container isFolderIcon={tag}>
-            <div className="flex-container">
+            <div className="flex-container" onClick={() => Download(file, token)}>
                 <div className="left-content">
                     <div className="icon-container">
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
-                        <p onClick={onClick} className="file">{children}</p>
+                        <p onClick={(e) => {onClick(e)}} className="file">{children}</p>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                     </div>
                 </div>

@@ -45,6 +45,7 @@ function FileList({ token }) {
                     tag={x['.tag']}
                     getPath={handlePath}
                     path={x.path_lower} 
+                    file={x}
                     id={x.id}
                     key={x.id}
                     name={x.name}
