@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
+
+import DropdownItems from './DropdownItems';
 
 const Container = styled.div`
   display: flex;
@@ -13,8 +15,15 @@ const Container = styled.div`
 `;
 
 export default function FileItemMeny() {
+  const [dropdown, setDropdown] = useState(false);
+
+  const onClick = () => {
+    dropdown ? setDropdown(false) : setDropdown(true);
+  }
+
   return (
-    <Container>
+    <Container onClick={onClick}>
+      {dropdown ? <DropdownItems /> : null}
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )

@@ -4,14 +4,13 @@ import { Router, Link } from "react-router-dom";
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
 
-function FileList({ token, ...props }) {
+function FileList({ token, pathname }) {
 
     const [state, updateState] = useState({
         files: [],
     })
 
     useEffect(() => {
-        console.log(props.match);
         fetchDataFromUser(token)
             .then((response) => {
                 console.log(response)
@@ -22,6 +21,10 @@ function FileList({ token, ...props }) {
                 console.error(err);
             })
     }, [])
+
+    useEffect(() => {
+        console.log("HEJ", pathname);
+    }, [pathname]);
 
     function handlePath(path) {
         console.log(path)
@@ -45,6 +48,7 @@ function FileList({ token, ...props }) {
                     tag={x['.tag']}
                     getPath={handlePath}
                     path={x.path_lower}
+                    file={x}
                     id={x.id}
                     key={x.id}
                     name={x.name}

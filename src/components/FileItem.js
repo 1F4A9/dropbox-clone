@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
 import { BrowserRouter, Router, Link } from "react-router-dom";
 
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
-import FileItemMeny from './FileItemMeny';
+import { Download } from "../api/API";
+import FileItemMeny from './FileItemDropdown';
 
 const Container = styled.div`
     display: flex;
@@ -22,6 +23,7 @@ const Container = styled.div`
         margin: 0px 50px;
         border-bottom: 1px solid #e6e8eb;
         color: #202020;
+        box-sizing: border-box;
 
         :hover {
             cursor: pointer;
@@ -44,6 +46,7 @@ const Container = styled.div`
     }
 
     .right-content {
+        position: relative;
         display: flex;
         align-items: center;
     }
@@ -74,15 +77,21 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ children, path, getPath, tag, name }) {
+
+
+function FileItem({ children, path, getPath, tag, name, file }) {
+    const token = localStorage.getItem("token");
+
     const [state, updateState] = useState(false)
 
     function toggleCheck() {
         updateState(!state)
     }
 
-    function onClick() {
-        getPath(path);
+    function onClick(e) {
+        if (tag === "folder") {
+            getPath(path);
+        }
     }
 
     function iconsToRender(tag, name) {
@@ -91,7 +100,7 @@ function FileItem({ children, path, getPath, tag, name }) {
 
     return (
         <Container isFolderIcon={tag}>
-            <div className="flex-container">
+            <div className="flex-container" onClick={() => Download(file, token)}>
                 <div className="left-content">
                     <div className="icon-container">
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>

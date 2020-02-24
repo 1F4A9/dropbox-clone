@@ -2,10 +2,11 @@ import { CLIENT_ID } from '../constants/constants';
 import { Dropbox } from 'dropbox'
 
 export const fetchDataFromUser = (token) => {
-  let dbx = new Dropbox({ accessToken: token });
+  let dbx = new Dropbox({ accessToken: token, fetch });
 
   return dbx.filesListFolder({ path: '' })
     .then(function (response) {
+      console.log(response);
       return response.entries;
     });
 }
@@ -21,7 +22,21 @@ export const filesListFolder = (token, path) => {
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
   return dbx.filesListFolder({ path: path })
     .then((response) => {
+      console.log("TEST");
       console.log(response);
       return response;
     })
+    .catch((err) => {
+      console.error(err);
+    })
+}
+
+export function Download(file, token){
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+  if(file.is_downloadable === true){
+    dbx.filesGetTemporaryLink({path : file.path_lower})
+      .then((response) => {
+        window.location.href = response.link;
+    })
+  }
 }
