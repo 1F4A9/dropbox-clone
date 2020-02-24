@@ -86,7 +86,7 @@ function FileItem({ children, path, getPath, tag, name }) {
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-
+    
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">

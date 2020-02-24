@@ -16,7 +16,7 @@ function Auth() {
 
   return (
     <>
-      {token ? <Redirect to="/" /> : null}
+      {token ? <Redirect to="/home" /> : null}
       <h2>AUTH PAGE</h2>
     </>
   )
