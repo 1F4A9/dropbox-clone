@@ -4,13 +4,14 @@ import { Router, Link } from "react-router-dom";
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
 
-function FileList({ token }) {
+function FileList({ token, ...props }) {
 
     const [state, updateState] = useState({
         files: [],
     })
 
     useEffect(() => {
+        console.log(props.match);
         fetchDataFromUser(token)
             .then((response) => {
                 console.log(response)

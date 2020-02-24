@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
-import { Router, Link } from "react-router-dom";
+import { BrowserRouter, Router, Link } from "react-router-dom";
 
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
@@ -88,7 +88,7 @@ function FileItem({ children, path, getPath, tag, name }) {
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-    
+
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">
@@ -97,7 +97,9 @@ function FileItem({ children, path, getPath, tag, name }) {
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
-                        <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
+                        <BrowserRouter basename="/home" >
+                            <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
+                        </BrowserRouter>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                     </div>
                 </div>
