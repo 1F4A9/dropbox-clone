@@ -20,8 +20,6 @@ function FileList({ token }) {
             }).catch((err) => {
                 console.error(err);
             })
-
-
     }, [])
 
     function handlePath(path) {
