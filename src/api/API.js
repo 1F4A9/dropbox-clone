@@ -35,8 +35,20 @@ export function Download(file, token){
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
   if(file.is_downloadable === true){
     dbx.filesGetTemporaryLink({path : file.path_lower})
-      .then((response) => {
+    .then((response) => {
         window.location.href = response.link;
     })
   }
+}
+
+export function createFolder(path, token){
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+  console.log(path);
+  dbx.filesCreateFolder({path : path})
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
 }

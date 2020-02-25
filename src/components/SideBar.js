@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import UploadFile from '../components/UploadFile';
 
 import LogoutButton from './LogoutButton';
+import NewFolder from "./NewFolder";
 
 const Container = styled.aside`
   display: flex;
@@ -31,12 +32,27 @@ const Container = styled.aside`
 `;
 
 function SideBar() {
+  const [newFolder, setNewFolder] = useState(false);
+
+  function onFolderClick(){
+    if(newFolder){
+      setNewFolder(false)
+    }else{
+      setNewFolder(true)
+    }
+  }
+
+  console.log(newFolder)
+
   return (
     <Container>
       <div className="header">
         <h1>Home</h1>
         <UploadFile />
-        <h1>New folder</h1>
+        <div>
+          <h1 onClick={onFolderClick}>New folder</h1>
+          {newFolder ? <NewFolder /> : <div></div>}
+        </div>
       </div>
       <div className="footer">
         <LogoutButton />
