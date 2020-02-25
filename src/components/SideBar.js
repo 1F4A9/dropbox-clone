@@ -46,7 +46,7 @@ function SideBar() {
   console.log(newFolder)
 
   const handleToggle = (e) =>{
-    updateTogle(!toggle)
+    updateToggle(!toggle)
 
     console.log(toggle);
   }
@@ -59,12 +59,12 @@ function SideBar() {
           <h1 onClick={onFolderClick}>New folder</h1>
           {newFolder ? <NewFolder /> : <div></div>}
         </div>
-        <h1 onClick={handleTogle}>Upload file</h1>
+        <h1 onClick={handleToggle}>Upload file</h1>
       </div>
       <div className="footer">
         <LogoutButton />
       </div>
-      {toggle ? <UploadFile toggle={handleTogle}/> : null}
+      {toggle ? <UploadFile toggle={handleToggle}/> : null}
     </Container>
 
   )
