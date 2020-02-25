@@ -5,7 +5,6 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
-import { Download } from "../api/API";
 import FileItemMeny from './FileItemDropdown';
 
 const Container = styled.div`
@@ -80,8 +79,6 @@ const Container = styled.div`
 
 
 function FileItem({ children, path, getPath, tag, name, file }) {
-    const token = localStorage.getItem("token");
-
     const [state, updateState] = useState(false)
 
     function toggleCheck() {
@@ -100,7 +97,7 @@ function FileItem({ children, path, getPath, tag, name, file }) {
 
     return (
         <Container isFolderIcon={tag}>
-            <div className="flex-container" onClick={() => Download(file, token)}>
+            <div className="flex-container">
                 <div className="left-content">
                     <div className="icon-container">
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
@@ -113,7 +110,7 @@ function FileItem({ children, path, getPath, tag, name, file }) {
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny />
+                    <FileItemMeny file={file}/>
                 </div>
             </div>
         </Container >

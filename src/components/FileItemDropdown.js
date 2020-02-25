@@ -14,7 +14,7 @@ const Container = styled.div`
   }
 `;
 
-export default function FileItemMeny() {
+export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
 
   const onClick = () => {
@@ -23,7 +23,7 @@ export default function FileItemMeny() {
 
   return (
     <Container onClick={onClick}>
-      {dropdown ? <DropdownItems /> : null}
+      {dropdown ? <DropdownItems file={file}/> : null}
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )
