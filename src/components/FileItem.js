@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
+import { BrowserRouter, Router, Link } from "react-router-dom";
+
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { Download } from "../api/API";
-import FileItemMeny from './FileItemMeny';
+import FileItemMeny from './FileItemDropdown';
 
 const Container = styled.div`
     display: flex;
@@ -21,6 +23,7 @@ const Container = styled.div`
         margin: 0px 50px;
         border-bottom: 1px solid #e6e8eb;
         color: #202020;
+        box-sizing: border-box;
 
         :hover {
             cursor: pointer;
@@ -43,6 +46,7 @@ const Container = styled.div`
     }
 
     .right-content {
+        position: relative;
         display: flex;
         align-items: center;
     }
@@ -75,7 +79,7 @@ const Container = styled.div`
 
 
 
-function FileItem({ children, path, getPath, tag, name, file}) {
+function FileItem({ children, path, getPath, tag, name, file }) {
     const token = localStorage.getItem("token");
 
     const [state, updateState] = useState(false)
@@ -85,7 +89,7 @@ function FileItem({ children, path, getPath, tag, name, file}) {
     }
 
     function onClick(e) {
-        if(tag === "folder"){
+        if (tag === "folder") {
             getPath(path);
         }
     }
@@ -93,7 +97,7 @@ function FileItem({ children, path, getPath, tag, name, file}) {
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-    
+
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container" onClick={() => Download(file, token)}>
@@ -102,7 +106,9 @@ function FileItem({ children, path, getPath, tag, name, file}) {
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
-                        <p onClick={(e) => {onClick(e)}} className="file">{children}</p>
+                        <BrowserRouter basename="/home" >
+                            <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
+                        </BrowserRouter>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                     </div>
                 </div>
@@ -110,7 +116,7 @@ function FileItem({ children, path, getPath, tag, name, file}) {
                     <FileItemMeny />
                 </div>
             </div>
-        </Container>
+        </Container >
     )
 }
 
