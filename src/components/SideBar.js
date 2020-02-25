@@ -33,6 +33,7 @@ const Container = styled.aside`
 
 function SideBar() {
   const [newFolder, setNewFolder] = useState(false);
+  const [togle, updateTogle] = useState(false);
 
   function onFolderClick(){
     if(newFolder){
@@ -41,10 +42,6 @@ function SideBar() {
       setNewFolder(true)
     }
   }
-
-  console.log(newFolder)
-
-  const [togle, updateTogle] = useState(false);
 
   const handleTogle = (e) =>{
     updateTogle(!togle)
@@ -55,17 +52,16 @@ function SideBar() {
     <Container>
       <div className="header">
         <h1>Home</h1>
-        <UploadFile />
-        <div>
-          <h1 onClick={onFolderClick}>New folder</h1>
-          {newFolder ? <NewFolder /> : <div></div>}
-        </div>
         <h1 onClick={handleTogle}>Upload file</h1>
       </div>
       <div className="footer">
         <LogoutButton />
       </div>
       {togle ? <UploadFile togle={handleTogle}/> : null}
+      <div>
+          <h1 onClick={onFolderClick}>New folder</h1>
+          {newFolder ? <NewFolder /> : <div></div>}
+      </div>
     </Container>
 
   )
