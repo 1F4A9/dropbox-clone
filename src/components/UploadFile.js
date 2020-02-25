@@ -52,7 +52,7 @@ function UploadFile(props){
   return (
     <Container>
       <div className='uploadContainer'>
-
+        <button onClick={props.togle}>&times;</button>
         <input
           type='file'
           multiple
