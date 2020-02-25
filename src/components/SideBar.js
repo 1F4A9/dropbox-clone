@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import UploadFile from '../components/UploadFile';
 
 import LogoutButton from './LogoutButton';
+import NewFolder from "./NewFolder";
 
 const Container = styled.aside`
   display: flex;
@@ -31,24 +32,39 @@ const Container = styled.aside`
 `;
 
 function SideBar() {
-  const [togle, updateTogle] = useState(false);
+  const [newFolder, setNewFolder] = useState(false);
+  const [toggle, updateToggle] = useState(false);
 
-  const handleTogle = (e) =>{
-    updateTogle(!togle)
-    console.log(togle);
+  function onFolderClick(){
+    if(newFolder){
+      setNewFolder(false)
+    }else{
+      setNewFolder(true)
+    }
+  }
+
+  console.log(newFolder)
+
+  const handleToggle = (e) =>{
+    updateToggle(!toggle)
+
+    console.log(toggle);
   }
 
   return (
     <Container>
       <div className="header">
         <h1>Home</h1>
-        <h1 onClick={handleTogle}>Upload file</h1>
-        <h1>New folder</h1>
+        <div>
+          <h1 onClick={onFolderClick}>New folder</h1>
+          {newFolder ? <NewFolder /> : <div></div>}
+        </div>
+        <h1 onClick={handleToggle}>Upload file</h1>
       </div>
       <div className="footer">
         <LogoutButton />
       </div>
-      {togle ? <UploadFile togle={handleTogle}/> : null}
+      {toggle ? <UploadFile toggle={handleToggle}/> : null}
     </Container>
 
   )
