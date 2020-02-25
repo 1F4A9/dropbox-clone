@@ -23,7 +23,7 @@ const Container = styled.div`
 function UploadFile(props){
   const [token, updateTokenState] = useState(token$.value);
   const [file, updateFile] = useState(null);
-
+  console.log(props)
   const path = window.location.pathname;
   console.log(path)
 
@@ -34,7 +34,7 @@ function UploadFile(props){
 
   const handleUpload= (e) =>{
 
-    const dropbox = new Dropbox({ accessToken: token$.value, fetch });
+    const dropbox = new Dropbox({ accessToken: token, fetch });
     dropbox.filesUpload({
       contents: file,
       path: path + file.name,
@@ -52,13 +52,13 @@ function UploadFile(props){
   return (
     <Container>
       <div className='uploadContainer'>
-        <button onClick={props.toggle}>&times;</button>
+        <button onClick={props.toggle}>Cancel</button>
         <input
           type='file'
           multiple
           onChange={handleItem}
           />
-        <button onClick={handleUpload}>sub</button>
+        <button onClick={handleUpload}>Upload file</button>
       </div>
     </Container>
   )
