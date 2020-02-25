@@ -14,9 +14,9 @@ function App() {
         <Route exact path="/">
           <Redirect to="/login/" />
         </Route>
-        <Route path="/home/" component={MainPage}/>
-        <Route path="/login/" component={LoginPage}/>
-        <Route path="/auth/" component={Auth}/>
+        <Route path="/home/" component={MainPage} />
+        <Route path="/login/" component={LoginPage} />
+        <Route path="/auth/" component={Auth} />
       </Router>
     </>
   );

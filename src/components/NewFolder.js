@@ -8,7 +8,7 @@ const Container = styled.aside`
     left: 0;
     width: ${props=>props.width + "px"};
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(44, 117, 165, 0.15);
     z-index: 1;
     display: flex;
     justify-content: center;

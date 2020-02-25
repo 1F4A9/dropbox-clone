@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Router, Link } from "react-router-dom";
 
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
 
-function FileList({ token }) {
+function FileList({ token, pathname }) {
 
     const [state, updateState] = useState({
         files: [],
@@ -20,6 +21,10 @@ function FileList({ token }) {
                 console.error(err);
             })
     }, [])
+
+    useEffect(() => {
+        console.log("HEJ", pathname);
+    }, [pathname]);
 
     function handlePath(path) {
         console.log(path)
@@ -38,16 +43,17 @@ function FileList({ token }) {
     return (
         <div className="cont" >
             {state.files.map((x) => {
-                return <FileItem 
+                return <FileItem
                     files={state.files}
                     tag={x['.tag']}
                     getPath={handlePath}
-                    path={x.path_lower} 
+                    path={x.path_lower}
                     file={x}
                     id={x.id}
                     key={x.id}
                     name={x.name}
-                    >{x.name}
+                >{x.name}
+
                 </FileItem>;
             })}
         </div >

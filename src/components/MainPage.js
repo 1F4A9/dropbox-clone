@@ -22,7 +22,7 @@ const Container = styled.div`
   }
 `;
 
-function MainPage() {
+function MainPage({ location }) {
   const [token, setToken] = useState(token$.value);
 
   useEffect(() => {
@@ -30,13 +30,15 @@ function MainPage() {
     return () => subscription.unsubscribe();
   }, []);
 
+  console.log("TEST", location.pathname);
+
   return (
     <Container>
       {token ? null : <Redirect to="/login" />}
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-        <FileList token={token} />
+        <FileList token={token} pathname={location.pathname} />
       </main>
 
     </Container>
