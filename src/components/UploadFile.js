@@ -1,6 +1,24 @@
 import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  z-index: 100;
+  position: absolute;
+  left: 50%;
+  width: 60%;
+  height 300px;
+}
+
+.uploadContainer{
+  position: relative;
+  background: white;
+  left: -50%;
+  border: 1px solid black;
+}
+
+`;
 
 function UploadFile(props){
   const [token, updateTokenState] = useState(token$.value);
@@ -9,14 +27,17 @@ function UploadFile(props){
   const path = window.location.pathname;
   console.log(path)
 
-  const handleUpload= (e) =>{
+  const handleItem= (e) =>{
     updateFile(e.target.files[0]);
-    console.log(file)
 
-    const dropbox = new Dropbox({ accessToken: token$, fetch });
+  }
+
+  const handleUpload= (e) =>{
+
+    const dropbox = new Dropbox({ accessToken: token$.value, fetch });
     dropbox.filesUpload({
       contents: file,
-      path: path,
+      path: path + file.name,
       autorename: true,
     })
     .then((response) => {
@@ -25,20 +46,21 @@ function UploadFile(props){
     .catch((error) => {
       console.log(error);
     })
-    
+
   }
 
   return (
-    <>
-      <label htmlFor='uploadFile' >Upload File</label>
-      <input
-        id='uploadFile'
-        type='file'
-        multiple
-        onChange={handleUpload}
-        style={{visibility:'hidden'}}
-      />
-    </>
+    <Container>
+      <div className='uploadContainer'>
+
+        <input
+          type='file'
+          multiple
+          onChange={handleItem}
+          />
+        <button onClick={handleUpload}>sub</button>
+      </div>
+    </Container>
   )
 }
 

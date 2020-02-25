@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components';
 import UploadFile from '../components/UploadFile';
 
@@ -31,17 +31,26 @@ const Container = styled.aside`
 `;
 
 function SideBar() {
+  const [togle, updateTogle] = useState(false);
+
+  const handleTogle = (e) =>{
+    updateTogle(!togle)
+    console.log(togle);
+  }
+
   return (
     <Container>
       <div className="header">
         <h1>Home</h1>
-        <UploadFile />
+        <h1 onClick={handleTogle}>Upload file</h1>
         <h1>New folder</h1>
       </div>
       <div className="footer">
         <LogoutButton />
       </div>
+      {togle ? <UploadFile togle={handleTogle}/> : null}
     </Container>
+
   )
 }
 
