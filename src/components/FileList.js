@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { fetchDataFromUser, filesListFolder } from "../api/API";
+import { filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 
@@ -12,19 +12,22 @@ function FileList({ token, pathname }) {
     })
     const [path, updatePath] = useState("");
 
+    console.log("FILELIST KÖRS!!")
+
+
     useEffect(() => {
-        fetchDataFromUser(token)
+
+        filesListFolder(token, pathname.substring(5))
             .then((response) => {
-                /* console.log(response) */
+                console.log("LOCATION ÄNDRADES", pathname.substring(5));
                 updateState({
-                    files: response,
+                    files: response.entries
                 })
+                updatePath(path)
+
             }).catch((err) => {
                 console.error(err);
             })
-    }, [])
-
-    useEffect(() => {
     }, [pathname]);
 
     function handlePath(path) {
@@ -34,6 +37,8 @@ function FileList({ token, pathname }) {
                     files: response.entries
                 })
                 updatePath(path)
+
+
             }).catch((err) => {
                 console.error(err);
             })
@@ -43,7 +48,7 @@ function FileList({ token, pathname }) {
     return (
         <section>
             <div>
-                <BreadCrumbs getPath={handlePath} path={path}></BreadCrumbs>
+                <BreadCrumbs getPath={handlePath} path={pathname}></BreadCrumbs>
 
             </div>
 

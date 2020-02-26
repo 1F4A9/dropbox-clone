@@ -16,7 +16,3 @@ export function returnRightPath(str, path) {
   let returnPath = uncutPath.replace(regEx, "");
   return returnPath;
 }
-
-export function getCurrentPathName() {
-  return window.location.pathname.substring(5);
-}

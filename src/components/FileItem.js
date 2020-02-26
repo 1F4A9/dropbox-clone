@@ -76,8 +76,6 @@ const Container = styled.div`
     }
 `
 
-
-
 function FileItem({ children, path, getPath, tag, name, file }) {
     const [state, updateState] = useState(false)
 
@@ -103,14 +101,12 @@ function FileItem({ children, path, getPath, tag, name, file }) {
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
-                        <BrowserRouter basename="/home" >
-                            <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
-                        </BrowserRouter>
+                        <Link to={"/home" + path}><p className="file">{children}</p></Link>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny file={file}/>
+                    <FileItemMeny file={file} />
                 </div>
             </div>
         </Container >

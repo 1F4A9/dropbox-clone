@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { Link, BrowserRouter } from "react-router-dom";
 
-
+import { PATH_BASENAME } from "../constants/constants"
+import { stringToArrBreadCrumbs, returnRightPath } from "../utilities"
 
 const Container = styled.div`
   display: flex;
@@ -39,37 +41,32 @@ const Container = styled.div`
 
 function BreadCrumbs({ getPath, path }) {
 
-  function stringToArrBreadCrumbs(str) {
-    str = "Home" + str; //Gjort en konstant som kan användas för path basename.
-    let arr = str.split("/");
-
-    return arr;
-  }
-
-  function returnRightPath(str, path) {
-    let arr = stringToArrBreadCrumbs(path);
-
-    let index = arr.indexOf(str);
-    let uncutPath = arr.slice(0, index + 1).join("/");
-    let regEx = /home/i;
-    let returnPath = uncutPath.replace(regEx, "");
-    return returnPath;
-  }
-
   function onClick(e) {
-
     e.stopPropagation();
     let value = e.target.textContent;
     let breadCrumb = returnRightPath(value, path);
     getPath(breadCrumb);
   }
 
+  function addPathForEach(path) {
+    let parts = path.split("/");
+
+    console.log(parts);
+    let newPath = parts.map((part, i) => ({ part, path: parts.slice(0, i + 1).join("/") }));
+    newPath = newPath.slice(1);
+    console.log(newPath);
+    return newPath
+  }
+
+  console.log(path);
+  addPathForEach(path);
   return (
     <Container>
-      {stringToArrBreadCrumbs(path).map((crumb, i) => {
-        return <div key={i} className="cont"><p className="breadCrumb" onClick={onClick}>{crumb}</p> {i === stringToArrBreadCrumbs(path).length - 1 ? null : <p className="arrow"> > </p>} </div>
+      {addPathForEach(path).map((crumb, i) => {
+
+        return <div key={i} className="cont"><p className="breadCrumb"><Link to={crumb.path}>{crumb.part}</Link></p> {i === stringToArrBreadCrumbs(path).length - 1 ? null : <p className="arrow"> > </p>}</div>
       })}
-    </Container>
+    </Container >
   )
 }
 
