@@ -30,8 +30,6 @@ function MainPage({ location }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  console.log("TEST", location.pathname);
-
   return (
     <Container>
       {token ? null : <Redirect to="/login" />}
