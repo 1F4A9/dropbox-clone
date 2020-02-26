@@ -46,12 +46,12 @@ function SideBar() {
   return (
     <Container>
       <div className="header">
-        <h1>Home</h1>
         <div>
           <h1 onClick={onFolderClick}>New folder</h1>
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
         <h1 onClick={handleToggle}>Upload file</h1>
+        <h1>Favorites</h1>
       </div>
       <div className="footer">
         <LogoutButton />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from "styled-components";
 
 import { Download, deleteFilesAndFolders } from "../api/API";
@@ -23,7 +23,7 @@ const Container = styled.div`
   }
 `;
 
-export default function DropdownItems({ file }) {
+export default function DropdownItems({ file, cb }) {
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {

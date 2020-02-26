@@ -7,6 +7,7 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import FileItemMeny from './FileItemDropdown';
 import { getFilesMetadata } from "../api/API";
+import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
 
 const Container = styled.div`
     display: flex;
@@ -73,10 +74,16 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        padding-top: 10px;
     }
 
     .metadata {
+        color: #637282;
+        font-size: 12px;
+    }
 
+    .date {
+        padding-right: 15px;
     }
 
     .file {
@@ -86,9 +93,27 @@ const Container = styled.div`
     .meny-container {
         justify-content: flex-end;
     }
+
+    p {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+    }
+
+    a {
+        text-decoration: none;
+
+        :link,
+        :visited {
+            color: black;
+        }
+
+        :hover {
+            color: #92ceff;
+        }
+    }
 `
 
-function FileItem({ children, path, getPath, tag, name, file, token }) {
+function FileItem({ children, path, getPath, tag, name, file, token, changeURL }) {
     const [state, updateState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
@@ -99,6 +124,8 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
     }
 
     function onClick(e) {
+
+        console.log("HEJ!", path);
         if (tag === "folder") {
             getPath(path);
         }
@@ -110,12 +137,18 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
 
     useEffect(() => {
         getFilesMetadata(path, token)
-        .then(metadata => {
-            setModified(metadata.client_modified);
-            setSize(metadata.size);
-        })
-
+            .then(metadata => {
+                setModified(metadata.server_modified);
+                setSize(metadata.size);
+            })
     }, [])
+
+    let link = ""
+    if (changeURL) {
+        link = <Link to={"/home" + path}><p onClick={onClick} className="file">{children}</p></Link>
+    } else {
+        link = <div><p onClick={onClick} className="file">{children}</p></div>
+    }
 
     return (
         <Container isFolderIcon={tag}>
@@ -126,19 +159,17 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
                     </div>
                     <div className="name-cont">
                         <div className="file-star-container">
-                        <BrowserRouter basename="/home" >
-                            <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
-                        </BrowserRouter>
-                        {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
+                            {link}
+                            {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                         </div>
                         <div className="metadata-container">
-                            <span className="metadata date">{modified}</span>
-                            <span className="metadata kilobyte">{size}</span>
+                            <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
+                            <span className="metadata kilobyte">{convertToHumanReadableSize(size)}</span>
                         </div>
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny file={file}/>
+                    <FileItemMeny file={file} />
                 </div>
             </div>
         </Container >

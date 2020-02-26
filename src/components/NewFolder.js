@@ -88,6 +88,7 @@ const Container = styled.aside`
     background-color: rgba(41, 116, 255, 1);
     border: 0px;
     color: white;
+    margin-right: 15px;
   }
   .overFlow{
     position: relative;
@@ -107,24 +108,19 @@ const Container = styled.aside`
 `;
 
 function NewFolder(props){
-  let myPath = window.location.pathname.substring(5);
   const [token, setToken] = useState(token$.value);
   const [inputName, setInputName] = useState("");
-
-  console.log(myPath)
+  const [state, updateState] = useState({
+    files: [],
+  })
+//  console.log(state.files);
+  const [path, updatePath] = useState("/");
+  console.log("PATH! ", path);
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
-  console.log(token);
-
-  let files = filesListFolder(token, myPath);
-
-  const [state, updateState] = useState({
-    files: [],
-  })
-  console.log(state.files);
-  const [path, updatePath] = useState(myPath);
+//  console.log(token);
 
   useEffect(() => {
       fetchDataFromUser(token)
@@ -137,9 +133,6 @@ function NewFolder(props){
               console.error(err);
           })
   }, [])
-
-  useEffect(() => {
-  }, [myPath]);
 
   function handlePath(path) {
       filesListFolder(token, path)
@@ -164,7 +157,7 @@ function NewFolder(props){
     if(path === "/"){
       dbx.filesCreateFolder({path : path + inputName})
       .then((response) => {
-        console.log(response);
+//        console.log(response);
       })
       .then(() => {
         props.onClickToggle();
@@ -172,12 +165,25 @@ function NewFolder(props){
     }else{
       dbx.filesCreateFolder({path : path + "/" + inputName})
       .then((response) => {
-        console.log(response);
+//        console.log(response);
       })
       .then(() => {
         props.onClickToggle();
       })
     }
+  }
+
+  function onReturn(path){
+    let splittedPath = path.split("/");
+    let newPath = "";
+    for(let i = 1; i < splittedPath.length - 1; i++){
+      if(i !== splittedPath.length || splittedPath !== ""){
+        newPath += "/" + splittedPath[i];
+      }
+    }
+    console.log(newPath);
+    handlePath(newPath)
+    updatePath(newPath);
   }
 
   return (
@@ -194,7 +200,7 @@ function NewFolder(props){
               <input value={inputName} onChange={(e) => folderNameChange(e)} className="input" placeholder="Folder name" />
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox => {path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
               <div className="overFlow">
                 {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
                       return <FileItem
@@ -207,6 +213,7 @@ function NewFolder(props){
                           key={x.id}
                           name={x.name}
                           token={token}
+                          changeURL={false}
                       >{x.name}
 
                       </FileItem>;
@@ -215,6 +222,7 @@ function NewFolder(props){
             </div>
           </div>
           <footer className="myFooter">
+            <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={props.onClickToggle}>Cancel</button>
             <button className="btn create" onClick={onCreateFolder}>Create</button>
           </footer>

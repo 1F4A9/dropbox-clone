@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useParams } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
 import { token$ } from '../Observables/Store';
@@ -13,7 +13,7 @@ const Container = styled.div`
   main {
     display: flex;
     flex: 4;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
   }
 
@@ -22,13 +22,18 @@ const Container = styled.div`
   }
 `;
 
-function MainPage({ location }) {
+/* let { path } = useParams();
+console.log(path); */
+
+function MainPage({ location, ...props }) {
+  console.log("NEW LOCATION", location.pathname);
   const [token, setToken] = useState(token$.value);
 
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
+
 
   return (
     <Container>
@@ -38,7 +43,6 @@ function MainPage({ location }) {
         <h1>MAIN PAGE CONTENT</h1>
         <FileList token={token} pathname={location.pathname} />
       </main>
-
     </Container>
   )
 }
