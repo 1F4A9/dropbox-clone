@@ -30,7 +30,7 @@ export default function DropdownItems({ file }) {
     deleteFilesAndFolders(file.path_lower, token)
       .then(metaData => {
         console.log(metaData);
-        console.log('RADERAD MEN UPDATERAR EJ SIDAN!!!')
+        console.log('RADERAD MEN UPDATERAR EJ SIDAN I VÄNTAN PÅ WEBSOCKETS!!!')
       })
   }
 
