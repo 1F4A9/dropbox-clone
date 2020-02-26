@@ -92,6 +92,11 @@ const Container = styled.div`
     .meny-container {
         justify-content: flex-end;
     }
+
+    p {
+        margin-block-start: 10px;
+        margin-block-end: 0em;
+    }
 `
 
 function FileItem({ children, path, getPath, tag, name, file, token }) {
