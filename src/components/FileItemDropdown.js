@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
@@ -17,6 +17,7 @@ const Container = styled.div`
 
 export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
+  const refWrapper = useRef(null);
 
   const onClick = () => {
     dropdown ? setDropdown(false) : setDropdown(true);
@@ -24,8 +25,8 @@ export default function FileItemMeny({ file }) {
 
   return (
     <Container onClick={onClick}>
-      {dropdown ? <DropdownItems file={file}/> : null}
-      <i className="material-icons meny">more_horiz</i>
+      {dropdown ? <DropdownItems file={file} /> : null}
+      <i ref={refWrapper} className="material-icons meny">more_horiz</i>
     </Container>
   )
 }

@@ -13,7 +13,7 @@ const Container = styled.div`
   main {
     display: flex;
     flex: 4;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
   }
 
@@ -38,7 +38,6 @@ function MainPage({ location }) {
         <h1>MAIN PAGE CONTENT</h1>
         <FileList token={token} pathname={location.pathname} />
       </main>
-
     </Container>
   )
 }

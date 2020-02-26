@@ -15,4 +15,4 @@ export const convertToHumanReadableSize = (bytes, decimals = 2) => {
 
 export const convertToHumanReadableTime = (iso) => {
   return moment(iso).format('YYYY-MM-DD HH:mm:ss');
-} 
+}
