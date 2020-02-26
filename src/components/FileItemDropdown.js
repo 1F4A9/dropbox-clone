@@ -11,6 +11,7 @@ const Container = styled.div`
 
   .meny {
     border-radius: 4px;
+    border: 2px solid transparent;
   }
 `;
 
