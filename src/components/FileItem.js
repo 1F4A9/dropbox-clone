@@ -7,6 +7,7 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import FileItemMeny from './FileItemDropdown';
 import { getFilesMetadata } from "../api/API";
+import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
 
 const Container = styled.div`
     display: flex;
@@ -76,7 +77,12 @@ const Container = styled.div`
     }
 
     .metadata {
+        color: #637282;
+        font-size: 12px;
+    }
 
+    .date {
+        padding-right: 15px;
     }
 
     .file {
@@ -92,7 +98,6 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
     const [state, updateState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
-    const [mediaInfo, setMediaInfo] = useState([]);
     
     function toggleCheck() {
         updateState(!state)
@@ -111,10 +116,9 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
     useEffect(() => {
         getFilesMetadata(path, token)
         .then(metadata => {
-            setModified(metadata.client_modified);
+            setModified(metadata.server_modified);
             setSize(metadata.size);
         })
-
     }, [])
 
     return (
@@ -132,8 +136,8 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                         </div>
                         <div className="metadata-container">
-                            <span className="metadata date">{modified}</span>
-                            <span className="metadata kilobyte">{size}</span>
+                            <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
+                            <span className="metadata kilobyte">{convertToHumanReadableSize(size)}</span>
                         </div>
                     </div>
                 </div>
