@@ -64,7 +64,7 @@ function BreadCrumbs({ getPath, path }) {
     <Container>
       {addPathForEach(path).map((crumb, i) => {
 
-        return <div key={i} className="cont"><p className="breadCrumb"><Link to={crumb.path}>{crumb.part}</Link></p> {i === stringToArrBreadCrumbs(path).length - 1 ? null : <p className="arrow"> > </p>}</div>
+        return <div key={i} className="cont"><p className="breadCrumb"><Link to={crumb.path}>{crumb.part}</Link></p> {i === addPathForEach(path).length - 1 ? null : <p className="arrow"> > </p>}</div>
       })}
     </Container >
   )
