@@ -19,8 +19,10 @@ export const fetchAccessesTokenFromUser = () => {
 }
 
 export const filesListFolder = (token, path) => {
+  let newPath = path.replace(/%20/g," ");
+  
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
-  return dbx.filesListFolder({ path: path })
+  return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
       console.log("TEST");
       console.log(response);
