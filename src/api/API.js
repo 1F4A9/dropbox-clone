@@ -20,7 +20,7 @@ export const fetchAccessesTokenFromUser = () => {
 
 export const filesListFolder = (token, path) => {
   let newPath = path.replace(/%20/g," ");
-  
+
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
   return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
@@ -64,5 +64,12 @@ export function deleteFilesAndFolders(path, token) {
 export function getFilesMetadata(path, token) {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
 
-  return dbx.filesGetMetadata({ path })
+  // include_media_info: true
+  return dbx.filesGetMetadata({ path, include_media_info: true  })
+}
+
+export function getTumbnail(path, token){
+  const dbx = new Dropbox({accesToken: token,fetch});
+
+  return dbx.filesGetThumbnail({path})
 }
