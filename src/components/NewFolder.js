@@ -7,6 +7,7 @@ import { filesListFolder, fetchDataFromUser } from "../api/API";
 import { token$ } from '../Observables/Store';
 
 import FileItem from "../components/FileItem";
+import LoadingCircle from "./LoadingCircle";
 
 const Container = styled.aside`
   .shadow{
@@ -98,6 +99,12 @@ const Container = styled.aside`
     display:flex;
     flex-direction: column;
   }
+  .center{
+    height: 280px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
   .flex-container {
     margin-left: 0px;
     margin-right: 0px;
@@ -113,6 +120,7 @@ function NewFolder(props){
   const [state, updateState] = useState({
     files: [],
   })
+  const [loading, setLoading] = useState(true);
 //  console.log(state.files);
   const [path, updatePath] = useState("/");
   console.log("PATH! ", path);
@@ -123,24 +131,32 @@ function NewFolder(props){
 //  console.log(token);
 
   useEffect(() => {
+      setLoading(true);
       fetchDataFromUser(token)
           .then((response) => {
               /* console.log(response) */
               updateState({
                   files: response,
               })
+              setLoading(false);
           }).catch((err) => {
               console.error(err);
           })
   }, [])
 
   function handlePath(path) {
+      console.log("SHOULD LOAD")
+      setLoading(true);
       filesListFolder(token, path)
           .then((response) => {
               updateState({
                   files: response.entries
               })
               updatePath(path)
+          })
+          .then((response) => {
+            console.log("FINISHED LOADING")
+            setLoading(false);
           })
           .catch((err) => {
               console.error(err);
@@ -185,6 +201,29 @@ function NewFolder(props){
     handlePath(newPath)
     updatePath(newPath);
   }
+  let loadingReturn;
+  if(loading){
+    loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
+  }else{
+    loadingReturn = (<div className="overFlow">
+    {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+          return <FileItem
+              files={state.files}
+              tag={x['.tag']}
+              getPath={handlePath}
+              path={x.path_lower}
+              file={x}
+              id={x.id}
+              key={x.id}
+              name={x.name}
+              token={token}
+              changeURL={false}
+          >{x.name}
+
+          </FileItem>;
+      })}
+  </div>)
+  }
 
   return (
     <Container width={window.innerWidth}>
@@ -201,24 +240,7 @@ function NewFolder(props){
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
-              <div className="overFlow">
-                {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
-                      return <FileItem
-                          files={state.files}
-                          tag={x['.tag']}
-                          getPath={handlePath}
-                          path={x.path_lower}
-                          file={x}
-                          id={x.id}
-                          key={x.id}
-                          name={x.name}
-                          token={token}
-                          changeURL={false}
-                      >{x.name}
-
-                      </FileItem>;
-                  })}
-              </div>
+              {loadingReturn}
             </div>
           </div>
           <footer className="myFooter">
