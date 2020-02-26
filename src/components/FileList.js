@@ -3,17 +3,19 @@ import { Router, Link } from "react-router-dom";
 
 import { fetchDataFromUser, filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
+import BreadCrumbs from "./BreadCrumbs";
 
 function FileList({ token, pathname }) {
 
     const [state, updateState] = useState({
         files: [],
     })
+    const [path, updatePath] = useState("");
 
     useEffect(() => {
         fetchDataFromUser(token)
             .then((response) => {
-                console.log(response)
+                /* console.log(response) */
                 updateState({
                     files: response,
                 })
@@ -23,17 +25,15 @@ function FileList({ token, pathname }) {
     }, [])
 
     useEffect(() => {
-        console.log("HEJ", pathname);
     }, [pathname]);
 
     function handlePath(path) {
-        console.log(path)
         filesListFolder(token, path)
             .then((response) => {
                 updateState({
                     files: response.entries
                 })
-                console.log(response);
+                updatePath(path)
             }).catch((err) => {
                 console.error(err);
             })
@@ -41,22 +41,29 @@ function FileList({ token, pathname }) {
     }
 
     return (
-        <div className="cont" >
-            {state.files.map((x) => {
-                return <FileItem
-                    files={state.files}
-                    tag={x['.tag']}
-                    getPath={handlePath}
-                    path={x.path_lower}
-                    file={x}
-                    id={x.id}
-                    key={x.id}
-                    name={x.name}
-                >{x.name}
+        <section>
+            <div>
+                <BreadCrumbs getPath={handlePath} path={path}></BreadCrumbs>
 
-                </FileItem>;
-            })}
-        </div >
+            </div>
+
+            <div className="cont" >
+                {state.files.map((x) => {
+                    return <FileItem
+                        files={state.files}
+                        tag={x['.tag']}
+                        getPath={handlePath}
+                        path={x.path_lower}
+                        file={x}
+                        id={x.id}
+                        key={x.id}
+                        name={x.name}
+                    >{x.name}
+
+                    </FileItem>;
+                })}
+            </div >
+        </section>
     )
 }
 
