@@ -11,7 +11,7 @@ const Container = styled.div`
   height 300px;
 }
 
-.uploadContainer{
+.uploadContainer {
   position: relative;
   background: white;
   left: -50%;

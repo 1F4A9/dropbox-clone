@@ -33,6 +33,7 @@ const Container = styled.div`
     color: #fff;
     font-weight: 600;
     background-color: #0062ff;
+    cursor: pointer;
 
     transition: all 0.4s ease 0s;
 
@@ -60,11 +61,13 @@ function LoginPage() {
       {token ? <Redirect to="/home/" /> : null}
       <button onClick={() => fetchAccessesTokenFromUser()}>Login with Dropbox</button>
       <footer>
-        Developed with &nbsp;
-        <i className="fas fa-heart"></i>
-        &nbsp; love and  &nbsp;
-        <i class="fas fa-mug-hot"></i>
-        &nbsp;
+        <span>
+          Developed with &nbsp;
+          <i className="fas fa-heart"></i>
+          &nbsp; love and  &nbsp;
+          <i class="fas fa-mug-hot"></i>
+          &nbsp;
+        </span>
       </footer>
     </Container>
   )
