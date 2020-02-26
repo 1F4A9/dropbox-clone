@@ -88,7 +88,7 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ children, path, getPath, tag, name, file, token }) {
+function FileItem({ children, path, getPath, tag, name, file, token, changeURL }) {
     const [state, updateState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
@@ -99,6 +99,8 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
     }
 
     function onClick(e) {
+        
+        console.log("HEJ!", path);
         if (tag === "folder") {
             getPath(path);
         }
@@ -117,6 +119,13 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
 
     }, [])
 
+    let link = ""
+    if(changeURL){
+        link = <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
+    }else{
+        link = <div><p onClick={onClick} className="file">{children}</p></div>
+    }
+
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">
@@ -127,7 +136,7 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
                     <div className="name-cont">
                         <div className="file-star-container">
                         <BrowserRouter basename="/home" >
-                            <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
+                            {link}
                         </BrowserRouter>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                         </div>
