@@ -52,6 +52,7 @@ function SideBar() {
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
         <h1 onClick={handleToggle}>Upload file</h1>
+        <h1>Favorites</h1>
       </div>
       <div className="footer">
         <LogoutButton />
