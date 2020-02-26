@@ -92,7 +92,6 @@ const Container = styled.aside`
 function UploadFile(props){
   const [file, updateFile] = useState(null);
   const [progressbar, updateProgressbar] = useState(0);
-  const [token, setToken] = useState(token$.value);
 
   const path = window.location.pathname.substring(5);
   console.log(path)
@@ -116,12 +115,12 @@ function UploadFile(props){
         },
       })
       .then((response) => {
+          props.toggleModal()
       //  const dropbox = new new Dropbox({ accessToken: token$.value, fetch });
       //  dropbox.filesListFolder({path: path})
-      //  filesListFolder(token, window.location.pathname)
-        console.log(response);
-        console.log(progressbar);
-        console.log(props.toggle);
+      //  filesListFolder(token$.value, window.location.pathname.substring(5))
+          console.log(response);
+          console.log(progressbar);
       })
       .catch((error) => {
         console.log(error);
@@ -137,6 +136,31 @@ function UploadFile(props){
         workItems.push(file.slice(offset, offset + chunkSize));
         offset += chunkSize;
       }
+
+      const task = workItems.reduce((acc, blob, idx, items) => { //make this to a function
+   if (idx == 0) {
+     // Starting multipart upload of file
+     return acc.then(function() {
+       return dropbox.filesUploadSessionStart({ close: false, contents: blob})
+                 .then(response => response.session_id)
+     });
+   } else if (idx < items.length-1) {
+     // Append part to the upload session
+     return acc.then(function(sessionId) {
+      var cursor = { session_id: sessionId, offset: idx * maxBlob };
+      return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
+      //updateProgressbar here
+     });
+   } else {
+     // Last chunk of data, close session
+     return acc.then(function(sessionId) {
+       var cursor = { session_id: sessionId, offset: file.size - blob.size };
+       var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };
+       return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
+     });
+   }
+ }, Promise.resolve());
+
     }
   }
 
