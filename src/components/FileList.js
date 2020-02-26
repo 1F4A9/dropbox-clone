@@ -63,6 +63,8 @@ function FileList({ token, pathname }) {
                         id={x.id}
                         key={x.id}
                         name={x.name}
+                        token={token}
+                        changeURL={true}
                     >{x.name}
 
                     </FileItem>;

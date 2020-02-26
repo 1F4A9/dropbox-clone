@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
@@ -11,6 +11,7 @@ const Container = styled.div`
 
   .meny {
     border-radius: 4px;
+    border: 2px solid transparent;
   }
 `;
 
@@ -23,7 +24,7 @@ export default function FileItemMeny({ file }) {
 
   return (
     <Container onClick={onClick}>
-      {dropdown ? <DropdownItems file={file}/> : null}
+      {dropdown ? <DropdownItems file={file} /> : null}
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )

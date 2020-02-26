@@ -19,8 +19,10 @@ export const fetchAccessesTokenFromUser = () => {
 }
 
 export const filesListFolder = (token, path) => {
+  let newPath = path.replace(/%20/g," ");
+  
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
-  return dbx.filesListFolder({ path: path })
+  return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
       console.log("TEST");
       console.log(response);
@@ -31,7 +33,7 @@ export const filesListFolder = (token, path) => {
     })
 }
 
-export function Download(file, token){
+export function Download(file, token) {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
   if(file.is_downloadable === true){
     dbx.filesGetTemporaryLink({path : file.path_lower})
@@ -51,4 +53,17 @@ export function createFolder(path, token){
   .catch((error) => {
     console.log(error);
   })
+}
+
+export function deleteFilesAndFolders(path, token) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+
+  return dbx.filesDelete({ path })
+}
+
+export function getFilesMetadata(path, token) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+
+  // include_media_info: true
+  return dbx.filesGetMetadata({ path })
 }
