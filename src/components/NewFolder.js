@@ -101,6 +101,9 @@ const Container = styled.aside`
     margin-left: 0px;
     margin-right: 0px;
   }
+  .metadata-container{
+    display:none;
+  }
 `;
 
 function NewFolder(props){
@@ -203,6 +206,7 @@ function NewFolder(props){
                           id={x.id}
                           key={x.id}
                           name={x.name}
+                          token={token}
                       >{x.name}
 
                       </FileItem>;

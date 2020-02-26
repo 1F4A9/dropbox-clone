@@ -10,7 +10,7 @@ import { getFilesMetadata } from "../api/API";
 
 const Container = styled.div`
     display: flex;
-    
+
     :first-child > div {
         border-top: 1px solid #e6e8eb;
     }
@@ -93,7 +93,7 @@ function FileItem({ children, path, getPath, tag, name, file, token }) {
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
     const [mediaInfo, setMediaInfo] = useState([]);
-    
+
     function toggleCheck() {
         updateState(!state)
     }
