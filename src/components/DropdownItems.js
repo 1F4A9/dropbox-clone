@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-import { Download } from "../api/API";
+import { Download, deleteFilesAndFolders } from "../api/API";
 
 const Container = styled.div`
   position: absolute;
@@ -26,11 +26,19 @@ const Container = styled.div`
 export default function DropdownItems({ file }) {
   const token = localStorage.getItem("token");
 
+  const deleteFiles = () => {
+    deleteFilesAndFolders(file.path_lower, token)
+      .then(metaData => {
+        console.log(metaData);
+        console.log('RADERAD MEN UPDATERAR EJ SIDAN I VÄNTAN PÅ WEBSOCKETS!!!')
+      })
+  }
+
   return (
     <Container>
       <div className="trigger-action" onClick={() => Download(file, token)}>Download</div>
       <div className="trigger-action">Copy</div>
-      <div className="trigger-action">Delete</div>
+      <div className="trigger-action" onClick={deleteFiles}>Delete</div>
     </Container>
   )
 }

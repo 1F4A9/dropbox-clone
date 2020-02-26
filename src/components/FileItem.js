@@ -6,6 +6,7 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import FileItemMeny from './FileItemDropdown';
+import { getFilesMetadata } from "../api/API";
 
 const Container = styled.div`
     display: flex;
@@ -63,8 +64,19 @@ const Container = styled.div`
 
     .name-cont {
         display: flex;
-        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         padding: 0px 15px;
+    }
+
+    .file-star-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .metadata {
+
     }
 
     .file {
@@ -76,11 +88,12 @@ const Container = styled.div`
     }
 `
 
-
-
-function FileItem({ children, path, getPath, tag, name, file }) {
-    const [state, updateState] = useState(false)
-
+function FileItem({ children, path, getPath, tag, name, file, token }) {
+    const [state, updateState] = useState(false);
+    const [modified, setModified] = useState(0);
+    const [size, setSize] = useState('');
+    const [mediaInfo, setMediaInfo] = useState([]);
+    
     function toggleCheck() {
         updateState(!state)
     }
@@ -95,6 +108,15 @@ function FileItem({ children, path, getPath, tag, name, file }) {
         return filterOutIconsToRender(tag, name);
     }
 
+    useEffect(() => {
+        getFilesMetadata(path, token)
+        .then(metadata => {
+            setModified(metadata.client_modified);
+            setSize(metadata.size);
+        })
+
+    }, [])
+
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">
@@ -103,10 +125,16 @@ function FileItem({ children, path, getPath, tag, name, file }) {
                         <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
                     </div>
                     <div className="name-cont">
+                        <div className="file-star-container">
                         <BrowserRouter basename="/home" >
                             <Link to={path}><p onClick={onClick} className="file">{children}</p></Link>
                         </BrowserRouter>
                         {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
+                        </div>
+                        <div className="metadata-container">
+                            <span className="metadata date">{modified}</span>
+                            <span className="metadata kilobyte">{size}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="right-content">
