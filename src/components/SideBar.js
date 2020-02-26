@@ -46,7 +46,6 @@ function SideBar() {
   return (
     <Container>
       <div className="header">
-        <h1>Home</h1>
         <div>
           <h1 onClick={onFolderClick}>New folder</h1>
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
