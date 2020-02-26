@@ -74,6 +74,7 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        padding-top: 10px;
     }
 
     .metadata {
@@ -94,8 +95,21 @@ const Container = styled.div`
     }
 
     p {
-        margin-block-start: 10px;
+        margin-block-start: 0em;
         margin-block-end: 0em;
+    }
+
+    a {
+        text-decoration: none;
+
+        :link,
+        :visited {
+            color: black;
+        }
+
+        :hover {
+            color: #92ceff;
+        }
     }
 `
 
