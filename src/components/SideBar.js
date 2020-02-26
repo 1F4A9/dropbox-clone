@@ -35,12 +35,8 @@ function SideBar() {
   const [newFolder, setNewFolder] = useState(false);
   const [toggle, updateToggle] = useState(false);
 
-  function onFolderClick(){
-    if(newFolder){
-      setNewFolder(false)
-    }else{
-      setNewFolder(true)
-    }
+  const onFolderClick = (e) => {
+      setNewFolder(!newFolder);
   }
 
   const handleToggle = () =>{
@@ -53,7 +49,7 @@ function SideBar() {
         <h1>Home</h1>
         <div>
           <h1 onClick={onFolderClick}>New folder</h1>
-          {newFolder ? <NewFolder /> : <div></div>}
+          {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
         <h1 onClick={handleToggle}>Upload file</h1>
       </div>
