@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 import styled from 'styled-components';
+
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
+import { filesListFolder } from "../api/API";
 
 const Container = styled.aside`
   .shadow{
@@ -90,8 +92,9 @@ const Container = styled.aside`
 function UploadFile(props){
   const [file, updateFile] = useState(null);
   const [progressbar, updateProgressbar] = useState(0);
+  const [token, setToken] = useState(token$.value);
 
-  const path = window.location.pathname;
+  const path = window.location.pathname.substring(5);
   console.log(path)
 
   const handleItem= (e) =>{
@@ -101,21 +104,24 @@ function UploadFile(props){
   const upload_Size_Limit = 150*1024*1024;
 
   const handleUpload= (e) =>{
-    e.preventDefault();
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
-
+    if(file === null) return;
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
       dropbox.filesUpload({
         contents: file,
         path: path + file.name,
         autorename: true,
         onUploadProgress: e => {
-          updateProgressbar(e.loaded / e.total);
+        updateProgressbar(e.loaded / e.total);
         },
       })
       .then((response) => {
+      //  const dropbox = new new Dropbox({ accessToken: token$.value, fetch });
+      //  dropbox.filesListFolder({path: path})
+      //  filesListFolder(token, window.location.pathname)
         console.log(response);
         console.log(progressbar);
+        console.log(props.toggle);
       })
       .catch((error) => {
         console.log(error);

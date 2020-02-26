@@ -43,9 +43,7 @@ function SideBar() {
     }
   }
 
-  console.log(newFolder)
-
-  const handleToggle = (e) =>{
+  const handleToggle = () =>{
     updateToggle(!toggle)
   }
 
@@ -62,7 +60,7 @@ function SideBar() {
       <div className="footer">
         <LogoutButton />
       </div>
-      {toggle ? <UploadFile toggleModal={handleToggle}/> : null}
+      {toggle ? <UploadFile toggleModal={handleToggle} toggle={toggle}/> : null}
     </Container>
 
   )
