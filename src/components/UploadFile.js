@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 import styled from 'styled-components';
+
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
+import { filesListFolder } from "../api/API";
 
 const Container = styled.aside`
   .shadow{
@@ -91,7 +93,7 @@ function UploadFile(props){
   const [file, updateFile] = useState(null);
   const [progressbar, updateProgressbar] = useState(0);
 
-  const path = window.location.pathname;
+  const path = window.location.pathname.substring(5);
   console.log(path)
 
   const handleItem= (e) =>{
@@ -101,21 +103,24 @@ function UploadFile(props){
   const upload_Size_Limit = 150*1024*1024;
 
   const handleUpload= (e) =>{
-    e.preventDefault();
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
-
+    if(file === null) return;
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
       dropbox.filesUpload({
         contents: file,
         path: path + file.name,
         autorename: true,
         onUploadProgress: e => {
-          updateProgressbar(e.loaded / e.total);
+        updateProgressbar(e.loaded / e.total);
         },
       })
       .then((response) => {
-        console.log(response);
-        console.log(progressbar);
+          props.toggleModal()
+      //  const dropbox = new new Dropbox({ accessToken: token$.value, fetch });
+      //  dropbox.filesListFolder({path: path})
+      //  filesListFolder(token$.value, window.location.pathname.substring(5))
+          console.log(response);
+          console.log(progressbar);
       })
       .catch((error) => {
         console.log(error);
@@ -131,6 +136,31 @@ function UploadFile(props){
         workItems.push(file.slice(offset, offset + chunkSize));
         offset += chunkSize;
       }
+
+      const task = workItems.reduce((acc, blob, idx, items) => { //make this to a function
+   if (idx == 0) {
+     // Starting multipart upload of file
+     return acc.then(function() {
+       return dropbox.filesUploadSessionStart({ close: false, contents: blob})
+                 .then(response => response.session_id)
+     });
+   } else if (idx < items.length-1) {
+     // Append part to the upload session
+     return acc.then(function(sessionId) {
+      var cursor = { session_id: sessionId, offset: idx * maxBlob };
+      return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
+      //updateProgressbar here
+     });
+   } else {
+     // Last chunk of data, close session
+     return acc.then(function(sessionId) {
+       var cursor = { session_id: sessionId, offset: file.size - blob.size };
+       var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };
+       return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
+     });
+   }
+ }, Promise.resolve());
+
     }
   }
 
