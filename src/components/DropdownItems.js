@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 
-import { Download, deleteFilesAndFolders } from "../api/API";
+import { Download } from "../api/API";
 
 const Container = styled.div`
   position: absolute;
@@ -27,11 +27,7 @@ export default function DropdownItems({ file, cb }) {
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {
-    deleteFilesAndFolders(file.path_lower, token)
-      .then(metaData => {
-        console.log(metaData);
-        console.log('RADERAD MEN UPDATERAR EJ SIDAN I VÄNTAN PÅ WEBSOCKETS!!!')
-      })
+    cb(true);
   }
 
   return (
