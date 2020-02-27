@@ -1,10 +1,15 @@
 
 export const filterOutIconsToRender = (tag, name) => {
+
+
+
   if (tag === 'folder') {
     return 'folder';
   } else {
 
-    let dataFormat = name.split('.')[1];
+    let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
+             
+
     if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
       return 'photo';
     }

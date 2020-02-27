@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 import styled from 'styled-components';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
-import { filesListFolder } from "../api/API";
+import { filesListFolder, fetchDataFromUser } from "../api/API";
+
+import FileItem from "../components/FileItem";
 
 const Container = styled.aside`
   .shadow{
@@ -65,7 +67,6 @@ const Container = styled.aside`
     width:100%;
     height: 60px;
     position: relative;
-    top: 280px;
     border-radius: 0px 0px 10px 10px;
     border-top: 1px solid rgba(222, 222, 222, 1);
     background-color: rgba(245, 245, 245, 1);
@@ -87,14 +88,35 @@ const Container = styled.aside`
     border: 0px;
     color: white;
   }
+  .overFlow{
+    position: relative;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    height: 280px;
+    display:flex;
+    flex-direction: column;
+  }
+  .flex-container {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .metadata-container{
+    display:none;
+  }
 `;
 
 function UploadFile(props){
   const [file, updateFile] = useState(null);
   const [progressbar, updateProgressbar] = useState(0);
 
-  const path = window.location.pathname.substring(5);
+  const [state, updateState] = useState({
+    files: [],
+  })
+
+  let path = window.location.pathname.substring(5);
   console.log(path)
+
+  const [usepath, updatePath] = useState(path);
 
   const handleItem= (e) =>{
     updateFile(e.target.files[0]);
@@ -108,11 +130,8 @@ function UploadFile(props){
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
       dropbox.filesUpload({
         contents: file,
-        path: path + file.name,
+        path: path + '/' + file.name,
         autorename: true,
-        onUploadProgress: e => {
-        updateProgressbar(e.loaded / e.total);
-        },
       })
       .then((response) => {
           props.toggleModal()
@@ -164,6 +183,35 @@ function UploadFile(props){
     }
   }
 
+// nytt
+useEffect(() => {
+    fetchDataFromUser(token$.value)
+        .then((response) => {
+            /* console.log(response) */
+            updateState({
+                files: response,
+            })
+        }).catch((err) => {
+            console.error(err);
+        })
+}, [])
+
+useEffect(() => {
+}, [path]);
+
+function handlePath(usepath) {
+    filesListFolder(token$.value, usepath)
+        .then((response) => {
+            updateState({
+                files: response.entries
+            })
+            updatePath(usepath)
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+
+}
 
   return (
     <Container width={window.innerWidth}>
@@ -184,6 +232,23 @@ function UploadFile(props){
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox</p>
+              <div className="overFlow">
+                {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+                      return <FileItem
+                          files={state.files}
+                          tag={x['.tag']}
+                          getPath={handlePath}
+                          path={x.path_lower}
+                          file={x}
+                          id={x.id}
+                          key={x.id}
+                          name={x.name}
+                          token={token$.value}
+                      >{x.name}
+
+                      </FileItem>;
+                  })}
+              </div>
             </div>
           </div>
           <footer className="myFooter">
