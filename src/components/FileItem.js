@@ -118,7 +118,6 @@ function FileItem({ children, path, getPath, tag, name, file, token, changeURL }
     const [state, updateState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
-    const [mediaInfo, setMediaInfo] = useState([]);
     const [url, updateUrl] = useState('');
 
     let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);

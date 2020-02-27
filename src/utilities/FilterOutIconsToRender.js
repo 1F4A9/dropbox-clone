@@ -1,8 +1,4 @@
-
-export const filterOutIconsToRender = (tag, name) => {
-
-
-
+export const filterOutIconsToRender = (tag) => {
   if (tag === 'folder') {
     return 'folder';
   } else {

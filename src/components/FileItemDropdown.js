@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
+import ModuleNotification from './ModuleNotification';
 
 const Container = styled.div`
   display: flex;
@@ -17,14 +18,24 @@ const Container = styled.div`
 
 export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
+  const [notification, setNotification] = useState(false);
 
   const onClick = () => {
-    dropdown ? setDropdown(false) : setDropdown(true);
+    if (!notification) {
+      setDropdown(!dropdown);
+    }
+  }
+
+  const displayNotification = (cb) => {
+    let boolean = cb;
+
+    setNotification(boolean)
   }
 
   return (
     <Container onClick={onClick}>
-      {dropdown ? <DropdownItems file={file} /> : null}
+      { notification ? <ModuleNotification file={file} cb={displayNotification}/> : null }
+      { dropdown ? <DropdownItems file={file} cb={displayNotification}/> : null}
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )
