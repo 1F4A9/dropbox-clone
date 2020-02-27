@@ -58,7 +58,7 @@ function LoginPage() {
         <h1>Dropbox Clone</h1>
         <i className="fab fa-dropbox"></i>
       </header>
-      {token ? <Redirect to="/home/" /> : null}
+      {token ? <Redirect to="/home" /> : null}
       <button onClick={() => fetchAccessesTokenFromUser()}>Login with Dropbox</button>
       <footer>
         <span>
