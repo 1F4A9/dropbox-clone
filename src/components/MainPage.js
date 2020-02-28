@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useParams } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+import SearchBar from '../components/SearchBar'
 import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
@@ -28,6 +29,7 @@ console.log(path); */
 function MainPage({ location, ...props }) {
   console.log("NEW LOCATION", location.pathname);
   const [token, setToken] = useState(token$.value);
+  //const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
@@ -41,6 +43,7 @@ function MainPage({ location, ...props }) {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
+        <SearchBar />
         <FileList token={token} pathname={location.pathname} />
       </main>
     </Container>
