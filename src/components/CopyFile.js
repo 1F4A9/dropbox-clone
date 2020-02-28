@@ -137,6 +137,8 @@ function CopyFile(props){
   }, []);
 //  console.log(token);
 
+  const { displayCopy } = props;
+
   useEffect(() => {
       setLoading(true);
       fetchDataFromUser(token)
@@ -231,13 +233,17 @@ function CopyFile(props){
   </div>)
   }
 
+  function onCancel(e){
+    displayCopy(false);
+  }
+
   return ReactDOM.createPortal (
     <Container width={window.innerWidth}>
       <div className="shadow">
         <div className="border">
           <header className="row">
             <i className="material-icons data-format folderIcon">{filterOutIconsToRender("folder", "")}</i>
-            <h3>Create folder</h3>
+            <h3>Copy folder</h3>
           </header>
           <div className="column left">
             <div>
@@ -251,7 +257,7 @@ function CopyFile(props){
           </div>
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
-            <button className="btn cancel" onClick={props.onClickToggle}>Cancel</button>
+            <button className="btn cancel" onClick={onCancel}>Cancel</button>
             <button className="btn create" onClick={onCreateFolder}>Create</button>
           </footer>
         </div>

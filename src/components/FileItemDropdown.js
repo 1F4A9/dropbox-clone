@@ -50,7 +50,7 @@ export default function FileItemMeny({ file }) {
     <Container onClick={onClick}>
       { notification ? <PortalDelete file={file} displayDelete={displayDelete} /> : null }
       { dropdown ? <DropdownItems file={file} displayDelete={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
-      { copy ? <CopyFile file={file} deleteCallback={displayCopy} /> : null }
+      { copy ? <CopyFile file={file} displayCopy={displayCopy} /> : null }
       { rename ? <PortalRename file={file} displayRename={displayRename} /> : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
