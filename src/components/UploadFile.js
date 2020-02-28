@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import UploadProgress from '../components/UploadProgress';
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
+import LoadingCircle from "../components/LoadingCircle"
 
 
 import FileItem from "../components/FileItem";
@@ -98,6 +99,12 @@ const Container = styled.aside`
     display:flex;
     flex-direction: column;
   }
+  .center{
+    height: 280px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
   .flex-container {
     margin-left: 0px;
     margin-right: 0px;
@@ -126,14 +133,20 @@ function UploadFile(props){
   })
   let path = window.location.pathname.substring(5);
   const [usepath, updatePath] = useState(path);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+      setLoading(true);
       fetchDataFromUser(token$.value)
           .then((response) => {
               updateState({
                   files: response,
               })
-          }).catch((err) => {
+          })
+          .then((repsonse) => {
+            setLoading(false);
+          })
+          .catch((err) => {
               console.error(err);
           })
   }, [])
@@ -142,6 +155,7 @@ function UploadFile(props){
   }, [path]);
 
   function handlePath(usepath) {
+      setLoading(true);
       filesListFolder(token$.value, usepath)
           .then((response) => {
               updateState({
@@ -151,6 +165,9 @@ function UploadFile(props){
           })
           .catch((err) => {
               console.error(err);
+          })
+          .finally(() => {
+            setLoading(false);
           })
   }
 
@@ -243,6 +260,29 @@ function UploadFile(props){
     return false;
   };
 
+  let loadingReturn;
+  if(loading){
+    loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
+  }else{
+    loadingReturn = (<div className="overFlow">
+    {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+          return <FileItem
+              files={state.files}
+              tag={x['.tag']}
+              getPath={handlePath}
+              path={x.path_lower}
+              file={x}
+              id={x.id}
+              key={x.id}
+              name={x.name}
+              token={token$.value}
+              changeURL={false}
+          >{x.name}
+
+          </FileItem>;
+      })}
+  </div>)
+  }
 
   return (
     <Container width={window.innerWidth}>
@@ -263,23 +303,7 @@ function UploadFile(props){
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox</p>
-              <div className="overFlow">
-                {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
-                      return <FileItem
-                          files={state.files}
-                          tag={x['.tag']}
-                          getPath={handlePath}
-                          path={x.path_lower}
-                          file={x}
-                          id={x.id}
-                          key={x.id}
-                          name={x.name}
-                          token={token$.value}
-                      >{x.name}
-
-                      </FileItem>;
-                  })}
-              </div>
+              {loadingReturn}
             </div>
           </div>
           <footer className="myFooter">

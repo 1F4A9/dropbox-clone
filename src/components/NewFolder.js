@@ -160,12 +160,11 @@ function NewFolder(props){
               })
               updatePath(path)
           })
-          .then((response) => {
-            console.log("FINISHED LOADING")
-            setLoading(false);
-          })
           .catch((err) => {
               console.error(err);
+          })
+          .finally(() => {
+            setLoading(false);
           })
 
   }
