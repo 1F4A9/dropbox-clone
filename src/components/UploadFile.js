@@ -3,8 +3,11 @@ import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 import styled from 'styled-components';
 
+import UploadProgress from '../components/UploadProgress';
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
+import LoadingCircle from "../components/LoadingCircle"
+
 
 import FileItem from "../components/FileItem";
 
@@ -96,6 +99,12 @@ const Container = styled.aside`
     display:flex;
     flex-direction: column;
   }
+  .center{
+    height: 280px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
   .flex-container {
     margin-left: 0px;
     margin-right: 0px;
@@ -103,26 +112,71 @@ const Container = styled.aside`
   .metadata-container{
     display:none;
   }
+  .right-content{
+    display:none;
+  }
+  .MuiSvgIcon-root{
+    display:none;
+  }
 `;
 
 function UploadFile(props){
   const [file, updateFile] = useState(null);
-  const [progressbar, updateProgressbar] = useState(0);
-
+  const [largeFileUpload, updateLargeFileUpload] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const [info, setInfo] = useState({name: '', size: ''});
+  const [items, setItems] = useState(0);
+  const [uploadedSize, setUploadedSize] = useState(0);
+  const [uploadDone, setUploadDone] = useState(false)
   const [state, updateState] = useState({
     files: [],
   })
-
   let path = window.location.pathname.substring(5);
-  console.log(path)
-
   const [usepath, updatePath] = useState(path);
+  const [loading, setLoading] = useState(true);
 
-  const handleItem= (e) =>{
-    updateFile(e.target.files[0]);
+  useEffect(() => {
+      setLoading(true);
+      fetchDataFromUser(token$.value)
+          .then((response) => {
+              updateState({
+                  files: response,
+              })
+          })
+          .then((repsonse) => {
+            setLoading(false);
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+  }, [])
+
+  useEffect(() => {
+  }, [path]);
+
+  function handlePath(usepath) {
+      setLoading(true);
+      filesListFolder(token$.value, usepath)
+          .then((response) => {
+              updateState({
+                  files: response.entries
+              })
+              updatePath(usepath)
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+          .finally(() => {
+            setLoading(false);
+          })
   }
 
   const upload_Size_Limit = 150*1024*1024;
+
+  const handleItem= (e) =>{
+    updateFile(e.target.files[0]);
+
+  }
 
   const handleUpload= (e) =>{
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
@@ -130,88 +184,105 @@ function UploadFile(props){
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
       dropbox.filesUpload({
         contents: file,
-        path: path + '/' + file.name,
+        path: usepath + '/' + file.name,
         autorename: true,
       })
       .then((response) => {
           props.toggleModal()
-      //  const dropbox = new new Dropbox({ accessToken: token$.value, fetch });
-      //  dropbox.filesListFolder({path: path})
-      //  filesListFolder(token$.value, window.location.pathname.substring(5))
           console.log(response);
-          console.log(progressbar);
       })
       .catch((error) => {
         console.log(error);
       });
-    } else {  // File is bigger than 150 Mb - use filesUploadSession API
-      const maxBlob = 8 * 1000 * 1000; // 8Mb - Dropbox JavaScript API suggested max file / chunk size
-
-      const workItems = [];
-      const offset = 0;
-
+    } else {
+      const maxBlob = 8 * 1000 * 1000;
+      let workItems = [];
+      let offset = 0;
+      updateLargeFileUpload(true);
+      setInfo({ name: file.name, size: file.size });
       while (offset < file.size) {
-        const chunkSize = Math.min(maxBlob, file.size - offset);
+        let chunkSize = Math.min(maxBlob, file.size - offset);
         workItems.push(file.slice(offset, offset + chunkSize));
         offset += chunkSize;
       }
 
-      const task = workItems.reduce((acc, blob, idx, items) => { //make this to a function
-   if (idx == 0) {
-     // Starting multipart upload of file
-     return acc.then(function() {
-       return dropbox.filesUploadSessionStart({ close: false, contents: blob})
-                 .then(response => response.session_id)
-     });
-   } else if (idx < items.length-1) {
-     // Append part to the upload session
-     return acc.then(function(sessionId) {
-      var cursor = { session_id: sessionId, offset: idx * maxBlob };
-      return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
-      //updateProgressbar here
-     });
-   } else {
-     // Last chunk of data, close session
-     return acc.then(function(sessionId) {
-       var cursor = { session_id: sessionId, offset: file.size - blob.size };
-       var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };
-       return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
-     });
-   }
- }, Promise.resolve());
+      const task = workItems.reduce((acc, blob, idx, items) => {
+        if (idx === 0) {
+          return acc.then(() => {
+            return dropbox
+              .filesUploadSessionStart({ close: false, contents: blob })
+              .then((response) => {
+                setIdx(idx);
+                setItems(items.length);
 
+                return response.session_id;
+              });
+          });
+        } else if (idx < items.length - 1) {
+          return acc.then((sessionId) => {
+            var cursor = { session_id: sessionId, offset: idx * maxBlob };
+            return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
+              .then(() => {
+                setIdx(idx);
+                setUploadedSize((idx * maxBlob * 0.000001).toFixed(0));
+                return sessionId;
+              });
+          });
+        } else {
+          return acc.then(function(sessionId) {
+            var cursor = {
+              session_id: sessionId,
+              offset: file.size - blob.size
+            };
+            var commit = {
+              path: "/" + file.name,
+              mode: "add",
+              autorename: true,
+              mute: false
+            };
+            return dropbox
+              .filesUploadSessionFinish({
+                cursor: cursor,
+                commit: commit,
+                contents: blob
+              })
+              .then((res) => {
+                setUploadDone(true);
+              });
+          });
+        }
+      }, Promise.resolve());
+
+      task.catch((error) => {
+        console.error(error);
+      });
     }
+    return false;
+  };
+
+  let loadingReturn;
+  if(loading){
+    loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
+  }else{
+    loadingReturn = (<div className="overFlow">
+    {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+          return <FileItem
+              files={state.files}
+              tag={x['.tag']}
+              getPath={handlePath}
+              path={x.path_lower}
+              file={x}
+              id={x.id}
+              key={x.id}
+              name={x.name}
+              token={token$.value}
+              changeURL={false}
+          >{x.name}
+
+          </FileItem>;
+      })}
+  </div>)
   }
-
-// nytt
-useEffect(() => {
-    fetchDataFromUser(token$.value)
-        .then((response) => {
-            /* console.log(response) */
-            updateState({
-                files: response,
-            })
-        }).catch((err) => {
-            console.error(err);
-        })
-}, [])
-
-useEffect(() => {
-}, [path]);
-
-function handlePath(usepath) {
-    filesListFolder(token$.value, usepath)
-        .then((response) => {
-            updateState({
-                files: response.entries
-            })
-            updatePath(usepath)
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-
-}
 
   return (
     <Container width={window.innerWidth}>
@@ -232,23 +303,7 @@ function handlePath(usepath) {
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox</p>
-              <div className="overFlow">
-                {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
-                      return <FileItem
-                          files={state.files}
-                          tag={x['.tag']}
-                          getPath={handlePath}
-                          path={x.path_lower}
-                          file={x}
-                          id={x.id}
-                          key={x.id}
-                          name={x.name}
-                          token={token$.value}
-                      >{x.name}
-
-                      </FileItem>;
-                  })}
-              </div>
+              {loadingReturn}
             </div>
           </div>
           <footer className="myFooter">
@@ -257,6 +312,7 @@ function handlePath(usepath) {
           </footer>
         </div>
       </div>
+      <UploadProgress />
     </Container>
   )
 }

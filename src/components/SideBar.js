@@ -23,13 +23,26 @@ const Container = styled.aside`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 35px;
   }
 
   .footer {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
   }
+
+  h3 {
+    cursor: pointer;
+    color: #0070e0;
+
+    margin: 30px 0px;
+
+    :hover {
+      color: #92ceff;
+    }
+  }
+
 `;
 
 function SideBar() {
@@ -48,10 +61,11 @@ function SideBar() {
     <Container>
       <div className="header">
         <div>
-          <h1 onClick={onFolderClick}>New folder</h1>
+          <h3 onClick={onFolderClick}>New folder <i class="fas fa-folder-plus"></i></h3>
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
-        <h1 onClick={handleToggle}>Upload file</h1>
+        <h3 onClick={handleToggle}>Upload file <i class="fas fa-file-upload"></i></h3>
+        <h3>Favorites <i class="fas fa-star"></i></h3>
         <Favorites />
       </div>
       <div className="footer">

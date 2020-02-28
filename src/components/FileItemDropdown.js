@@ -1,7 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
+import CopyFile from "./PortalCopy";
+import PortalDelete from './PortalDelete';
+import PortalRename from './PortalRename';
 
 const Container = styled.div`
   display: flex;
@@ -17,14 +20,34 @@ const Container = styled.div`
 
 export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [rename, setRename] = useState(false);
+  const [copy, setCopy] = useState(false);
 
   const onClick = () => {
-    dropdown ? setDropdown(false) : setDropdown(true);
+    if (!notification) {
+      setDropdown(!dropdown);
+    }
+  }
+
+  const displayDelete = (boolean) => {
+    setNotification(boolean)
+  }
+
+  const displayRename = (boolean) => {
+    setRename(boolean);
+  }
+
+  const displayCopy = (boolean) => {
+    setCopy(boolean)
   }
 
   return (
     <Container onClick={onClick}>
-      {dropdown ? <DropdownItems file={file} /> : null}
+      { notification ? <PortalDelete file={file} displayDelete={displayDelete} /> : null }
+      { dropdown ? <DropdownItems file={file} displayDelete={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
+      { copy ? <CopyFile file={file} displayCopy={displayCopy} /> : null }
+      { rename ? <PortalRename file={file} displayRename={displayRename} /> : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )

@@ -4,10 +4,11 @@ import { Star, StarBorder } from '@material-ui/icons';
 import { BrowserRouter, Router, Link } from "react-router-dom";
 
 
+
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { addStarredItems, removeStarredItem } from "../utilities";
 import FileItemMeny from './FileItemDropdown';
-import { getFilesMetadata } from "../api/API";
+import { getFilesMetadata, getFilesThumbnail } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
 
 const Container = styled.div`
@@ -118,7 +119,9 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     const [starState, updateStarState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
-    const [mediaInfo, setMediaInfo] = useState([]);
+    const [url, updateUrl] = useState('');
+
+    let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
 
     function toggleCheck() {
         updateStarState(!starState);
@@ -143,6 +146,14 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                 setModified(metadata.server_modified);
                 setSize(metadata.size);
             })
+
+        if(dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp'){
+            getFilesThumbnail(path, token)
+              .then(res => {
+                updateUrl(window.URL.createObjectURL(res.fileBlob))
+              })
+    
+          }
     }, [])
 
     let link = ""
@@ -157,7 +168,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
             <div className="flex-container">
                 <div className="left-content">
                     <div className="icon-container">
-                        <i className="material-icons data-format">{iconsToRender(tag, name)}</i>
+                        {url ? <img src={url} /> : <i className="material-icons data-format">{iconsToRender(tag, name)}</i>}
                     </div>
                     <div className="name-cont">
                         <div className="file-star-container">

@@ -8,6 +8,10 @@ const Container = styled.div`
   display: flex;
   .cont {
     display: flex;
+    
+    :first-child {
+      margin-left: 62px;
+    }
   }
 
   .breadCrumb {

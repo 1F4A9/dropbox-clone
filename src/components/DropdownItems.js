@@ -1,12 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 
-import { Download, deleteFilesAndFolders } from "../api/API";
+import { Download } from "../api/API";
 
 const Container = styled.div`
   position: absolute;
   width: 100px;
-  height: 100px;
+  height: 170px;
   top: 32px;
   right: 15px;
   border: 1px solid #e6e8eb;
@@ -23,22 +23,28 @@ const Container = styled.div`
   }
 `;
 
-export default function DropdownItems({ file, cb }) {
+export default function DropdownItems({ file, displayDelete, displayRename, displayCopy }) {
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {
-    deleteFilesAndFolders(file.path_lower, token)
-      .then(metaData => {
-        console.log(metaData);
-        console.log('RADERAD MEN UPDATERAR EJ SIDAN I VÄNTAN PÅ WEBSOCKETS!!!')
-      })
+    displayDelete(true);
+  }
+
+  const renameFiles = () => {
+    displayRename(true);
+  }
+
+  const copyFiles = () => {
+    displayCopy(true)
   }
 
   return (
     <Container>
       <div className="trigger-action" onClick={() => Download(file, token)}>Download</div>
-      <div className="trigger-action">Copy</div>
       <div className="trigger-action" onClick={deleteFiles}>Delete</div>
+      <div className="trigger-action" onClick={copyFiles}>Copy</div>
+      <div className="trigger-action" onClick={renameFiles}>Rename</div>
+      <div className="trigger-action">Move</div>
     </Container>
   )
 }

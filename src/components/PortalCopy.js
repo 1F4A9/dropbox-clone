@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
+import React, { useState, useEffect} from "react";
+import ReactDOM from "react-dom"
+
+import styled from "styled-components";
+
 import { Dropbox } from 'dropbox';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
 import { token$ } from '../Observables/Store';
 
-import FileItem from "../components/FileItem";
+import FileItem from "./FileItem";
 import LoadingCircle from "./LoadingCircle";
 
 const Container = styled.aside`
@@ -14,7 +17,7 @@ const Container = styled.aside`
     position: absolute;
     top: 0;
     left: 0;
-    width: ${props=>props.width + "px"};
+    width: ${props=>props.width + 'px'};
     height: 100%;
     background-color: rgba(14, 37, 52, 0.15);
     z-index: 1;
@@ -26,7 +29,7 @@ const Container = styled.aside`
     display:flex;
   }
   .column{
-    display:flex;
+    display: flex;
     flex-direction: column;
   }
   .left{
@@ -39,8 +42,8 @@ const Container = styled.aside`
     border-radius: 5px;
   }
   .miniTitle{
-    margin-bottom:5px;
-    color: gray;
+    margin-bottom: 5px;
+    color: grey;
     font-size: 14px;
   }
   .border{
@@ -49,11 +52,10 @@ const Container = styled.aside`
     background-color: white;
     border-radius: 10px;
   }
-  .icon-container {
+  .icon-container{
     display: flex;
     align-items: center;
   }
-
   .data-format {
     font-size: 35px;
     padding-left: 12px;
@@ -85,11 +87,10 @@ const Container = styled.aside`
     margin-left: 180px;
     background-color: white;
   }
-  .create{
+  .upload{
     background-color: rgba(41, 116, 255, 1);
     border: 0px;
     color: white;
-    margin-right: 15px;
   }
   .overFlow{
     position: relative;
@@ -120,7 +121,7 @@ const Container = styled.aside`
   }
 `;
 
-function NewFolder(props){
+function CopyFile(props){
   const [token, setToken] = useState(token$.value);
   const [inputName, setInputName] = useState("");
   const [state, updateState] = useState({
@@ -135,6 +136,8 @@ function NewFolder(props){
     return () => subscription.unsubscribe();
   }, []);
 //  console.log(token);
+
+  const { displayCopy } = props;
 
   useEffect(() => {
       setLoading(true);
@@ -230,13 +233,17 @@ function NewFolder(props){
   </div>)
   }
 
-  return (
+  function onCancel(e){
+    displayCopy(false);
+  }
+
+  return ReactDOM.createPortal (
     <Container width={window.innerWidth}>
       <div className="shadow">
         <div className="border">
           <header className="row">
             <i className="material-icons data-format folderIcon">{filterOutIconsToRender("folder", "")}</i>
-            <h3>Create folder</h3>
+            <h3>Copy folder</h3>
           </header>
           <div className="column left">
             <div>
@@ -250,16 +257,14 @@ function NewFolder(props){
           </div>
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
-            <button className="btn cancel" onClick={props.onClickToggle}>Cancel</button>
+            <button className="btn cancel" onClick={onCancel}>Cancel</button>
             <button className="btn create" onClick={onCreateFolder}>Create</button>
           </footer>
         </div>
       </div>
-    </Container>
+    </Container>,
+    document.getElementById('portal-copy')
   )
 }
 
-export default NewFolder;
-
-
-// INTE SLASH OCH INTE %20
+export default CopyFile

@@ -64,12 +64,11 @@ export function deleteFilesAndFolders(path, token) {
 export function getFilesMetadata(path, token) {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
 
-  // include_media_info: true
-  return dbx.filesGetMetadata({ path, include_media_info: true  })
+  return dbx.filesGetMetadata({ path })
 }
 
-export function getTumbnail(path, token){
-  const dbx = new Dropbox({accesToken: token,fetch});
+export function getFilesThumbnail(path, token) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
 
-  return dbx.filesGetThumbnail({path})
+  return dbx.filesGetThumbnail({ path })
 }
