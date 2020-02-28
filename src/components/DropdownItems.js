@@ -6,7 +6,7 @@ import { Download } from "../api/API";
 const Container = styled.div`
   position: absolute;
   width: 100px;
-  height: 100px;
+  height: 170px;
   top: 32px;
   right: 15px;
   border: 1px solid #e6e8eb;
@@ -39,8 +39,10 @@ export default function DropdownItems({ file, cb }) {
   return (
     <Container>
       <div className="trigger-action" onClick={() => Download(file, token)}>Download</div>
-      <div className="trigger-action" onClick={onCopyToggle}>Copy</div>
       <div className="trigger-action" onClick={deleteFiles}>Delete</div>
+      <div className="trigger-action" onClick={onCopyToggle}>Copy</div>
+      <div className="trigger-action">Rename</div>
+      <div className="trigger-action">Move</div>
     </Container>
   )
 }
