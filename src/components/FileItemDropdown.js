@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
 import ModuleNotification from './ModuleNotification';
+import CopyFile from "./CopyFile";
 
 const Container = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ export default function FileItemMeny({ file }) {
     <Container onClick={onClick}>
       { notification ? <ModuleNotification file={file} deleteCallBack={displayDelete} /> : null }
       { dropdown ? <DropdownItems file={file} deleteCallBack={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
-      { copy ? MattiModule : null }
+      { copy ? <CopyFile file={file} deleteCallback={displayCopy} /> : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )
