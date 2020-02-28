@@ -104,6 +104,12 @@ const Container = styled.aside`
   .metadata-container{
     display:none;
   }
+  .right-content{
+    display:none;
+  }
+  .MuiSvgIcon-root{
+    display:none;
+  }
 `;
 
 function UploadFile(props){

@@ -25,15 +25,21 @@ const Container = styled.div`
 
 export default function DropdownItems({ file, cb }) {
   const token = localStorage.getItem("token");
+  const [toggleCopy, setToggleCopy] = useState(false);
 
   const deleteFiles = () => {
     cb(true);
   }
 
+  const onCopyToggle = (e) => {
+    setToggleCopy(!toggleCopy);
+    
+  }
+
   return (
     <Container>
       <div className="trigger-action" onClick={() => Download(file, token)}>Download</div>
-      <div className="trigger-action">Copy</div>
+      <div className="trigger-action" onClick={onCopyToggle}>Copy</div>
       <div className="trigger-action" onClick={deleteFiles}>Delete</div>
     </Container>
   )
