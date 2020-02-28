@@ -19,6 +19,8 @@ const Container = styled.div`
 export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
   const [notification, setNotification] = useState(false);
+  const [rename, setRename] = useState(false);
+  const [copy, setCopy] = useState(false);
 
   const onClick = () => {
     if (!notification) {
@@ -26,16 +28,27 @@ export default function FileItemMeny({ file }) {
     }
   }
 
-  const displayNotification = (cb) => {
-    let boolean = cb;
-
+  const displayDelete = (boolean) => {
     setNotification(boolean)
   }
 
+  const displayRename = (boolean) => {
+    setRename(boolean);
+  }
+
+  // MATTI!!!!!! SKICKA MED DENNNA SOM EN CALLBACK TILL DIN MODUL!
+  // SÄTT SEDAN CALLBACK FUNKTIONEN TILL FALSE NÄR DU SKA STÄNGA NER DIN MODUL!!!
+  // medan copy är true kommer din modul att renderas.
+  const displayCopy = (boolean) => {
+    setCopy(boolean)
+  }
+  const MattiModule = null;
+
   return (
     <Container onClick={onClick}>
-      { notification ? <ModuleNotification file={file} cb={displayNotification}/> : null }
-      { dropdown ? <DropdownItems file={file} cb={displayNotification}/> : null}
+      { notification ? <ModuleNotification file={file} deleteCallBack={displayDelete} /> : null }
+      { dropdown ? <DropdownItems file={file} deleteCallBack={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
+      { copy ? MattiModule : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )

@@ -45,16 +45,16 @@ const Container = styled.div`
   }
 `;
 
-const ModuleNotification = ({ cb, file }) => {
+const ModuleNotification = ({ deleteCallBack, file }) => {
   const displayNotification = (boolean) => {
-    cb(boolean)
+    deleteCallBack(boolean)
   }
 
   const deleteItem = () => {
     const token = localStorage.getItem("token");
 
     deleteFilesAndFolders(file.path_lower, token)
-      .then(() => cb(false))  // closes notification window
+      .then(() => deleteCallBack(false))  // closes notification window
   }
 
   return ReactDOM.createPortal (
