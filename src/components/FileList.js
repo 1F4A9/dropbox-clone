@@ -42,14 +42,12 @@ function FileList({ token, pathname }) {
             }).catch((err) => {
                 console.error(err);
             })
-
     }
 
     return (
         <section>
             <div>
                 <BreadCrumbs getPath={handlePath} path={pathname}></BreadCrumbs>
-
             </div>
 
             <div className="cont" >
