@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
-import CopyFile from "./CopyFile";
+import CopyFile from "./PortalCopy";
 import PortalDelete from './PortalDelete';
 import PortalRename from './PortalRename';
 
@@ -38,13 +38,9 @@ export default function FileItemMeny({ file }) {
     setRename(boolean);
   }
 
-  // MATTI!!!!!! SKICKA MED DENNNA SOM EN CALLBACK TILL DIN MODUL!
-  // SÄTT SEDAN CALLBACK FUNKTIONEN TILL FALSE NÄR DU SKA STÄNGA NER DIN MODUL!!!
-  // medan copy är true kommer din modul att renderas.
   const displayCopy = (boolean) => {
     setCopy(boolean)
   }
-  const MattiModule = null;
 
   return (
     <Container onClick={onClick}>

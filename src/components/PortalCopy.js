@@ -9,7 +9,7 @@ import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
 import { token$ } from '../Observables/Store';
 
-import FileItem from "../components/FileItem";
+import FileItem from "./FileItem";
 import LoadingCircle from "./LoadingCircle";
 
 const Container = styled.aside`
