@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
-import ModuleNotification from './ModuleNotification';
+import PortalDelete from './PortalDelete';
+import PortalRename from './PortalRename';
 
 const Container = styled.div`
   display: flex;
@@ -46,9 +47,10 @@ export default function FileItemMeny({ file }) {
 
   return (
     <Container onClick={onClick}>
-      { notification ? <ModuleNotification file={file} deleteCallBack={displayDelete} /> : null }
-      { dropdown ? <DropdownItems file={file} deleteCallBack={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
+      { notification ? <PortalDelete file={file} displayDelete={displayDelete} /> : null }
+      { dropdown ? <DropdownItems file={file} displayDelete={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
       { copy ? MattiModule : null }
+      { rename ? <PortalRename file={file} displayRename={displayRename} /> : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )

@@ -23,11 +23,11 @@ const Container = styled.div`
   }
 `;
 
-export default function DropdownItems({ file, deleteCallBack, displayRename, displayCopy }) {
+export default function DropdownItems({ file, displayDelete, displayRename, displayCopy }) {
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {
-    deleteCallBack(true);
+    displayDelete(true);
   }
 
   const renameFiles = () => {

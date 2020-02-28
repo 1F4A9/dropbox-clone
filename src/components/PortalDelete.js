@@ -45,16 +45,16 @@ const Container = styled.div`
   }
 `;
 
-const ModuleNotification = ({ deleteCallBack, file }) => {
+const PortalDelete = ({ displayDelete, file }) => {
   const displayNotification = (boolean) => {
-    deleteCallBack(boolean)
+    displayDelete(boolean)
   }
 
   const deleteItem = () => {
     const token = localStorage.getItem("token");
 
     deleteFilesAndFolders(file.path_lower, token)
-      .then(() => deleteCallBack(false))  // closes notification window
+      .then(() => displayDelete(false))  // closes notification window
   }
 
   return ReactDOM.createPortal (
@@ -68,8 +68,8 @@ const ModuleNotification = ({ deleteCallBack, file }) => {
         <button className="btn cancel" onClick={() => displayNotification(false)}>Cancel</button>
       </footer>
     </Container>, 
-    document.getElementById('portal-root')
+    document.getElementById('portal-delete')
   )
 }
 
-export default ModuleNotification;
+export default PortalDelete;
