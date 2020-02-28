@@ -18,7 +18,6 @@ const LogoutButton = () => {
         Logout
       </Container>
     )
-
 }
 
 export default LogoutButton;

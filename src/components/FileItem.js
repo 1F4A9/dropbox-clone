@@ -139,23 +139,19 @@ function FileItem({ children, path, getPath, tag, name, file, token, changeURL }
     }
 
     useEffect(() => {
-      if(dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp'){
-        getFilesThumbnail(path, token)
-          .then(res => {
-            console.log('thumb', res.fileBlob)
-            console.log(window.URL.createObjectURL(res.fileBlob))
-            updateUrl(window.URL.createObjectURL(res.fileBlob))
-          })
-
-      }
-    }, [])
-
-    useEffect(() => {
         getFilesMetadata(path, token)
             .then(metadata => {
                 setModified(metadata.server_modified);
                 setSize(metadata.size);
             })
+
+        if(dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp'){
+            getFilesThumbnail(path, token)
+              .then(res => {
+                updateUrl(window.URL.createObjectURL(res.fileBlob))
+              })
+    
+          }
     }, [])
 
     let link = ""
