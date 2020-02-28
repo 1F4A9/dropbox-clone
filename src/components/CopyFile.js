@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from "react";
+import ReactDOM from "react-dom"
 
 import styled from "styled-components";
 
@@ -230,7 +231,7 @@ function CopyFile(props){
   </div>)
   }
 
-  return (
+  return ReactDOM.createPortal (
     <Container width={window.innerWidth}>
       <div className="shadow">
         <div className="border">
@@ -255,7 +256,8 @@ function CopyFile(props){
           </footer>
         </div>
       </div>
-    </Container>
+    </Container>,
+    document.getElementById('portal-copy')
   )
 }
 
