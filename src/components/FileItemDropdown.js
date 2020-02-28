@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
-import ModuleNotification from './ModuleNotification';
 import CopyFile from "./CopyFile";
 import PortalDelete from './PortalDelete';
 import PortalRename from './PortalRename';
