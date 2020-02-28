@@ -55,6 +55,7 @@ function FileList({ token, pathname }) {
             <div className="cont" >
                 {state.files.map((x) => {
                     return <FileItem
+                        pathname={pathname}
                         files={state.files}
                         tag={x['.tag']}
                         getPath={handlePath}

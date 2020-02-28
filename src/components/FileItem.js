@@ -5,6 +5,7 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
+import { addStarredItems, removeStarredItem } from "../utilities";
 import FileItemMeny from './FileItemDropdown';
 import { getFilesMetadata } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
@@ -113,14 +114,15 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ children, path, getPath, tag, name, file, token, changeURL }) {
-    const [state, updateState] = useState(false);
+function FileItem({ pathname, children, path, getPath, tag, name, file, token, changeURL }) {
+    const [starState, updateStarState] = useState(false);
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
     const [mediaInfo, setMediaInfo] = useState([]);
 
     function toggleCheck() {
-        updateState(!state)
+        updateStarState(!starState);
+        addStarredItems(pathname, name, token);
     }
 
     function onClick(e) {
@@ -160,7 +162,7 @@ function FileItem({ children, path, getPath, tag, name, file, token, changeURL }
                     <div className="name-cont">
                         <div className="file-star-container">
                             {link}
-                            {state === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
+                            {starState === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
                         </div>
                         <div className="metadata-container">
                             <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
