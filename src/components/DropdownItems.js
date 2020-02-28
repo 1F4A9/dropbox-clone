@@ -33,7 +33,6 @@ export default function DropdownItems({ file, cb }) {
 
   const onCopyToggle = (e) => {
     setToggleCopy(!toggleCopy);
-    
   }
 
   return (
