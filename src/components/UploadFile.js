@@ -3,6 +3,7 @@ import { Dropbox } from 'dropbox';
 import { token$ } from '../Observables/Store';
 import styled from 'styled-components';
 
+import UploadProgress from '../components/UploadProgress';
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
 
@@ -287,6 +288,7 @@ function UploadFile(props){
           </footer>
         </div>
       </div>
+      <UploadProgress />
     </Container>
   )
 }
