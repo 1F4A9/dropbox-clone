@@ -4,6 +4,14 @@ import { Router, Link } from "react-router-dom";
 import { filesListFolder } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
+import LoadingCircle from "./LoadingCircle";
+import styled from "styled-components";
+
+const Container = styled.aside`
+    .center{
+        margin-top: 200px;
+    }
+`
 
 function FileList({ token, pathname }) {
 
@@ -11,12 +19,13 @@ function FileList({ token, pathname }) {
         files: [],
     })
     const [path, updatePath] = useState("");
+    const [loading, setLoading] = useState(true);
 
     console.log("FILELIST KÖRS!!")
 
 
     useEffect(() => {
-
+        setLoading(true);
         filesListFolder(token, pathname.substring(5))
             .then((response) => {
                 console.log("LOCATION ÄNDRADES", pathname.substring(5));
@@ -25,12 +34,17 @@ function FileList({ token, pathname }) {
                 })
                 updatePath(path)
 
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 console.error(err);
+            })
+            .finally(() => {
+                setLoading(false); 
             })
     }, [pathname]);
 
     function handlePath(path) {
+        setLoading(true);
         filesListFolder(token, path)
             .then((response) => {
                 updateState({
@@ -39,9 +53,37 @@ function FileList({ token, pathname }) {
                 updatePath(path)
 
 
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 console.error(err);
             })
+            .finally(() => {
+                setLoading(false); 
+            })
+    }
+
+    let loadingReturn;
+    if(loading){
+        loadingReturn = (<Container><div className="center"><LoadingCircle scale={2} /></div></Container>)
+      }else{
+        loadingReturn = (<div className="cont" >
+        {state.files.map((x) => {
+            return <FileItem
+                files={state.files}
+                tag={x['.tag']}
+                getPath={handlePath}
+                path={x.path_lower}
+                file={x}
+                id={x.id}
+                key={x.id}
+                name={x.name}
+                token={token}
+                changeURL={true}
+            >{x.name}
+
+            </FileItem>;
+        })}
+    </div >)
     }
 
     return (
@@ -50,24 +92,7 @@ function FileList({ token, pathname }) {
                 <BreadCrumbs getPath={handlePath} path={pathname}></BreadCrumbs>
             </div>
 
-            <div className="cont" >
-                {state.files.map((x) => {
-                    return <FileItem
-                        files={state.files}
-                        tag={x['.tag']}
-                        getPath={handlePath}
-                        path={x.path_lower}
-                        file={x}
-                        id={x.id}
-                        key={x.id}
-                        name={x.name}
-                        token={token}
-                        changeURL={true}
-                    >{x.name}
-
-                    </FileItem>;
-                })}
-            </div >
+            {loadingReturn}
         </section>
     )
 }
