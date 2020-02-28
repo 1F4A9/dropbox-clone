@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 
 import DropdownItems from './DropdownItems';
-import ModuleNotification from './ModuleNotification';
+import CopyFile from "./CopyFile";
+import PortalDelete from './PortalDelete';
+import PortalRename from './PortalRename';
 
 const Container = styled.div`
   display: flex;
@@ -19,6 +21,8 @@ const Container = styled.div`
 export default function FileItemMeny({ file }) {
   const [dropdown, setDropdown] = useState(false);
   const [notification, setNotification] = useState(false);
+  const [rename, setRename] = useState(false);
+  const [copy, setCopy] = useState(false);
 
   const onClick = () => {
     if (!notification) {
@@ -26,16 +30,28 @@ export default function FileItemMeny({ file }) {
     }
   }
 
-  const displayNotification = (cb) => {
-    let boolean = cb;
-
+  const displayDelete = (boolean) => {
     setNotification(boolean)
   }
 
+  const displayRename = (boolean) => {
+    setRename(boolean);
+  }
+
+  // MATTI!!!!!! SKICKA MED DENNNA SOM EN CALLBACK TILL DIN MODUL!
+  // SÄTT SEDAN CALLBACK FUNKTIONEN TILL FALSE NÄR DU SKA STÄNGA NER DIN MODUL!!!
+  // medan copy är true kommer din modul att renderas.
+  const displayCopy = (boolean) => {
+    setCopy(boolean)
+  }
+  const MattiModule = null;
+
   return (
     <Container onClick={onClick}>
-      { notification ? <ModuleNotification file={file} cb={displayNotification}/> : null }
-      { dropdown ? <DropdownItems file={file} cb={displayNotification}/> : null}
+      { notification ? <PortalDelete file={file} displayDelete={displayDelete} /> : null }
+      { dropdown ? <DropdownItems file={file} displayDelete={displayDelete} displayRename={displayRename} displayCopy={displayCopy}/> : null}
+      { copy ? <CopyFile file={file} displayCopy={displayCopy} /> : null }
+      { rename ? <PortalRename file={file} displayRename={displayRename} /> : null }
       <i className="material-icons meny">more_horiz</i>
     </Container>
   )
