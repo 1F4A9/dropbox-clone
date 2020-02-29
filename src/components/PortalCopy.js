@@ -14,7 +14,7 @@ import LoadingCircle from "./LoadingCircle";
 
 const Container = styled.aside`
   .shadow{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: ${props=>props.width + 'px'};
@@ -107,17 +107,17 @@ const Container = styled.aside`
     align-items: center;
   }
   .flex-container {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
   }
   .metadata-container{
     display:none;
   }
   .right-content{
-    display:none;
+    display:none !important;
   }
   .MuiSvgIcon-root{
-    display:none;
+    display:none !important;
   }
 `;
 
@@ -176,26 +176,32 @@ function CopyFile(props){
     setInputName(e.target.value);
   }
 
-  function onCreateFolder(){
+  function onCopy(){
     const dbx = new Dropbox({ accessToken: token, fetch});
-    if(path === "/"){
-      dbx.filesCreateFolder({path : path + inputName})
-      .then((response) => {
-//        console.log(response);
-      })
-      .then(() => {
-        props.onClickToggle();
-      })
-    }else{
-      dbx.filesCreateFolder({path : path + "/" + inputName})
-      .then((response) => {
-//        console.log(response);
-      })
-      .then(() => {
-        props.onClickToggle();
-      })
-    }
-  }
+    setLoading(true);
+    dbx.filesCopy(
+      {
+        from_path : props.file.path_lower,
+        to_path : path +"/"+ props.file.name,
+        allow_shared_folder : false,
+        autorename: true,
+        allow_ownership_transfer : true,
+      }
+    )
+    .then((response) => {
+      console.log(response);
+    })
+    .then(() => {
+      displayCopy(false);
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(() => {
+      setLoading(false);
+    })
+}
+
 
   function onReturn(path){
     let splittedPath = path.split("/");
@@ -258,7 +264,7 @@ function CopyFile(props){
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={onCancel}>Cancel</button>
-            <button className="btn create" onClick={onCreateFolder}>Create</button>
+            <button className="btn create" onClick={onCopy}>Copy</button>
           </footer>
         </div>
       </div>

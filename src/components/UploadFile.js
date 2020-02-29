@@ -13,7 +13,7 @@ import FileItem from "../components/FileItem";
 
 const Container = styled.aside`
   .shadow{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: ${props=>props.width + 'px'};
