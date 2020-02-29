@@ -11,7 +11,7 @@ import LoadingCircle from "./LoadingCircle";
 
 const Container = styled.aside`
   .shadow{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: ${props=>props.width + "px"};
@@ -175,6 +175,7 @@ function NewFolder(props){
 
   function onCreateFolder(){
     const dbx = new Dropbox({ accessToken: token, fetch});
+    console.log(path);
     if(path === "/"){
       dbx.filesCreateFolder({path : path + inputName})
       .then((response) => {
