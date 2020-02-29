@@ -83,6 +83,12 @@ const Container = styled.aside`
     border: 0.5px solid gray;
     border-radius: 10px;
   }
+  .create{
+    background-color: rgba(41, 116, 255, 1);
+    border: 0px;
+    color: white;
+    margin-right: 15px;
+  }
   .cancel{
     margin-left: 180px;
     background-color: white;
@@ -264,7 +270,7 @@ function CopyFile(props){
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={onCancel}>Cancel</button>
-            <button className="btn create" onClick={onCopy}>Copy</button>
+            <button className="btn create" onClick={onCopy}>Paste</button>
           </footer>
         </div>
       </div>
