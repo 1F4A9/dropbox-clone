@@ -127,7 +127,7 @@ const Container = styled.aside`
   }
 `;
 
-function CopyFile(props){
+function PortalMove(props){
   const [token, setToken] = useState(token$.value);
   const [inputName, setInputName] = useState("");
   const [state, updateState] = useState({
@@ -143,7 +143,7 @@ function CopyFile(props){
   }, []);
 //  console.log(token);
 
-  const { displayCopy } = props;
+  const { displayMove } = props;
 
   useEffect(() => {
       setLoading(true);
@@ -181,7 +181,7 @@ function CopyFile(props){
   function onCopy(){
     const dbx = new Dropbox({ accessToken: token, fetch});
     setLoading(true);
-    dbx.filesCopy(
+    dbx.filesMove(
       {
         from_path : props.file.path_lower,
         to_path : path +"/"+ props.file.name,
@@ -194,7 +194,7 @@ function CopyFile(props){
       console.log(response);
     })
     .then(() => {
-      displayCopy(false);
+      displayMove(false);
     })
     .catch((error) => {
       console.log(error)
@@ -242,7 +242,7 @@ function CopyFile(props){
   }
 
   function onCancel(e){
-    displayCopy(false);
+    displayMove(false);
   }
 
   return ReactDOM.createPortal (
@@ -251,11 +251,11 @@ function CopyFile(props){
         <div className="border">
           <header className="row">
             <i className="material-icons data-format folderIcon">{filterOutIconsToRender("folder", "")}</i>
-            <h3>Copy file/folder</h3>
+            <h3>Move file/folder</h3>
           </header>
           <div className="column left">
             <div>
-              <p className="miniTitle">Copy : {props.file.name}</p>
+              <p className="miniTitle">Move : {props.file.name}</p>
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
@@ -265,13 +265,13 @@ function CopyFile(props){
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={onCancel}>Cancel</button>
-            <button className="btn create" onClick={onCopy}>Paste</button>
+            <button className="btn create" onClick={onCopy}>Move</button>
           </footer>
         </div>
       </div>
     </Container>,
-    document.getElementById('portal-copy')
+    document.getElementById('portal-move')
   )
 }
 
-export default CopyFile
+export default PortalMove;
