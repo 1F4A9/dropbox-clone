@@ -28,7 +28,11 @@ export default function FileItemMeny({ file }) {
 
   const onClick = () => {
     if (!notification) {
-      setDropdown(!dropdown);
+      setDropdown(!dropdown)
+    }
+
+    if (notification || copy || move || rename) {
+      setDropdown(false)
     }
   }
 
