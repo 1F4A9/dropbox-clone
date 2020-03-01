@@ -152,7 +152,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
               .then(res => {
                 updateUrl(window.URL.createObjectURL(res.fileBlob))
               })
-    
+
           }
     }, [])
 

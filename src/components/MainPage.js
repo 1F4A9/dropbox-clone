@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useParams } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { Dropbox } from 'dropbox';
+import { useDebounce } from 'use-debounce';
 
-import SearchBar from '../components/SearchBar'
 import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
@@ -27,15 +28,31 @@ const Container = styled.div`
 console.log(path); */
 
 function MainPage({ location, ...props }) {
-  console.log("NEW LOCATION", location.pathname);
+//  console.log("NEW LOCATION", location.pathname);
   const [token, setToken] = useState(token$.value);
-  //const [searching, setSearching] = useState(false);
+  const [searchFile, updateSearchFile] = useState('');
+  const [list, updateList] = useState([]);
+  const [value] = useDebounce(searchFile, 600);
+  let searchItems = [];
+
+  useEffect(() => {
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesSearch({path:  window.location.pathname.substring(5), query: searchFile})
+      .then(res => {
+
+        res.matches.map(data => searchItems.push(data.metadata));
+        updateList(searchItems)
+      })
+  }, [value])
 
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
 
+  function handleSearch(e){
+    updateSearchFile(e.target.value)
+  }
 
   return (
     <Container>
@@ -43,8 +60,8 @@ function MainPage({ location, ...props }) {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-        <SearchBar />
-        <FileList token={token} pathname={location.pathname} />
+        <input type='search'  onChange={handleSearch} value={searchFile}/>
+        <FileList token={token} pathname={location.pathname} list={list}/>
       </main>
     </Container>
   )
