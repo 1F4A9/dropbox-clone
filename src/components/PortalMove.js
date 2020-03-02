@@ -129,7 +129,6 @@ const Container = styled.aside`
 
 function PortalMove(props){
   const [token, setToken] = useState(token$.value);
-  const [inputName, setInputName] = useState("");
   const [state, updateState] = useState({
     files: [],
   })
@@ -178,16 +177,14 @@ function PortalMove(props){
 
   }
 
-  function onCopy(){
+  function onMove(){
     const dbx = new Dropbox({ accessToken: token, fetch});
     setLoading(true);
     dbx.filesMove(
       {
         from_path : props.file.path_lower,
         to_path : path +"/"+ props.file.name,
-        allow_shared_folder : false,
         autorename: true,
-        allow_ownership_transfer : true,
       }
     )
     .then((response) => {
@@ -265,7 +262,7 @@ function PortalMove(props){
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={onCancel}>Cancel</button>
-            <button className="btn create" onClick={onCopy}>Move</button>
+            <button className="btn create" onClick={onMove}>Move</button>
           </footer>
         </div>
       </div>
