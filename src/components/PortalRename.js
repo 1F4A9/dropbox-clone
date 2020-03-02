@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import { GlobalStyle } from '../utilities/GlobalStyle';
+import { renameFiles } from '../api/API';
 
 const Container = styled.div`
   position: absolute;
@@ -37,28 +38,53 @@ const Container = styled.div`
     background-color: white;
   }
 
-  .delete {
+  .rename {
     background-color: rgba(41, 116, 255, 1);
     border: 0px;
     color: white;
   }
+
+  p {
+    margin-bottom: 0px;
+  }
 `;
 
 const PortalRename = ({ displayRename, file }) => {
+  const [input, setInput] = useState('');
+
+  const token = localStorage.getItem("token");
+      
   const displayNotification = (boolean) => {
     displayRename(boolean)
+  }
+
+  const onChange = (e) => {
+    setInput(e.target.value)
+    console.log(file.path_lower)
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    renameFiles(file.path_lower, token)
+      .then(data => console.log(data))
   }
 
   return ReactDOM.createPortal (
     <Container>
       <GlobalStyle mask={true}/>
       <header>
-        <p>Do you really want to remove the selected items?</p>
+        <p>Rename the selected item</p>
       </header>
-      <footer>
-        <button className="btn delete" >Delete</button>
-        <button className="btn cancel" onClick={() => displayNotification(false)}>Cancel</button>
-      </footer>
+      <form onSubmit={onSubmit}>
+        <main>
+          <input type="text" onChange={onChange} value={input}/>
+        </main>
+        <footer>
+          <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
+          <input type="button" className="btn rename" value="rename" />
+        </footer>
+      </form>
     </Container>, 
     document.getElementById('portal-rename')
   )
