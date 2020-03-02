@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import { updateToken } from '../Observables/Store';
+import { updateToken, removeStarItems } from '../Observables/Store';
 
 const Container = styled.div`
   cursor: pointer;
@@ -12,12 +12,17 @@ const Container = styled.div`
   }
 `;
 
+function onClick() {
+  updateToken(null)
+  removeStarItems();
+}
+
 const LogoutButton = () => {
   return (
-      <Container onClick={() => updateToken(null)}>
-        Logout
+    <Container onClick={onClick}>
+      Logout
       </Container>
-    )
+  )
 }
 
 export default LogoutButton;

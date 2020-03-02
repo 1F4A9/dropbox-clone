@@ -15,13 +15,12 @@ export default function Favorites() {
 
   return (
     <div>
-      <h1>Favorites</h1>
-      <div>
-        {starItems.map((x) => {
-          return <p>{x.name}</p>
-        })}
 
-      </div>
+      {starItems.map((x) => {
+        return <p key={x.id}>{x.name}</p>
+      })}
+
+
     </div>
   );
 }
