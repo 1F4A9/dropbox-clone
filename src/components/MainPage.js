@@ -6,7 +6,8 @@ import { useDebounce } from 'use-debounce';
 import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
 import styled from 'styled-components';
-import FileList from "../components/FileList"
+import FileList from "../components/FileList";
+import Favorites from "../components/Favorites";
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const Container = styled.div`
 console.log(path); */
 
 function MainPage({ location, ...props }) {
-//  console.log("NEW LOCATION", location.pathname);
+  //  console.log("NEW LOCATION", location.pathname);
   const [token, setToken] = useState(token$.value);
   const [searchFile, updateSearchFile] = useState('');
   const [list, updateList] = useState([]);
@@ -36,8 +37,8 @@ function MainPage({ location, ...props }) {
   let searchItems = [];
 
   useEffect(() => {
-    const dbx = new Dropbox({accessToken: token$.value, fetch});
-    dbx.filesSearch({path:  window.location.pathname.substring(5), query: searchFile})
+    const dbx = new Dropbox({ accessToken: token$.value, fetch });
+    dbx.filesSearch({ path: window.location.pathname.substring(5), query: searchFile })
       .then(res => {
 
         res.matches.map(data => searchItems.push(data.metadata));
@@ -50,7 +51,7 @@ function MainPage({ location, ...props }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  function handleSearch(e){
+  function handleSearch(e) {
     updateSearchFile(e.target.value)
   }
 
@@ -60,8 +61,9 @@ function MainPage({ location, ...props }) {
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-        <input type='search'  onChange={handleSearch} value={searchFile}/>
-        <FileList token={token} pathname={location.pathname} list={list}/>
+        <input type='search' onChange={handleSearch} value={searchFile} />
+        <FileList token={token} pathname={location.pathname} list={list} />
+        <Favorites token={token} pathname={location.pathname} />
       </main>
     </Container>
   )

@@ -143,7 +143,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
             console.log(file, "true");
             updateStarState(true);
         }
-    }, [favorites$])
+    }, [favorites$.value])
 
     let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
 

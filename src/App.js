@@ -18,7 +18,6 @@ function App() {
         <Route path="/home" component={MainPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/auth" component={Auth} />
-        <Route path="/favorites" component={Favorites} />
 
       </Router>
     </>

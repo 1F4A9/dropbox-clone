@@ -4,7 +4,6 @@ import UploadFile from '../components/UploadFile';
 
 import LogoutButton from './LogoutButton';
 import NewFolder from "./NewFolder";
-import Favorites from "./Favorites";
 
 const Container = styled.aside`
   display: flex;
@@ -65,14 +64,12 @@ function SideBar() {
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
         <h3 onClick={handleToggle}>Upload file <i class="fas fa-file-upload"></i></h3>
-        <h3>Favorites <i class="fas fa-star"></i></h3>
-        <Favorites />
       </div>
       <div className="footer">
         <LogoutButton />
       </div>
       {toggle ? <UploadFile toggleModal={handleToggle} toggle={toggle} /> : null}
-    </Container>
+    </Container >
 
   )
 }
