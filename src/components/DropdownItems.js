@@ -23,7 +23,7 @@ const Container = styled.div`
   }
 `;
 
-export default function DropdownItems({ file, displayDelete, displayRename, displayCopy }) {
+export default function DropdownItems({ file, displayDelete, displayRename, displayCopy, displayMove}) {
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {
@@ -35,7 +35,11 @@ export default function DropdownItems({ file, displayDelete, displayRename, disp
   }
 
   const copyFiles = () => {
-    displayCopy(true)
+    displayCopy(true);
+  }
+
+  const moveFiles = () => {
+    displayMove(true);
   }
 
   return (
@@ -44,7 +48,7 @@ export default function DropdownItems({ file, displayDelete, displayRename, disp
       <div className="trigger-action" onClick={deleteFiles}>Delete</div>
       <div className="trigger-action" onClick={copyFiles}>Copy</div>
       <div className="trigger-action" onClick={renameFiles}>Rename</div>
-      <div className="trigger-action">Move</div>
+      <div className="trigger-action" onClick={moveFiles}>Move</div>
     </Container>
   )
 }

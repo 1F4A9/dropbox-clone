@@ -164,6 +164,22 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         return filterOutIconsToRender(tag, name);
     }
 
+    useEffect(() => {
+        getFilesMetadata(path, token)
+            .then(metadata => {
+                setModified(metadata.server_modified);
+                setSize(metadata.size);
+            })
+
+        if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
+            getFilesThumbnail(path, token)
+                .then(res => {
+                    updateUrl(window.URL.createObjectURL(res.fileBlob))
+                })
+
+        }
+    }, [])
+
     let link = ""
     if (changeURL) {
         link = <Link to={"/home" + path}><p onClick={onClick} className="file">{children}</p></Link>
