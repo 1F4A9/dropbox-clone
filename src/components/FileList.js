@@ -14,7 +14,7 @@ const Container = styled.aside`
 `
 
 function FileList({ token, pathname, list }) {
-  console.log(list);
+    console.log(list);
     const [state, updateState] = useState({
         files: [],
     })
@@ -26,16 +26,16 @@ function FileList({ token, pathname, list }) {
 
         filesListFolder(token, pathname.substring(5))
             .then((response) => {
-              //  console.log("LOCATION ÄNDRADES", pathname.substring(5));
-              if(list.length > 0){
-                updateState({
-                  files: list
-                })
-              } else {
-                updateState({
-                    files: response.entries
-                })
-              }
+                //  console.log("LOCATION ÄNDRADES", pathname.substring(5));
+                if (list.length > 0) {
+                    updateState({
+                        files: list
+                    })
+                } else {
+                    updateState({
+                        files: response.entries
+                    })
+                }
 
                 updatePath(path)
 
@@ -68,27 +68,27 @@ function FileList({ token, pathname, list }) {
     }
 
     let loadingReturn;
-    if(loading){
+    if (loading) {
         loadingReturn = (<Container><div className="center"><LoadingCircle scale={2} /></div></Container>)
-      }else{
+    } else {
         loadingReturn = (<div className="cont" >
-        {state.files.map((x) => {
-            return <FileItem
-                files={state.files}
-                tag={x['.tag']}
-                getPath={handlePath}
-                path={x.path_lower}
-                file={x}
-                id={x.id}
-                key={x.id}
-                name={x.name}
-                token={token}
-                changeURL={true}
-            >{x.name}
+            {state.files.map((x) => {
+                return <FileItem
+                    files={state.files}
+                    tag={x['.tag']}
+                    getPath={handlePath}
+                    path={x.path_lower}
+                    file={x}
+                    id={x.id}
+                    key={x.id}
+                    name={x.name}
+                    token={token}
+                    changeURL={true}
+                >{x.name}
 
-            </FileItem>;
-        })}
-    </div >)
+                </FileItem>;
+            })}
+        </div >)
     }
 
     return (
