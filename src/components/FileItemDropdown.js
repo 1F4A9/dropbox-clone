@@ -5,7 +5,6 @@ import DropdownItems from './DropdownItems';
 import CopyFile from "./PortalCopy";
 import PortalDelete from './PortalDelete';
 import PortalRename from './PortalRename';
-import PortalMove from "./PortalMove";
 
 const Container = styled.div`
   display: flex;
