@@ -2,6 +2,7 @@ import React, { useEffect, useState, useParams } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Dropbox } from 'dropbox';
 import { useDebounce } from 'use-debounce';
+import { Search } from '@material-ui/icons';
 
 import { token$ } from '../Observables/Store';
 import SideBar from '../components/SideBar';
@@ -22,6 +23,34 @@ const Container = styled.div`
   h1 {
     margin: 0px 62px;
   }
+
+  .searchContainer{
+    display: flex;
+    margin-left: 62px;
+    border: 1px solid #c1c7cd;
+    color: #25282b;
+    border-radius: 25px;
+    width: 200px;
+    transition: width 0.4s ease-in-out;
+  }
+
+  .searchContainer:focus-within{
+    width: 85%;
+  }
+
+  .searchIcon{
+    padding: 10px;
+  }
+
+  .searchInput{
+    width: 89%;
+    padding 10px, 10px, 10px, 0;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    background: trasparent;
+  }
+
 `;
 
 /* let { path } = useParams();
@@ -32,6 +61,7 @@ function MainPage({ location, ...props }) {
   const [token, setToken] = useState(token$.value);
   const [searchFile, updateSearchFile] = useState('');
   const [list, updateList] = useState([]);
+  const [searchBar, updateSearchBar] = useState(null);
   const [value] = useDebounce(searchFile, 600);
   let searchItems = [];
 
@@ -54,13 +84,20 @@ function MainPage({ location, ...props }) {
     updateSearchFile(e.target.value)
   }
 
+  function handleSearchbar(){
+    updateSearchBar(!searchBar);
+  }
+
   return (
     <Container>
       {token ? null : <Redirect to="/login" />}
       <SideBar />
       <main>
         <h1>MAIN PAGE CONTENT</h1>
-        <input type='search'  onChange={handleSearch} value={searchFile}/>
+        <div className='searchContainer'>
+           <Search className='searchIcon'></Search>
+           <input className='searchInput' type='search'  onChange={handleSearch} value={searchFile} placeholder='Search...'/>
+        </div>
         <FileList token={token} pathname={location.pathname} list={list}/>
       </main>
     </Container>
