@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import styled from "styled-components";
 
 import { Download } from "../api/API";
@@ -24,6 +24,7 @@ const Container = styled.div`
 `;
 
 export default function DropdownItems({ file, displayDelete, displayRename, displayCopy, displayMove}) {
+  const clickedEl = useRef(null);
   const token = localStorage.getItem("token");
 
   const deleteFiles = () => {
@@ -43,7 +44,7 @@ export default function DropdownItems({ file, displayDelete, displayRename, disp
   }
 
   return (
-    <Container>
+    <Container ref={clickedEl} >
       <div className="trigger-action" onClick={() => Download(file, token)}>Download</div>
       <div className="trigger-action" onClick={deleteFiles}>Delete</div>
       <div className="trigger-action" onClick={copyFiles}>Copy</div>

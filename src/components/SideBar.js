@@ -60,10 +60,10 @@ function SideBar() {
     <Container>
       <div className="header">
         <div>
-          <h3 onClick={onFolderClick}>New folder <i class="fas fa-folder-plus"></i></h3>
+          <h3 onClick={onFolderClick}>New folder <i className="fas fa-folder-plus"></i></h3>
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
-        <h3 onClick={handleToggle}>Upload file <i class="fas fa-file-upload"></i></h3>
+        <h3 onClick={handleToggle}>Upload file <i className="fas fa-file-upload"></i></h3>
       </div>
       <div className="footer">
         <LogoutButton />

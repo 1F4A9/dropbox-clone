@@ -7,7 +7,7 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { addStarredItems, removeStarredItem } from "../utilities";
-import FileItemMeny from './FileItemDropdown';
+import FileItemDropdown from './FileItemDropdown';
 import { getFilesMetadata, getFilesThumbnail } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
 import { toggleFavorite, favorites$ } from "../Observables/Store";
@@ -206,7 +206,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny file={file} />
+                    <FileItemDropdown file={file} />
                 </div>
             </div>
         </Container >
