@@ -282,14 +282,13 @@ function CopyFile(props){
           <header className="row">
             <i className="material-icons data-format folderIcon">{filterOutIconsToRender("folder", "")}</i>
             <h3>{props.copy ? "Copy file/folder" : "Move file/folder"}</h3>
-            {props.copy ? <p>copy</p> : <p>move</p>}
           </header>
           <div className="column left">
             <div>
-              <p className="miniTitle">{props.copy ? "Copy : "+props.file.name : "Move"+props.file.name}</p>
+              <p className="miniTitle">{props.copy ? "Copy : "+props.file.name : "Move : "+props.file.name}</p>
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
               {loadingReturn}
             </div>
           </div>

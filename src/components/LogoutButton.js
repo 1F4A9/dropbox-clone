@@ -5,9 +5,12 @@ import { updateToken, removeStarItems } from '../Observables/Store';
 
 const Container = styled.div`
   cursor: pointer;
-  font-size: 22px;
+  color: #0070e0;
+  position: absolute;
+  bottom: 0;
 
   :hover {
+    color: #92ceff;
     text-decoration: underline;
   }
 `;
@@ -20,7 +23,7 @@ function onClick() {
 const LogoutButton = () => {
   return (
     <Container onClick={onClick}>
-      Logout
+      <h3>Logout <i class="fa fa-sign-out" aria-hidden="true"></i></h3>
       </Container>
   )
 }
