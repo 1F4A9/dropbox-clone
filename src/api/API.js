@@ -25,7 +25,6 @@ export const filesListFolder = (token, path) => {
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
   return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
-      console.log("TEST");
       console.log(response);
       return response;
     })
@@ -77,7 +76,7 @@ export function getFilesThumbnail(path, token) {
 export const renameFiles = (path, newName, token) => {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
 
-  return dbx.filesMoveV2({ 
+  return dbx.filesMoveV2({
     from_path: path,
     to_path: `${removeEndOfPathname(path)}/${newName}`,
   })

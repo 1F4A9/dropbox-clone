@@ -141,7 +141,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
 
     useEffect(() => {
         if (favorites$.value.find(x => x.id === file.id)) {
-            console.log(file, "true");
             updateStarState(true);
         }
     }, [favorites$.value])
@@ -154,8 +153,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     }
 
     function onClick(e) {
-
-        console.log("HEJ!", path);
         if (tag === "folder") {
             getPath(path);
         }

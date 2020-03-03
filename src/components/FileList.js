@@ -14,7 +14,6 @@ const Container = styled.aside`
 `
 
 function FileList({ token, pathname, list }) {
-    console.log(list);
     const [state, updateState] = useState({
         files: [],
     })

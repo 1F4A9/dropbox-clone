@@ -225,27 +225,15 @@ function UploadFile(props){
             return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
               .then(() => {
                 setIdx(idx);
-                setUploadedSize((idx * maxBlob * 0.000001).toFixed(0));
+                setUploadedSize((idx * maxBlob * 0.000001));
                 return sessionId;
               });
           });
         } else {
           return acc.then(function(sessionId) {
-            var cursor = {
-              session_id: sessionId,
-              offset: file.size - blob.size
-            };
-            var commit = {
-              path: "/" + file.name,
-              mode: "add",
-              autorename: true,
-              mute: false
-            };
-            return dropbox
-              .filesUploadSessionFinish({
-                cursor: cursor,
-                commit: commit,
-                contents: blob
+            var cursor = { session_id: sessionId, offset: file.size - blob.size };
+            var commit = { path: "/" + file.name, mode: "add", autorename: true, mute: false };
+            return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob
               })
               .then((res) => {
                 setUploadDone(true);
@@ -300,34 +288,42 @@ function UploadFile(props){
 
   return (
     <Container width={window.innerWidth}>
-      <div className="shadow">
-        <div className="border">
-          <header className="row">
-            <i className="material-icons data-format folderIcon">{filterOutIconsToRender("", "")}</i>
-            <h3>Upload file</h3>
-          </header>
-          <div className="column left">
-            <div>
-              <p className="miniTitle">Name</p>
-              <input
-                type='file'
-                onChange={handleItem}
-                multiple
-                />
+      {largeFileUpload ? <UploadProgress
+        largeFileUpload={largeFileUpload}
+        info={info}
+        idx={idx}
+        setIdx={setIdx}
+        items={items}
+        uploadedSize={uploadedSize}
+        uploadDone={uploadDone}
+        setUploadDone={setUploadDone}
+        /> : <div className="shadow">
+          <div className="border">
+            <header className="row">
+              <i className="material-icons data-format folderIcon">{filterOutIconsToRender("", "")}</i>
+              <h3>Upload file</h3>
+            </header>
+            <div className="column left">
+              <div>
+                <p className="miniTitle">Name</p>
+                <input
+                  type='file'
+                  onChange={handleItem}
+                  multiple
+                  />
+              </div>
+              <div>
+                <p className="miniTitle">Location : Dropbox/home{usepath.replace(/%20/g," ")}</p>
+                {loadingReturn}
+              </div>
             </div>
-            <div>
-              <p className="miniTitle">Location : Dropbox/home{usepath.replace(/%20/g," ")}</p>
-              {loadingReturn}
-            </div>
+            <footer className="myFooter">
+              <button className="btn return" onClick={(e) => onReturn(usepath)}>Return</button>
+              <button className="btn cancel" onClick={props.toggleModal}>Cancel</button>
+              <button className="btn upload" onClick={handleUpload}>Upload</button>
+            </footer>
           </div>
-          <footer className="myFooter">
-            <button className="btn return" onClick={(e) => onReturn(usepath)}>Return</button>
-            <button className="btn cancel" onClick={props.toggleModal}>Cancel</button>
-            <button className="btn upload" onClick={handleUpload}>Upload</button>
-          </footer>
-        </div>
-      </div>
-      <UploadProgress />
+        </div>}
     </Container>
   )
 }
