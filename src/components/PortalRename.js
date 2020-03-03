@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
@@ -56,7 +56,12 @@ const Container = styled.div`
 const PortalRename = ({ displayRename, file }) => {
   const [input, setInput] = useState('');
 
+  const inputRef = useRef(null);
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [])
       
   const displayNotification = (boolean) => {
     displayRename(boolean)
@@ -85,7 +90,7 @@ const PortalRename = ({ displayRename, file }) => {
       </header>
       <form onSubmit={onSubmit}>
         <main>
-          <input type="text" onChange={onChange} value={input}/>
+          <input ref={inputRef} type="text" onChange={onChange} value={input}/>
         </main>
         <footer>
           <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />

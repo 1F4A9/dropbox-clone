@@ -188,8 +188,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         link = <div><p onClick={onClick} className="file">{children}</p></div>
     }
 
-    console.log(tag)
-
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">
