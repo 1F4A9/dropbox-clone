@@ -90,6 +90,7 @@ const Container = styled.aside`
     background-color: rgba(41, 116, 255, 1);
     border: 0px;
     color: white;
+    margin-right: 15px;
   }
   .overFlow{
     position: relative;
@@ -260,6 +261,19 @@ function UploadFile(props){
     return false;
   };
 
+  function onReturn(path){
+    let splittedPath = path.split("/");
+    let newPath = "";
+    for(let i = 1; i < splittedPath.length - 1; i++){
+      if(i !== splittedPath.length || splittedPath !== ""){
+        newPath += "/" + splittedPath[i];
+      }
+    }
+    console.log(newPath);
+    handlePath(newPath)
+    updatePath(newPath);
+  }
+
   let loadingReturn;
   if(loading){
     loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
@@ -302,11 +316,12 @@ function UploadFile(props){
                 />
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox</p>
+              <p className="miniTitle">Location : Dropbox/home{usepath.replace(/%20/g," ")}</p>
               {loadingReturn}
             </div>
           </div>
           <footer className="myFooter">
+            <button className="btn return" onClick={(e) => onReturn(usepath)}>Return</button>
             <button className="btn cancel" onClick={props.toggleModal}>Cancel</button>
             <button className="btn upload" onClick={handleUpload}>Upload</button>
           </footer>

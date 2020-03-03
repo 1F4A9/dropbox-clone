@@ -26,3 +26,7 @@ export function toggleFavorite(file) {
     localStorage.setItem("starred", JSON.stringify(newFavorites));
     favorites$.next(newFavorites);
 }
+
+export function removeStarItems() {
+    localStorage.removeItem("starred");
+}

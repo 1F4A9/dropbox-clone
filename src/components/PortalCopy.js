@@ -129,7 +129,6 @@ const Container = styled.aside`
 
 function CopyFile(props){
   const [token, setToken] = useState(token$.value);
-  const [inputName, setInputName] = useState("");
   const [state, updateState] = useState({
     files: [],
   })
@@ -181,13 +180,15 @@ function CopyFile(props){
   function onCopy(){
     const dbx = new Dropbox({ accessToken: token, fetch});
     setLoading(true);
+    let pathFix = path;
+    if(pathFix === "/"){
+      pathFix = "";
+    }
     dbx.filesCopy(
       {
         from_path : props.file.path_lower,
-        to_path : path +"/"+ props.file.name,
-        allow_shared_folder : false,
+        to_path : pathFix +"/"+props.file.name,
         autorename: true,
-        allow_ownership_transfer : true,
       }
     )
     .then((response) => {
@@ -202,7 +203,35 @@ function CopyFile(props){
     .finally(() => {
       setLoading(false);
     })
-}
+  }
+
+  function onMove(){
+    const dbx = new Dropbox({ accessToken: token, fetch});
+    setLoading(true);
+    let pathFix = path;
+    if(pathFix === "/"){
+      pathFix = "";
+    }
+    dbx.filesMove(
+      {
+        from_path : props.file.path_lower,
+        to_path : pathFix +"/"+ props.file.name,
+        autorename: true,
+      }
+    )
+    .then((response) => {
+      console.log(response);
+    })
+    .then(() => {
+      displayCopy(false);
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(() => {
+      setLoading(false);
+    })
+  }
 
 
   function onReturn(path){
@@ -217,6 +246,7 @@ function CopyFile(props){
     handlePath(newPath)
     updatePath(newPath);
   }
+  
   let loadingReturn;
   if(loading){
     loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
@@ -251,21 +281,21 @@ function CopyFile(props){
         <div className="border">
           <header className="row">
             <i className="material-icons data-format folderIcon">{filterOutIconsToRender("folder", "")}</i>
-            <h3>Copy file/folder</h3>
+            <h3>{props.copy ? "Copy file/folder" : "Move file/folder"}</h3>
           </header>
           <div className="column left">
             <div>
-              <p className="miniTitle">Copy : {props.file.name}</p>
+              <p className="miniTitle">{props.copy ? "Copy : "+props.file.name : "Move : "+props.file.name}</p>
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
               {loadingReturn}
             </div>
           </div>
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
             <button className="btn cancel" onClick={onCancel}>Cancel</button>
-            <button className="btn create" onClick={onCopy}>Paste</button>
+            <button className="btn create" onClick={props.copy ? onCopy : onMove}>{props.copy ? "Paste" : "Move"}</button>
           </footer>
         </div>
       </div>

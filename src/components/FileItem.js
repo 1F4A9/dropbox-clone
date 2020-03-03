@@ -7,9 +7,10 @@ import { BrowserRouter, Router, Link } from "react-router-dom";
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { addStarredItems, removeStarredItem } from "../utilities";
-import FileItemMeny from './FileItemDropdown';
+import FileItemDropdown from './FileItemDropdown';
 import { getFilesMetadata, getFilesThumbnail } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
+import { toggleFavorite, favorites$ } from "../Observables/Store";
 
 const Container = styled.div`
     display: flex;
@@ -57,6 +58,7 @@ const Container = styled.div`
     .icon-container {
         display: flex;
         align-items: center;
+        width: 48px;
     }
 
     .data-format {
@@ -121,11 +123,34 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     const [size, setSize] = useState('');
     const [url, updateUrl] = useState('');
 
+    useEffect(() => {
+        getFilesMetadata(path, token)
+            .then(metadata => {
+                setModified(metadata.server_modified);
+                setSize(metadata.size);
+            })
+
+        if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
+            getFilesThumbnail(path, token)
+                .then(res => {
+                    updateUrl(window.URL.createObjectURL(res.fileBlob))
+                })
+
+        }
+    }, [])
+
+    useEffect(() => {
+        if (favorites$.value.find(x => x.id === file.id)) {
+            console.log(file, "true");
+            updateStarState(true);
+        }
+    }, [favorites$.value])
+
     let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
 
-    function toggleCheck() {
+    function toggleCheck(file) {
+        toggleFavorite(file); //Takes file from prop.
         updateStarState(!starState);
-        addStarredItems(pathname, name, token);
     }
 
     function onClick(e) {
@@ -147,13 +172,13 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                 setSize(metadata.size);
             })
 
-        if(dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp'){
+        if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
             getFilesThumbnail(path, token)
-              .then(res => {
-                updateUrl(window.URL.createObjectURL(res.fileBlob))
-              })
+                .then(res => {
+                    updateUrl(window.URL.createObjectURL(res.fileBlob))
+                })
 
-          }
+        }
     }, [])
 
     let link = ""
@@ -173,16 +198,16 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                     <div className="name-cont">
                         <div className="file-star-container">
                             {link}
-                            {starState === false ? <StarBorder onClick={toggleCheck}></StarBorder> : <Star onClick={toggleCheck}></Star>}
+                            {starState ? <Star onClick={() => toggleCheck(file)}></Star> : <StarBorder onClick={() => toggleCheck(file)}></StarBorder>}
                         </div>
                         <div className="metadata-container">
-                            <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
+                            <span className="metadata date">{tag === 'file' ? `Modified: ${convertToHumanReadableTime(modified)}` : null}</span>
                             <span className="metadata kilobyte">{convertToHumanReadableSize(size)}</span>
                         </div>
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny file={file} />
+                    <FileItemDropdown file={file} />
                 </div>
             </div>
         </Container >
