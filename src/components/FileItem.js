@@ -58,6 +58,7 @@ const Container = styled.div`
     .icon-container {
         display: flex;
         align-items: center;
+        width: 48px;
     }
 
     .data-format {
@@ -187,6 +188,8 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         link = <div><p onClick={onClick} className="file">{children}</p></div>
     }
 
+    console.log(tag)
+
     return (
         <Container isFolderIcon={tag}>
             <div className="flex-container">
@@ -200,7 +203,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                             {starState ? <Star onClick={() => toggleCheck(file)}></Star> : <StarBorder onClick={() => toggleCheck(file)}></StarBorder>}
                         </div>
                         <div className="metadata-container">
-                            <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
+                            <span className="metadata date">{tag === 'file' ? `Modified: ${convertToHumanReadableTime(modified)}` : null}</span>
                             <span className="metadata kilobyte">{convertToHumanReadableSize(size)}</span>
                         </div>
                     </div>
