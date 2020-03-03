@@ -47,6 +47,10 @@ const Container = styled.div`
   p {
     margin-bottom: 0px;
   }
+
+  input[type="text"] {
+    margin-bottom: 20px;
+  }
 `;
 
 const PortalRename = ({ displayRename, file }) => {
@@ -60,14 +64,17 @@ const PortalRename = ({ displayRename, file }) => {
 
   const onChange = (e) => {
     setInput(e.target.value)
-    console.log(file.path_lower)
   }
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    renameFiles(file.path_lower, token)
-      .then(data => console.log(data))
+    renameFiles(file.path_lower, input, token)
+      .then(() => displayNotification(false))
+      .catch(data => {
+        console.log(data);
+        displayNotification(false);
+      })
   }
 
   return ReactDOM.createPortal (
@@ -82,7 +89,7 @@ const PortalRename = ({ displayRename, file }) => {
         </main>
         <footer>
           <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
-          <input type="button" className="btn rename" value="rename" />
+          <input type="button" className="btn rename" value="rename" onClick={onSubmit}/>
         </footer>
       </form>
     </Container>, 

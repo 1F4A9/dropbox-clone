@@ -1,5 +1,6 @@
 import { CLIENT_ID } from '../constants/constants';
 import { Dropbox } from 'dropbox'
+import { removeEndOfPathname } from '../utilities/index';
 
 export const fetchDataFromUser = (token) => {
   let dbx = new Dropbox({ accessToken: token, fetch });
@@ -73,33 +74,11 @@ export function getFilesThumbnail(path, token) {
   return dbx.filesGetThumbnail({ path })
 }
 
-export const renameFiles = (path, token) => {
+export const renameFiles = (path, newName, token) => {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
-
-
-  console.log(path.split('/'))
-  let splitted = path.split("/");
-  let l = splitted[splitted.length - 1].length;
-
-  console.log(path.substring(path.length -1) + '/NUNUNUNU')
-  
-  function onReturn(path){
-    let splittedPath = path.split("/");
-    let newPath = "";
-    for(let i = 1; i < splittedPath.length - 1; i++){
-      if(i !== splittedPath.length || splittedPath !== ""){
-        newPath += "/" + splittedPath[i];
-      }
-    }
-    return newPath
-  }
 
   return dbx.filesMoveV2({ 
     from_path: path,
-    to_path: onReturn(path) + '/HEEEJ',
+    to_path: `${removeEndOfPathname(path)}/${newName}`,
   })
 }
-
-
-// from: /home/home/test/toto
-// to: /home/home/test/nyfil
