@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
 import { BrowserRouter, Router, Link } from "react-router-dom";
 
-
-
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import FileItemMeny from './FileItemDropdown';
 import { getFilesMetadata, getFilesThumbnail } from "../api/API";
@@ -140,8 +138,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     }, [])
 
     useEffect(() => {
-        let favorites = JSON.parse(localStorage.getItem("starred"));
-        if (favorites.find(x => x.id === file.id)) {
+        if (favorites$.value.find(x => x.id === file.id)) {
             updateStarState(true);
         }
 
@@ -168,22 +165,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-
-    useEffect(() => {
-        getFilesMetadata(path, token)
-            .then(metadata => {
-                setModified(metadata.server_modified);
-                setSize(metadata.size);
-            })
-
-        if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
-            getFilesThumbnail(path, token)
-                .then(res => {
-                    updateUrl(window.URL.createObjectURL(res.fileBlob))
-                })
-
-        }
-    }, [])
 
     let link = ""
     if (changeURL) {

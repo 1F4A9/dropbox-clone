@@ -60,7 +60,7 @@ export function deleteFilesAndFolders(path, token) {
 
   return dbx.filesDelete({ path })
 }
-
+// Någon bugg där namn med endast siffror skapar felkod: 409
 export function getFilesMetadata(path, token) {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch })
 
@@ -79,4 +79,22 @@ export function checkChanges(cursor, timeout, token) {
   return dbx.filesListFolderLongpoll({ cursor: cursor, timeout: timeout })
 
 
+}
+
+export function filesListFolderContinue(path, token) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+  return dbx.fileRequestsListContinue({ path: path });
+}
+
+export function getCursor(token, path) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch });
+
+  return dbx.filesListFolderGetLatestCursor({
+    path,
+    recursive: true,
+    include_media_info: false,
+    include_deleted: true,
+    include_has_explicit_shared_members: false,
+    include_mounted_folders: false
+  });
 }
