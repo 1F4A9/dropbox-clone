@@ -6,7 +6,7 @@ import { deleteFilesAndFolders } from "../api/API";
 import { GlobalStyle } from '../utilities/GlobalStyle';
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   width: 370px;
   height: 150px;
   left: 50%;

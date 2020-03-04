@@ -174,23 +174,30 @@ function NewFolder(props){
   }
 
   function onCreateFolder(){
+    setLoading(true);
     const dbx = new Dropbox({ accessToken: token, fetch});
     console.log(path);
     if(path === "/"){
       dbx.filesCreateFolder({path : path + inputName})
       .then(() => {
-        props.onClickToggle();
+        setLoading(false);
       })
       .catch(() => {
         setError(true);
+      })
+      .finally(() => {
+        props.onClickToggle();
       })
     }else{
       dbx.filesCreateFolder({path : path + "/" + inputName})
       .then(() => {
-        props.onClickToggle();
+        setLoading(false);
       })
       .catch(() => {
         setError(true);
+      })
+      .finally(() => {
+        props.onClickToggle();
       })
     }
   }

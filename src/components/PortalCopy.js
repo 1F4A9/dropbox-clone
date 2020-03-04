@@ -193,7 +193,6 @@ function CopyFile(props){
     )
     .then((response) => {
       console.log(response);
-      displayCopy(false);
     })
     .catch((error) => {
       console.log(error)
@@ -201,6 +200,7 @@ function CopyFile(props){
     })
     .finally(() => {
       setLoading(false);
+      displayCopy(false);
     })
   }
 
@@ -220,7 +220,6 @@ function CopyFile(props){
     )
     .then((response) => {
       console.log(response);
-      displayCopy(false);
     })
     .catch((error) => {
       console.log(error)
@@ -228,6 +227,7 @@ function CopyFile(props){
     })
     .finally(() => {
       setLoading(false);
+      displayCopy(false);
     })
   }
 
