@@ -127,14 +127,14 @@ function NewFolder(props){
     files: [],
   })
   const [loading, setLoading] = useState(true);
-//  console.log(state.files);
   const [path, updatePath] = useState("/");
+  const [error, setError] = useState(false);
   console.log("PATH! ", path);
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
-//  console.log(token);
+
 
   useEffect(() => {
       setLoading(true);
@@ -174,22 +174,29 @@ function NewFolder(props){
   }
 
   function onCreateFolder(){
+    setLoading(true);
     const dbx = new Dropbox({ accessToken: token, fetch});
     console.log(path);
     if(path === "/"){
       dbx.filesCreateFolder({path : path + inputName})
-      .then((response) => {
-//        console.log(response);
-      })
       .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
         props.onClickToggle();
       })
     }else{
       dbx.filesCreateFolder({path : path + "/" + inputName})
-      .then((response) => {
-//        console.log(response);
-      })
       .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
         props.onClickToggle();
       })
     }

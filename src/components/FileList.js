@@ -59,31 +59,31 @@ function FileList({ token, pathname, list }) {
     useEffect(() => {
         const longpoll = () => {
             getCursor(token, path)
-            .then((response) => {
-                updateCursor(response.cursor);
-                return response.cursor;
-            })
-            .then(cursor => {
-                checkChanges(cursor, 30, token)
-            .then((response) => {
-                if (response.changes) {
-                    return filesListFolder(token, path)
-
-                } else {
-                    getCursor(token, path);
-                }
-            })
-            .then(response => {
-                if (response) {
+                .then((response) => {
                     updateCursor(response.cursor);
-                    updateState({ files: response.entries})
-                    longpoll()
-                } else {
-                    longpoll()
-                }
-            })
-            .catch(err => console.log(err))
-        })
+                    return response.cursor;
+                })
+                .then(cursor => {
+                    checkChanges(cursor, 30, token)
+                        .then((response) => {
+                            if (response.changes) {
+                                return filesListFolder(token, path)
+
+                            } else {
+                                getCursor(token, path);
+                            }
+                        })
+                        .then(response => {
+                            if (response) {
+                                updateCursor(response.cursor);
+                                updateState({ files: response.entries })
+                                longpoll()
+                            } else {
+                                longpoll()
+                            }
+                        })
+                        .catch(err => console.log(err))
+                })
         }
         longpoll();
     }, [])

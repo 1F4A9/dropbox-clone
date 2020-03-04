@@ -133,14 +133,12 @@ function CopyFile(props){
     files: [],
   })
   const [loading, setLoading] = useState(true);
-//  console.log(state.files);
   const [path, updatePath] = useState("/");
-  console.log("PATH! ", path);
+  const [error, setError] = useState(false);
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
-//  console.log(token);
 
   const { displayCopy } = props;
 
@@ -155,6 +153,7 @@ function CopyFile(props){
               setLoading(false);
           }).catch((err) => {
               console.error(err);
+              setError(true);
           })
   }, [])
 
@@ -170,6 +169,7 @@ function CopyFile(props){
           })
           .catch((err) => {
               console.error(err);
+              setError(true);
           })
           .finally(() => {
             setLoading(false);
@@ -194,14 +194,13 @@ function CopyFile(props){
     .then((response) => {
       console.log(response);
     })
-    .then(() => {
-      displayCopy(false);
-    })
     .catch((error) => {
       console.log(error)
+      setError(true);
     })
     .finally(() => {
       setLoading(false);
+      displayCopy(false);
     })
   }
 
@@ -222,14 +221,13 @@ function CopyFile(props){
     .then((response) => {
       console.log(response);
     })
-    .then(() => {
-      displayCopy(false);
-    })
     .catch((error) => {
       console.log(error)
+      setError(true);
     })
     .finally(() => {
       setLoading(false);
+      displayCopy(false);
     })
   }
 
@@ -271,10 +269,6 @@ function CopyFile(props){
   </div>)
   }
 
-  function onCancel(e){
-    displayCopy(false);
-  }
-
   return ReactDOM.createPortal (
     <Container width={window.innerWidth}>
       <div className="shadow">
@@ -286,6 +280,7 @@ function CopyFile(props){
           <div className="column left">
             <div>
               <p className="miniTitle">{props.copy ? "Copy : "+props.file.name : "Move : "+props.file.name}</p>
+              {error ? <p className="miniTitle" style={{color:"red"}}>Something went wrong, try again</p> : null}
             </div>
             <div>
               <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
@@ -294,7 +289,7 @@ function CopyFile(props){
           </div>
           <footer className="myFooter">
             <button className="btn return" onClick={(e) => onReturn(path)}>Return</button>
-            <button className="btn cancel" onClick={onCancel}>Cancel</button>
+            <button className="btn cancel" onClick={() => displayCopy(false)}>Cancel</button>
             <button className="btn create" onClick={props.copy ? onCopy : onMove}>{props.copy ? "Paste" : "Move"}</button>
           </footer>
         </div>

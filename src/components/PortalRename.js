@@ -6,7 +6,7 @@ import { GlobalStyle } from '../utilities/GlobalStyle';
 import { renameFiles } from '../api/API';
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   width: 370px;
   height: 150px;
   left: 50%;
