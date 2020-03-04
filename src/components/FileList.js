@@ -61,38 +61,39 @@ function FileList({ token, pathname, list }) {
             .then((response) => {
                 updateCursor(response.cursor);
                 return response.cursor;
-            });
+            })
+            .then((cursor) => {
+                return checkChanges(cursor, 30, token)
 
-        async function wait() {
+            })
 
-            await checkChanges(cursor, 30, token)
-                .then((response) => {
-                    console.log(response);
-                    if (response.changes) {
-                        return filesListFolder(token, path)
+            .then((response) => {
+                console.log(response);
+                if (response.changes) {
+                    return filesListFolder(token, path)
 
-                    } else {
-                        getCursor(token, path);
-                    }
+                } else {
+                    getCursor(token, path);
+                }
 
-                })
-                .then((response) => {
+            })
+            .then((response) => {
 
-                    console.log(response)
-                    if (response) {
-                        updateCursor(response.cursor);
-                        updateState({
-                            files: response.entries,
-                        })
+                console.log(response)
+                if (response) {
+                    updateCursor(response.cursor);
+                    updateState({
+                        files: response.entries,
+                    })
 
-                    }
+                }
 
-                })
-                .catch((err) => {
-                    console.error(err);
-                })
-        }
-        wait();
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+
+
     }, [])
 
     function handlePath(path) {
