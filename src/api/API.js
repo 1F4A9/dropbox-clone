@@ -72,3 +72,11 @@ export function getFilesThumbnail(path, token) {
 
   return dbx.filesGetThumbnail({ path })
 }
+
+export function checkChanges(cursor, timeout, token) {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch, })
+
+  return dbx.filesListFolderLongpoll({ cursor: cursor, timeout: timeout })
+
+
+}

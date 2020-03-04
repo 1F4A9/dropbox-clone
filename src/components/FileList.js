@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder } from "../api/API";
+import { filesListFolder, checkChanges } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
@@ -14,12 +14,15 @@ const Container = styled.aside`
 `
 
 function FileList({ token, pathname, list }) {
-    console.log(list);
     const [state, updateState] = useState({
         files: [],
     })
     const [path, updatePath] = useState("");
     const [loading, setLoading] = useState(true);
+    const [cursor, updateCursor] = useState("");
+    const [changes, updateChanges] = useState(false);
+
+
 
     useEffect(() => {
         setLoading(true);
@@ -36,8 +39,15 @@ function FileList({ token, pathname, list }) {
                         files: response.entries
                     })
                 }
+                //updateCursor(response.cursor);
 
-                updatePath(path)
+                /* updatePath(path)
+                checkChanges(response.cursor, 30, token)
+                    .then((response) => {
+                        console.log(response);
+
+
+                    }) */
 
             })
             .catch((err) => {
@@ -45,8 +55,27 @@ function FileList({ token, pathname, list }) {
             })
             .finally(() => {
                 setLoading(false);
-            })
+            });
+
+
+
     }, [pathname, list]);
+
+    /* useEffect(() => {
+
+        checkChanges(cursor, 30, token)
+            .then((response) => {
+                console.log(response);
+
+            })
+
+            .catch((err) => {
+                console.error(err);
+            })
+
+
+
+    }, []) */
 
     function handlePath(path) {
         setLoading(true);

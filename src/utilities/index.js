@@ -70,7 +70,7 @@ export function addStarredItems(path, name, token) {
 
 
 
-
+// Ta bort?!
 export function removeStarredItem(name) {
   let starItems = JSON.parse(localStorage.getItem("starred"));
 
