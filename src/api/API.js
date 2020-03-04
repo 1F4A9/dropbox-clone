@@ -91,7 +91,7 @@ export function getCursor(token, path) {
 
   return dbx.filesListFolderGetLatestCursor({
     path,
-    recursive: true,
+    recursive: false,
     include_media_info: false,
     include_deleted: true,
     include_has_explicit_shared_members: false,
