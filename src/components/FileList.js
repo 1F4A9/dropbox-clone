@@ -22,7 +22,7 @@ function FileList({ token, pathname, list }) {
     const [cursor, updateCursor] = useState("");
     const [changes, updateChanges] = useState(false);
 
-
+    console.log('hela komponenten updateras!!!!!')
 
     useEffect(() => {
         setLoading(true);
@@ -57,43 +57,35 @@ function FileList({ token, pathname, list }) {
     }, [pathname, list]);
 
     useEffect(() => {
-        getCursor(token, path)
-            .then((response) => {
-                updateCursor(response.cursor);
-                return response.cursor;
-            })
-            .then((cursor) => {
-                return checkChanges(cursor, 30, token)
-
-            })
-
-            .then((response) => {
-                console.log(response);
-                if (response.changes) {
-                    return filesListFolder(token, path)
-
-                } else {
-                    getCursor(token, path);
-                }
-
-            })
-            .then((response) => {
-
-                console.log(response)
-                if (response) {
+        const longpoll = () => {
+            getCursor(token, path)
+                .then((response) => {
                     updateCursor(response.cursor);
-                    updateState({
-                        files: response.entries,
-                    })
+                    return response.cursor;
+                })
+                .then(cursor => {
+                    checkChanges(cursor, 30, token)
+                        .then((response) => {
+                            if (response.changes) {
+                                return filesListFolder(token, path)
 
-                }
-
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-
-
+                            } else {
+                                getCursor(token, path);
+                            }
+                        })
+                        .then(response => {
+                            if (response) {
+                                updateCursor(response.cursor);
+                                updateState({ files: response.entries })
+                                longpoll()
+                            } else {
+                                longpoll()
+                            }
+                        })
+                        .catch(err => console.log(err))
+                })
+        }
+        longpoll();
     }, [])
 
     function handlePath(path) {
