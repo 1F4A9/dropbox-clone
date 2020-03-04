@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CloudDone } from '@material-ui/icons';
+
+import LoadingCircle from '../components/LoadingCircle'
 
 const Container = styled.div`
   .progressContainer{
@@ -16,6 +17,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     aligen-items: center;
+    border-radius: 5px;
   }
 
   .fileName{
@@ -24,6 +26,21 @@ const Container = styled.div`
 
   .fileSize{
     margin: 5px;
+  }
+
+  .closeBtn{
+    margin: 5px;
+    cursor: pointer;
+    color: #0070e0;
+  }
+
+  .closeBtn:hover{
+    color: #92ceff;
+  }
+
+  .fa-check{
+    margin: 8px;
+    color: #0070e0;
   }
 `;
 
@@ -34,21 +51,21 @@ function UploadProgress(props) {
   console.log("test", props.uploadedSize)
 
   function handleClose(){
-    props.setUploadDone(!props.uploadDone);
+    props.setDisplayDone(!props.displayDone);
   }
 
   return(
     <Container>
       {!props.uploadDone ? <div className='progressContainer'>
+        <LoadingCircle scale={0.3} />
         <span className='fileName'>Uploading  {name}</span>
         <span className='fileSize'>{props.uploadedSize}/{size}MB</span>
-      </div>:
-        <div className='progressContainer'>
-          <CloudDone></CloudDone>
-          <span className='fileName'>Uploading  {name} complete!</span>
-          <p onClick={handleClose}>Close</p>
-        </div>
-    }
+      </div>: null}
+      {props.displayDone ? <div className='progressContainer'>
+        <i className="fa fa-check" aria-hidden="true"></i>
+        <span className='fileName'>Uploading  {name} complete!</span>
+        <span className='closeBtn' onClick={handleClose}>Close</span>
+      </div>: null}
 
     </Container>
   )

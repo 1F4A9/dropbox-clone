@@ -129,12 +129,15 @@ function UploadFile(props){
   const [items, setItems] = useState(0);
   const [uploadedSize, setUploadedSize] = useState(0);
   const [uploadDone, setUploadDone] = useState(false)
+  const [displayDone, setDisplayDone] = useState(false);
   const [state, updateState] = useState({
     files: [],
   })
   let path = window.location.pathname.substring(5);
   const [usepath, updatePath] = useState(path);
   const [loading, setLoading] = useState(true);
+
+  console.log(token$.value)
 
   useEffect(() => {
       setLoading(true);
@@ -237,6 +240,7 @@ function UploadFile(props){
               })
               .then((res) => {
                 setUploadDone(true);
+                setDisplayDone(true);
               });
           });
         }
@@ -297,6 +301,8 @@ function UploadFile(props){
         uploadedSize={uploadedSize}
         uploadDone={uploadDone}
         setUploadDone={setUploadDone}
+        displayDone={displayDone}
+        setDisplayDone={setDisplayDone}
         /> : <div className="shadow">
           <div className="border">
             <header className="row">
