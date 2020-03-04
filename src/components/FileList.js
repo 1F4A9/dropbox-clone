@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder } from "../api/API";
+import { filesListFolder, checkChanges, getCursor, filesListFolderContinue } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
@@ -19,6 +19,10 @@ function FileList({ token, pathname, list }) {
     })
     const [path, updatePath] = useState("");
     const [loading, setLoading] = useState(true);
+    const [cursor, updateCursor] = useState("");
+    const [changes, updateChanges] = useState(false);
+
+    console.log('hela komponenten updateras!!!!!')
 
     useEffect(() => {
         setLoading(true);
@@ -35,8 +39,10 @@ function FileList({ token, pathname, list }) {
                         files: response.entries
                     })
                 }
-                
+                updateCursor(response.cursor);
+
                 updatePath(path)
+
 
             })
             .catch((err) => {
@@ -44,8 +50,43 @@ function FileList({ token, pathname, list }) {
             })
             .finally(() => {
                 setLoading(false);
-            })
+            });
+
+
+
     }, [pathname, list]);
+
+    useEffect(() => {
+        const longpoll = () => {
+            getCursor(token, path)
+                .then((response) => {
+                    updateCursor(response.cursor);
+                    return response.cursor;
+                })
+                .then(cursor => {
+                    checkChanges(cursor, 30, token)
+                        .then((response) => {
+                            if (response.changes) {
+                                return filesListFolder(token, path)
+
+                            } else {
+                                getCursor(token, path);
+                            }
+                        })
+                        .then(response => {
+                            if (response) {
+                                updateCursor(response.cursor);
+                                updateState({ files: response.entries })
+                                longpoll()
+                            } else {
+                                longpoll()
+                            }
+                        })
+                        .catch(err => console.log(err))
+                })
+        }
+        longpoll();
+    }, [])
 
     function handlePath(path) {
         setLoading(true);

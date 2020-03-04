@@ -64,6 +64,13 @@ export function addStarredItems(path, name, token) {
     })
 }
 
+
+
+
+
+
+
+/* // Ta bort?!
 export function removeStarredItem(name) {
   let starItems = JSON.parse(localStorage.getItem("starred"));
 
@@ -72,13 +79,13 @@ export function removeStarredItem(name) {
   localStorage.setItem("starred", JSON.stringify(starItems));
   // Detta ok? gör samma som RxJs nu, tror jag.
   // Bättre att säga att starItems === favorites$?
-}
+} */
 
-export function removeEndOfPathname(path){
+export function removeEndOfPathname(path) {
   let splittedPath = path.split("/");
   let newPath = "";
-  for(let i = 1; i < splittedPath.length - 1; i++){
-    if(i !== splittedPath.length || splittedPath !== ""){
+  for (let i = 1; i < splittedPath.length - 1; i++) {
+    if (i !== splittedPath.length || splittedPath !== "") {
       newPath += "/" + splittedPath[i];
     }
   }

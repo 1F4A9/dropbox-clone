@@ -3,10 +3,7 @@ import styled from "styled-components";
 import { Star, StarBorder } from '@material-ui/icons';
 import { BrowserRouter, Router, Link } from "react-router-dom";
 
-
-
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
-import { addStarredItems, removeStarredItem } from "../utilities";
 import FileItemDropdown from './FileItemDropdown';
 import { getFilesMetadata, getFilesThumbnail } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
@@ -122,6 +119,8 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
     const [url, updateUrl] = useState('');
+    const [starred, updateStar] = useState('');
+
 
     useEffect(() => {
         getFilesMetadata(path, token)
@@ -143,6 +142,10 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         if (favorites$.value.find(x => x.id === file.id)) {
             updateStarState(true);
         }
+
+        const subscription = favorites$.subscribe(updateStar);
+        return () => subscription.unsubscribe();
+
     }, [favorites$.value])
 
     let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
@@ -161,22 +164,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     function iconsToRender(tag, name) {
         return filterOutIconsToRender(tag, name);
     }
-
-    useEffect(() => {
-        getFilesMetadata(path, token)
-            .then(metadata => {
-                setModified(metadata.server_modified);
-                setSize(metadata.size);
-            })
-
-        if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
-            getFilesThumbnail(path, token)
-                .then(res => {
-                    updateUrl(window.URL.createObjectURL(res.fileBlob))
-                })
-
-        }
-    }, [])
 
     let link = ""
     if (changeURL) {
