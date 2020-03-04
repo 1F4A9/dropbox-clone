@@ -90,7 +90,7 @@ const PortalRename = ({ displayRename, file }) => {
       </header>
       <form onSubmit={onSubmit}>
         <main>
-          <input ref={inputRef} type="text" onChange={onChange} value={input}/>
+          <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input}/>
         </main>
         <footer>
           <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />

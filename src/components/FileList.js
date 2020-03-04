@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder } from "../api/API";
+import { filesListFolder, getCursor } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
@@ -19,6 +19,10 @@ function FileList({ token, pathname, list }) {
     })
     const [path, updatePath] = useState("");
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getCursor(token, path).then(data => console.log(data))
+    }, [])
 
     useEffect(() => {
         setLoading(true);
