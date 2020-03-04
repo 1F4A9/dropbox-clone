@@ -64,6 +64,13 @@ export function addStarredItems(path, name, token) {
     })
 }
 
+
+
+
+
+
+
+// Ta bort?!
 export function removeStarredItem(name) {
   let starItems = JSON.parse(localStorage.getItem("starred"));
 
@@ -74,11 +81,11 @@ export function removeStarredItem(name) {
   // Bättre att säga att starItems === favorites$?
 }
 
-export function removeEndOfPathname(path){
+export function removeEndOfPathname(path) {
   let splittedPath = path.split("/");
   let newPath = "";
-  for(let i = 1; i < splittedPath.length - 1; i++){
-    if(i !== splittedPath.length || splittedPath !== ""){
+  for (let i = 1; i < splittedPath.length - 1; i++) {
+    if (i !== splittedPath.length || splittedPath !== "") {
       newPath += "/" + splittedPath[i];
     }
   }

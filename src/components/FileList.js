@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder, getCursor } from "../api/API";
+import { filesListFolder, checkChanges, getCursor, filesListFolderContinue } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
@@ -19,6 +19,10 @@ function FileList({ token, pathname, list }) {
     })
     const [path, updatePath] = useState("");
     const [loading, setLoading] = useState(true);
+    const [cursor, updateCursor] = useState("");
+    const [changes, updateChanges] = useState(false);
+
+
 
     useEffect(() => {
         getCursor(token, path).then(data => console.log(data))
@@ -39,8 +43,10 @@ function FileList({ token, pathname, list }) {
                         files: response.entries
                     })
                 }
+                updateCursor(response.cursor);
 
                 updatePath(path)
+
 
             })
             .catch((err) => {
@@ -48,8 +54,50 @@ function FileList({ token, pathname, list }) {
             })
             .finally(() => {
                 setLoading(false);
-            })
+            });
+
+
+
     }, [pathname, list]);
+
+    useEffect(() => {
+        getCursor(token, path)
+            .then((response) => {
+                updateCursor(response.cursor);
+                return response.cursor;
+            });
+
+        async function wait() {
+
+            await checkChanges(cursor, 30, token)
+                .then((response) => {
+                    console.log(response);
+                    if (response.changes) {
+                        return filesListFolder(token, path)
+
+                    } else {
+                        getCursor(token, path);
+                    }
+
+                })
+                .then((response) => {
+
+                    console.log(response)
+                    if (response) {
+                        updateCursor(response.cursor);
+                        updateState({
+                            files: response.entries,
+                        })
+
+                    }
+
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+        }
+        wait();
+    }, [])
 
     function handlePath(path) {
         setLoading(true);
