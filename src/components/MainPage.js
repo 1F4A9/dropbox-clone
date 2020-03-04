@@ -44,6 +44,7 @@ const Container = styled.div`
   }
 
   .searchInput{
+    font-size: 18px;
     width: 89%;
     padding 10px, 10px, 10px, 0;
     border: none;
@@ -94,7 +95,7 @@ function MainPage({ location, ...props }) {
       {token ? null : <Redirect to="/login" />}
       <SideBar />
       <main>
-        <h1>MAIN PAGE CONTENT</h1>
+        <h1>FlUX BOIS</h1>
         <div className='searchContainer'>
            <Search className='searchIcon'></Search>
            <input className='searchInput' type='search'  onChange={handleSearch} value={searchFile} placeholder='Search...'/>

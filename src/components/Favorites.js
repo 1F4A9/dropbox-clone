@@ -62,7 +62,7 @@ export default function Favorites({ token, pathname }) {
   return (
     <Container>
       <div className="title-cont">
-        <h3 className="fav-title">Favorites<i class="fas fa-star"></i></h3>
+        <h3 className="fav-title">Favorites<i className="fas fa-star"></i></h3>
         {toggleStar ?
           <p onClick={() => updateToggle(!toggleStar)} className="fav-toggle">Hide favorites</p> :
           <p onClick={() => updateToggle(!toggleStar)} className="fav-toggle">Show favorites</p>}

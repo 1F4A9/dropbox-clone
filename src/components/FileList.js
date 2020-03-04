@@ -35,7 +35,7 @@ function FileList({ token, pathname, list }) {
                         files: response.entries
                     })
                 }
-
+                
                 updatePath(path)
 
             })
