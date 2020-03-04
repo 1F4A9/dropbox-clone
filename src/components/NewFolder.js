@@ -245,7 +245,7 @@ function NewFolder(props){
               <input value={inputName} onChange={(e) => folderNameChange(e)} className="input" placeholder="Folder name" />
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox => home{path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
               {loadingReturn}
             </div>
           </div>

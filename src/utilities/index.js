@@ -80,3 +80,14 @@ export function removeStarredItem(name) {
   // Detta ok? gör samma som RxJs nu, tror jag.
   // Bättre att säga att starItems === favorites$?
 }
+
+export function removeEndOfPathname(path) {
+  let splittedPath = path.split("/");
+  let newPath = "";
+  for (let i = 1; i < splittedPath.length - 1; i++) {
+    if (i !== splittedPath.length || splittedPath !== "") {
+      newPath += "/" + splittedPath[i];
+    }
+  }
+  return newPath
+}

@@ -1,5 +1,6 @@
 import { CLIENT_ID } from '../constants/constants';
 import { Dropbox } from 'dropbox'
+import { removeEndOfPathname } from '../utilities/index';
 
 export const fetchDataFromUser = (token) => {
   let dbx = new Dropbox({ accessToken: token, fetch });
@@ -24,7 +25,6 @@ export const filesListFolder = (token, path) => {
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
   return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
-      console.log("TEST");
       console.log(response);
       return response;
     })
@@ -97,4 +97,12 @@ export function getCursor(token, path) {
     include_has_explicit_shared_members: false,
     include_mounted_folders: false
   });
+}
+export const renameFiles = (path, newName, token) => {
+  const dbx = new Dropbox({ accessToken: token, fetch: fetch })
+
+  return dbx.filesMoveV2({
+    from_path: path,
+    to_path: `${removeEndOfPathname(path)}/${newName}`,
+  })
 }

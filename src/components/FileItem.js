@@ -4,7 +4,7 @@ import { Star, StarBorder } from '@material-ui/icons';
 import { BrowserRouter, Router, Link } from "react-router-dom";
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
-import FileItemMeny from './FileItemDropdown';
+import FileItemDropdown from './FileItemDropdown';
 import { getFilesMetadata, getFilesThumbnail } from "../api/API";
 import { convertToHumanReadableSize, convertToHumanReadableTime } from '../utilities';
 import { toggleFavorite, favorites$ } from "../Observables/Store";
@@ -55,6 +55,7 @@ const Container = styled.div`
     .icon-container {
         display: flex;
         align-items: center;
+        width: 48px;
     }
 
     .data-format {
@@ -155,8 +156,6 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
     }
 
     function onClick(e) {
-
-        console.log("HEJ!", path);
         if (tag === "folder") {
             getPath(path);
         }
@@ -186,13 +185,13 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                             {starState ? <Star onClick={() => toggleCheck(file)}></Star> : <StarBorder onClick={() => toggleCheck(file)}></StarBorder>}
                         </div>
                         <div className="metadata-container">
-                            <span className="metadata date">{`Modified: ${convertToHumanReadableTime(modified)}`}</span>
+                            <span className="metadata date">{tag === 'file' ? `Modified: ${convertToHumanReadableTime(modified)}` : null}</span>
                             <span className="metadata kilobyte">{convertToHumanReadableSize(size)}</span>
                         </div>
                     </div>
                 </div>
                 <div className="right-content">
-                    <FileItemMeny file={file} />
+                    <FileItemDropdown file={file} />
                 </div>
             </div>
         </Container >

@@ -8,10 +8,9 @@ import NewFolder from "./NewFolder";
 const Container = styled.aside`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   flex: 2;
   height: 100vh;
-  max-width: 300px;
+  max-width: 200px;
   position: sticky;
   top: 0;
   left: 0;
@@ -19,29 +18,52 @@ const Container = styled.aside`
   color: #202020;
 
   .header {
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 35px;
+    align-items: left;
+    margin-left: 15px;
   }
 
   .footer {
+    height:0px;
     display: flex;
-    justify-content: center;
-    margin-bottom: 35px;
+    justify-content: left;
+    margin-left: 20px;
   }
 
   h3 {
     cursor: pointer;
     color: #0070e0;
-
-    margin: 30px 0px;
-
     :hover {
       color: #92ceff;
     }
   }
-
+  
+  .item:hover {
+    text-decoration: underline;
+  }
+  .item {
+    margin: 5px;
+  }
+  .logo {
+    font-size: 45px;
+    color: #0070e0;
+    margin-left: 15px;
+    margin-top: 20px;
+  }
+  .line{
+    margin-left: 5%;
+    width: 90%;
+    border-top: 1.5px solid #e6e8eb;
+  }
+  .lineBot{
+    position: absolute;
+    bottom: 65px;
+    margin-left: 5%;
+    width: 90%;
+    border-top: 1.5px solid #e6e8eb;
+  }
 `;
 
 function SideBar() {
@@ -58,13 +80,18 @@ function SideBar() {
 
   return (
     <Container>
+      <div className="superHeader">
+        <i className="logo fab fa-dropbox"></i>
+      </div>
       <div className="header">
         <div>
-          <h3 onClick={onFolderClick}>New folder <i class="fas fa-folder-plus"></i></h3>
+          <h3 className="item" onClick={onFolderClick}>New folder <i className="fas fa-folder-plus"></i></h3>
           {newFolder ? <NewFolder onClickToggle={onFolderClick} /> : <div></div>}
         </div>
-        <h3 onClick={handleToggle}>Upload file <i class="fas fa-file-upload"></i></h3>
+        <h3 className="item" onClick={handleToggle}>Upload file <i className="fas fa-file-upload"></i></h3>
       </div>
+      <div className="line"></div>
+      <div className="lineBot"></div>
       <div className="footer">
         <LogoutButton />
       </div>
