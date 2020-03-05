@@ -174,6 +174,7 @@ function UploadFile(props){
   }
 
   const upload_Size_Limit = 150*1024*1024;
+  let maxBlob = 8 * 1000 * 1000;
 
   const handleItem= (e) =>{
     updateFile(e.target.files[0]);
@@ -184,24 +185,12 @@ function UploadFile(props){
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
     if(file === null) return;
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
-      dropbox.filesUpload({
-        contents: file,
-        path: usepath + '/' + file.name,
-        autorename: true,
-      })
-      .then((response) => {
-          props.toggleModal()
-          console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    } else {
-      const maxBlob = 8 * 1000 * 1000;
-      let workItems = [];
-      let offset = 0;
-      updateLargeFileUpload(true);
-      setInfo({ name: file.name, size: file.size });
+      maxBlob = 8 * 10* 10;
+      };
+    let workItems = [];
+    let offset = 0;
+    updateLargeFileUpload(true);
+    setInfo({ name: file.name, size: file.size });
       while (offset < file.size) {
         let chunkSize = Math.min(maxBlob, file.size - offset);
         workItems.push(file.slice(offset, offset + chunkSize));
@@ -226,7 +215,7 @@ function UploadFile(props){
             return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
               .then(() => {
                 setIdx(idx);
-                setUploadedSize((idx * maxBlob * 0.000001));
+                setUploadedSize((idx * maxBlob * 0.001));
                 return sessionId;
               });
           });
@@ -247,7 +236,7 @@ function UploadFile(props){
       task.catch((error) => {
         console.error(error);
       });
-    }
+
     return false;
   };
 
