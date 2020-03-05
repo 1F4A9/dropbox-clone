@@ -64,7 +64,11 @@ export function addStarredItems(path, name, token) {
     })
 }
 
+export function firstLetterCapital(word) {
 
+  let newWord = word.toUpperCase().slice(0, 1) + word.slice(1);
+  return newWord;
+}
 
 
 

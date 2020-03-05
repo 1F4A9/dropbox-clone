@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { addPathForEach } from "../utilities"
+import { addPathForEach, firstLetterCapital } from "../utilities"
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +17,11 @@ const Container = styled.div`
   .breadCrumb {
     font-size: 18px;
     color: #637282;
+    text-decoration: none;
+    margin: 16px 0px 16px 0px;
+    display: flex;
+    align-self: center;
+    
 
     :hover {
       cursor: pointer;
@@ -46,7 +51,10 @@ function BreadCrumbs({ path }) {
   return (
     <Container>
       {addPathForEach(path).map((crumb, i) => {
-        return <div key={i} className="cont"><p className="breadCrumb"><Link to={crumb.path}>{crumb.part}</Link></p> {i === addPathForEach(path).length - 1 ? null : <p className="arrow"> > </p>}</div>
+        return <div key={i} className="cont">
+          <Link className="breadCrumb" to={crumb.path}>{firstLetterCapital(crumb.part)}</Link>
+          {i === addPathForEach(path).length - 1 ? null : <p className="arrow"> > </p>}
+        </div>
       })}
     </Container >
   )

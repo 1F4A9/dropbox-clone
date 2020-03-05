@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom"
 
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import { Dropbox } from 'dropbox';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
-import { token$ } from '../Observables/Store';
+import { token$, toggleFavorite } from '../Observables/Store';
 
 import FileItem from "./FileItem";
 import LoadingCircle from "./LoadingCircle";
@@ -17,7 +17,7 @@ const Container = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    width: ${props=>props.width + 'px'};
+    width: ${props => props.width + 'px'};
     height: 100%;
     background-color: rgba(14, 37, 52, 0.15);
     z-index: 1;
@@ -127,118 +127,119 @@ const Container = styled.aside`
   }
 `;
 
-function CopyFile(props){
+function CopyFile(props) {
   const [token, setToken] = useState(token$.value);
   const [state, updateState] = useState({
     files: [],
   })
   const [loading, setLoading] = useState(true);
-//  console.log(state.files);
+  //  console.log(state.files);
   const [path, updatePath] = useState("/");
   console.log("PATH! ", path);
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
   }, []);
-//  console.log(token);
+  //  console.log(token);
 
   const { displayCopy } = props;
 
   useEffect(() => {
-      setLoading(true);
-      fetchDataFromUser(token)
-          .then((response) => {
-              /* console.log(response) */
-              updateState({
-                  files: response,
-              })
-              setLoading(false);
-          }).catch((err) => {
-              console.error(err);
-          })
+    setLoading(true);
+    fetchDataFromUser(token)
+      .then((response) => {
+        /* console.log(response) */
+        updateState({
+          files: response,
+        })
+        setLoading(false);
+      }).catch((err) => {
+        console.error(err);
+      })
   }, [])
 
   function handlePath(path) {
-      console.log("SHOULD LOAD")
-      setLoading(true);
-      filesListFolder(token, path)
-          .then((response) => {
-              updateState({
-                  files: response.entries
-              })
-              updatePath(path)
-          })
-          .catch((err) => {
-              console.error(err);
-          })
-          .finally(() => {
-            setLoading(false);
-          })
+    console.log("SHOULD LOAD")
+    setLoading(true);
+    filesListFolder(token, path)
+      .then((response) => {
+        updateState({
+          files: response.entries
+        })
+        updatePath(path)
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
 
   }
 
-  function onCopy(){
-    const dbx = new Dropbox({ accessToken: token, fetch});
+  function onCopy() {
+    const dbx = new Dropbox({ accessToken: token, fetch });
     setLoading(true);
     let pathFix = path;
-    if(pathFix === "/"){
+    if (pathFix === "/") {
       pathFix = "";
     }
     dbx.filesCopy(
       {
-        from_path : props.file.path_lower,
-        to_path : pathFix +"/"+props.file.name,
+        from_path: props.file.path_lower,
+        to_path: pathFix + "/" + props.file.name,
         autorename: true,
       }
     )
-    .then((response) => {
-      console.log(response);
-    })
-    .then(() => {
-      displayCopy(false);
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-    .finally(() => {
-      setLoading(false);
-    })
+      .then((response) => {
+        console.log(response);
+      })
+      .then(() => {
+        displayCopy(false);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
-  function onMove(){
-    const dbx = new Dropbox({ accessToken: token, fetch});
+  function onMove() {
+    const dbx = new Dropbox({ accessToken: token, fetch });
     setLoading(true);
     let pathFix = path;
-    if(pathFix === "/"){
+    if (pathFix === "/") {
       pathFix = "";
     }
+    toggleFavorite(props.file);
     dbx.filesMove(
       {
-        from_path : props.file.path_lower,
-        to_path : pathFix +"/"+ props.file.name,
+        from_path: props.file.path_lower,
+        to_path: pathFix + "/" + props.file.name,
         autorename: true,
       }
     )
-    .then((response) => {
-      console.log(response);
-    })
-    .then(() => {
-      displayCopy(false);
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-    .finally(() => {
-      setLoading(false);
-    })
+      .then((response) => {
+        console.log(response);
+      })
+      .then(() => {
+        displayCopy(false);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
 
-  function onReturn(path){
+  function onReturn(path) {
     let splittedPath = path.split("/");
     let newPath = "";
-    for(let i = 1; i < splittedPath.length - 1; i++){
-      if(i !== splittedPath.length || splittedPath !== ""){
+    for (let i = 1; i < splittedPath.length - 1; i++) {
+      if (i !== splittedPath.length || splittedPath !== "") {
         newPath += "/" + splittedPath[i];
       }
     }
@@ -246,36 +247,36 @@ function CopyFile(props){
     handlePath(newPath)
     updatePath(newPath);
   }
-  
-  let loadingReturn;
-  if(loading){
-    loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
-  }else{
-    loadingReturn = (<div className="overFlow">
-    {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
-          return <FileItem
-              files={state.files}
-              tag={x['.tag']}
-              getPath={handlePath}
-              path={x.path_lower}
-              file={x}
-              id={x.id}
-              key={x.id}
-              name={x.name}
-              token={token}
-              changeURL={false}
-          >{x.name}
 
-          </FileItem>;
+  let loadingReturn;
+  if (loading) {
+    loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
+  } else {
+    loadingReturn = (<div className="overFlow">
+      {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+        return <FileItem
+          files={state.files}
+          tag={x['.tag']}
+          getPath={handlePath}
+          path={x.path_lower}
+          file={x}
+          id={x.id}
+          key={x.id}
+          name={x.name}
+          token={token}
+          changeURL={false}
+        >{x.name}
+
+        </FileItem>;
       })}
-  </div>)
+    </div>)
   }
 
-  function onCancel(e){
+  function onCancel(e) {
     displayCopy(false);
   }
 
-  return ReactDOM.createPortal (
+  return ReactDOM.createPortal(
     <Container width={window.innerWidth}>
       <div className="shadow">
         <div className="border">
@@ -285,10 +286,10 @@ function CopyFile(props){
           </header>
           <div className="column left">
             <div>
-              <p className="miniTitle">{props.copy ? "Copy : "+props.file.name : "Move : "+props.file.name}</p>
+              <p className="miniTitle">{props.copy ? "Copy : " + props.file.name : "Move : " + props.file.name}</p>
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g, " ")}</p>
               {loadingReturn}
             </div>
           </div>

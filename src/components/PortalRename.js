@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { GlobalStyle } from '../utilities/GlobalStyle';
 import { renameFiles } from '../api/API';
+import { favorites$, toggleFavorite } from "../Observables/Store";
 
 const Container = styled.div`
   position: absolute;
@@ -61,8 +62,10 @@ const PortalRename = ({ displayRename, file }) => {
 
   useEffect(() => {
     inputRef.current.focus();
+    const subsription = favorites$.subscribe();
+    return () => subsription.unsubscribe;
   }, [])
-      
+
   const displayNotification = (boolean) => {
     displayRename(boolean)
   }
@@ -75,29 +78,33 @@ const PortalRename = ({ displayRename, file }) => {
     e.preventDefault();
 
     renameFiles(file.path_lower, input, token)
-      .then(() => displayNotification(false))
+      .then(() => {
+
+        displayNotification(false);
+      })
       .catch(data => {
         console.log(data);
         displayNotification(false);
       })
+    toggleFavorite(file);
   }
 
-  return ReactDOM.createPortal (
+  return ReactDOM.createPortal(
     <Container>
-      <GlobalStyle mask={true}/>
+      <GlobalStyle mask={true} />
       <header>
         <p>Rename the selected item</p>
       </header>
       <form onSubmit={onSubmit}>
         <main>
-          <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input}/>
+          <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input} />
         </main>
         <footer>
           <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
-          <input type="button" className="btn rename" value="rename" onClick={onSubmit}/>
+          <input type="button" className="btn rename" value="rename" onClick={onSubmit} />
         </footer>
       </form>
-    </Container>, 
+    </Container>,
     document.getElementById('portal-rename')
   )
 }

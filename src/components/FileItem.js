@@ -27,15 +27,18 @@ const Container = styled.div`
         box-sizing: border-box;
 
         :hover {
-            cursor: pointer;
+            cursor: ${props => props.isFolderIcon === "folder" ? "pointer" : "default"};
             color: #92ceff;
+            
         }
+
 
         :hover > div:last-child .meny {
             border: 2px solid #637282;
 
             :hover {
                 border: 2px solid #92ceff;
+                cursor: pointer;
             }
         }
     }
@@ -89,6 +92,15 @@ const Container = styled.div`
 
     .file {
         margin-right: 5px;
+        color: #202020;
+        :hover {
+            color: #92ceff;
+        }
+    }
+
+    .star {
+        hover:
+        cursor: pointer;
     }
 
     .meny-container {
@@ -165,9 +177,11 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         return filterOutIconsToRender(tag, name);
     }
 
-    let link = ""
+    let link = "";
     if (changeURL) {
-        link = <Link to={"/home" + path}><p onClick={onClick} className="file">{children}</p></Link>
+        link = tag === "folder" ?
+            <Link to={"/home" + path}><p onClick={onClick} className="file">{children}</p></Link> :
+            <div><p onClick={onClick} className="file">{children}</p></div>
     } else {
         link = <div><p onClick={onClick} className="file">{children}</p></div>
     }
@@ -182,7 +196,7 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                     <div className="name-cont">
                         <div className="file-star-container">
                             {link}
-                            {starState ? <Star onClick={() => toggleCheck(file)}></Star> : <StarBorder onClick={() => toggleCheck(file)}></StarBorder>}
+                            {starState ? <Star className="star" onClick={() => toggleCheck(file)}></Star> : <StarBorder className="star" onClick={() => toggleCheck(file)}></StarBorder>}
                         </div>
                         <div className="metadata-container">
                             <span className="metadata date">{tag === 'file' ? `Modified: ${convertToHumanReadableTime(modified)}` : null}</span>
