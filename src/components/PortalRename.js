@@ -7,7 +7,7 @@ import { renameFiles } from '../api/API';
 import { favorites$, toggleFavorite } from "../Observables/Store";
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   width: 370px;
   height: 150px;
   left: 50%;

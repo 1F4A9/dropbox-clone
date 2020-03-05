@@ -12,6 +12,8 @@ import { toggleFavorite, favorites$ } from "../Observables/Store";
 const Container = styled.div`
     display: flex;
 
+    
+
     :first-child > div {
         border-top: 1px solid #e6e8eb;
     }
@@ -25,11 +27,11 @@ const Container = styled.div`
         border-bottom: 1px solid #e6e8eb;
         color: #202020;
         box-sizing: border-box;
-
+        transition: all 0.1s ease-in;
         :hover {
             cursor: ${props => props.isFolderIcon === "folder" ? "pointer" : "default"};
             color: #92ceff;
-            
+            background-color: rgb(153, 198, 224, 0.1);
         }
 
 
@@ -135,10 +137,14 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
 
 
     useEffect(() => {
+        let unmounted = false;
+
         getFilesMetadata(path, token)
             .then(metadata => {
-                setModified(metadata.server_modified);
-                setSize(metadata.size);
+                if (!unmounted) {
+                    setModified(metadata.server_modified);
+                    setSize(metadata.size);
+                }
             })
 
         if (dataFormat === 'jpg' || dataFormat === 'jpeg' || dataFormat === 'png' || dataFormat === 'gif' || dataFormat === 'svg' || dataFormat === 'bmp' || dataFormat === 'webp') {
@@ -147,6 +153,10 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
                     updateUrl(window.URL.createObjectURL(res.fileBlob))
                 })
 
+        }
+
+        return () => {
+            unmounted = true;
         }
     }, [])
 

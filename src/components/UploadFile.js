@@ -137,8 +137,6 @@ function UploadFile(props){
   const [usepath, updatePath] = useState(path);
   const [loading, setLoading] = useState(true);
 
-  console.log(token$.value)
-
   useEffect(() => {
       setLoading(true);
       fetchDataFromUser(token$.value)
@@ -235,7 +233,7 @@ function UploadFile(props){
         } else {
           return acc.then(function(sessionId) {
             var cursor = { session_id: sessionId, offset: file.size - blob.size };
-            var commit = { path: "/" + file.name, mode: "add", autorename: true, mute: false };
+            var commit = { path: usepath + '/' + file.name, mode: "add", autorename: true, mute: false };
             return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob
               })
               .then((res) => {

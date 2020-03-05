@@ -9,7 +9,7 @@ const Container = styled.div`
   position: absolute;
   bottom: 0;
 
-  :hover {
+  h3:hover {
     color: #92ceff;
     text-decoration: underline;
   }
@@ -23,7 +23,7 @@ function onClick() {
 const LogoutButton = () => {
   return (
     <Container onClick={onClick}>
-      <h3>Logout <i class="fa fa-sign-out" aria-hidden="true"></i></h3>
+      <h3>Logout <i className="fa fa-sign-out" aria-hidden="true"></i></h3>
       </Container>
   )
 }
