@@ -183,7 +183,7 @@ function UploadFile(props){
   const handleUpload= (e) =>{
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
     if(file === null) return;
-    if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
+    if(file.size < upload_Size_Limit){  
       dropbox.filesUpload({
          contents: file,
          path: usepath + '/' + file.name.replace(/%20/g, " "),
