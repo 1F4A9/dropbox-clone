@@ -77,8 +77,6 @@ export function checkChanges(cursor, timeout, token) {
   const dbx = new Dropbox({ accessToken: token, fetch: fetch, })
 
   return dbx.filesListFolderLongpoll({ cursor: cursor, timeout: timeout })
-
-
 }
 
 export function filesListFolderContinue(path, token) {
