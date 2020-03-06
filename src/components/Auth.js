@@ -9,9 +9,9 @@ function Auth() {
   useEffect(() => {
     const parsedHash = queryString.parse(window.location.hash);
 
-    updateToken(parsedHash['#access_token'])
+    updateToken(parsedHash['#access_token']);
 
-    setToken(token$.value)
+    setToken(token$.value);
   }, [])
 
   return (
