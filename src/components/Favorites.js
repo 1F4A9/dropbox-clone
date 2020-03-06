@@ -8,12 +8,12 @@ import { filesListFolder } from "../api/API";
 
 const Container = styled.section`
 
-/* margin: 0px 50px 0px 50px; */
+margin-bottom: 36px;
 
 .title-cont {
   display: flex;
   justify-content: space-between;
-  margin: 15px 25px 0px 25px;
+  margin: 0px 62px 0px 62px;
 
 }
 
@@ -21,11 +21,21 @@ h3 {
   color: #0070e0;
 
 }
-.fav-toggle:hover {
-  cursor: pointer;
-  text-decoration: underline;
+.fav-toggle {
+  display: flex;
+  align-self: center;
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 
+.no-fav {
+  margin: 0px 62px 0px 62px;
+  color: #637282;
+  font-size: 14px;
+  font-style: italic;
+}
 `
 
 
@@ -71,22 +81,26 @@ export default function Favorites({ token, pathname }) {
       {toggleStar ?
         <div className="fav-items">
 
-          {starItems.map((x) => {
-            return <FileItem
-              /* files={state.files} */
-              tag={x['.tag']}
-              getPath={handlePath}
-              path={x.path_lower}
-              file={x}
-              id={x.id}
-              key={x.id}
-              name={x.name}
-              token={token}
-              changeURL={true}
-            >{x.name}
+          {favorites$.value.length > 0 ?
+            starItems.map((x) => {
 
-            </FileItem>;
-          })}
+              return <FileItem
+                /* files={state.files} */
+                tag={x['.tag']}
+                getPath={handlePath}
+                path={x.path_lower}
+                file={x}
+                id={x.id}
+                key={x.id}
+                name={x.name}
+                token={token}
+                changeURL={true}
+              >{x.name}
+
+              </FileItem>;
+            }) :
+            <p className="no-fav">You have no favorites. Add a favorite using the star next to your file.</p>
+          }
 
         </div> :
         null

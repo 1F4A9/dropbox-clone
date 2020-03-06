@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder, checkChanges, getCursor, filesListFolderContinue } from "../api/API";
+import { filesListFolder, checkChanges, getCursor } from "../api/API";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
@@ -11,8 +11,15 @@ const Container = styled.aside`
     .center{
         margin-top: 200px;
     }
+    .empty {
+        margin: 0px 62px 0px 62px;
+        color: #637282;
+        font-size: 14px;
+        font-style: italic;
+    }
 `
-
+// style på favorites, kolla margin o paddings.
+// Metadatabugg på favorites, ev props. oklart när det händer..
 function FileList({ token, pathname, list }) {
     const [state, updateState] = useState({
         files: [],
@@ -111,24 +118,27 @@ function FileList({ token, pathname, list }) {
     if (loading) {
         loadingReturn = (<Container><div className="center"><LoadingCircle scale={2} /></div></Container>)
     } else {
-        loadingReturn = (<div className="cont" >
-            {state.files.map((x) => {
-                return <FileItem
-                    files={state.files}
-                    tag={x['.tag']}
-                    getPath={handlePath}
-                    path={x.path_lower}
-                    file={x}
-                    id={x.id}
-                    key={x.id}
-                    name={x.name}
-                    token={token}
-                    changeURL={true}
-                >{x.name}
+        loadingReturn = (<Container><div className="cont" >
+            {state.files.length > 0 ?
+                state.files.map((x) => {
+                    return <FileItem
+                        files={state.files}
+                        tag={x['.tag']}
+                        getPath={handlePath}
+                        path={x.path_lower}
+                        file={x}
+                        id={x.id}
+                        key={x.id}
+                        name={x.name}
+                        token={token}
+                        changeURL={true}
+                    >{x.name}
 
-                </FileItem>;
-            })}
-        </div >)
+                    </FileItem>;
+                }) :
+                <p className="empty">This folder is empty.</p>
+            }
+        </div ></Container>)
     }
 
     return (

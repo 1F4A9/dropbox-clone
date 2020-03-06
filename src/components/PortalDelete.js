@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import { deleteFilesAndFolders } from "../api/API";
 import { GlobalStyle } from '../utilities/GlobalStyle';
+import { favorites$, toggleFavorite } from "../Observables/Store";
 
 const Container = styled.div`
   position: fixed;
@@ -50,16 +51,21 @@ const PortalDelete = ({ displayDelete, file }) => {
     displayDelete(boolean)
   }
 
+  useEffect(() => {
+    const subscription = favorites$.subscribe()
+    return () => subscription.unsubscribe();
+  }, [])
+
   const deleteItem = () => {
     const token = localStorage.getItem("token");
-
+    toggleFavorite(file);
     deleteFilesAndFolders(file.path_lower, token)
       .then(() => displayDelete(false))  // closes notification window
   }
 
-  return ReactDOM.createPortal (
+  return ReactDOM.createPortal(
     <Container>
-      <GlobalStyle mask={true}/>
+      <GlobalStyle mask={true} />
       <header>
         <p>Do you really want to remove the selected items?</p>
       </header>
@@ -67,7 +73,7 @@ const PortalDelete = ({ displayDelete, file }) => {
         <button className="btn delete" onClick={deleteItem}>Delete</button>
         <button className="btn cancel" onClick={() => displayNotification(false)}>Cancel</button>
       </footer>
-    </Container>, 
+    </Container>,
     document.getElementById('portal-delete')
   )
 }
