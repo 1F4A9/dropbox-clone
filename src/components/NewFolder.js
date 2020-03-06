@@ -175,6 +175,7 @@ function NewFolder(props){
 
   function onCreateFolder(){
     setLoading(true);
+    console.log(path);
     const dbx = new Dropbox({ accessToken: token, fetch});
     console.log(path);
     if(path === "/"){
@@ -237,7 +238,6 @@ function NewFolder(props){
       })}
   </div>)
   }
-
   return (
     <Container width={window.innerWidth}>
       <div className="shadow">
