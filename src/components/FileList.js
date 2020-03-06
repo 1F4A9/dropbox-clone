@@ -74,8 +74,8 @@ function FileList({ token, pathname, list }) {
                     checkChanges(cursor, 30, token)
                         .then((response) => {
                             if (response.changes) {
-                                return filesListFolder(token, path)
-
+                                console.log(path + '  <-- pathen!')
+                                return filesListFolder(token, window.location.pathname.substring(5));
                             } else {
                                 getCursor(token, path);
                             }

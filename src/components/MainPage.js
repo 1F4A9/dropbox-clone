@@ -63,7 +63,6 @@ function MainPage({ location, ...props }) {
   const [token, setToken] = useState(token$.value);
   const [searchFile, updateSearchFile] = useState('');
   const [list, updateList] = useState([]);
-  const [searchBar, updateSearchBar] = useState(null);
   const [value] = useDebounce(searchFile, 600);
   let searchItems = [];
 
@@ -84,10 +83,6 @@ function MainPage({ location, ...props }) {
 
   function handleSearch(e) {
     updateSearchFile(e.target.value)
-  }
-
-  function handleSearchbar(){
-    updateSearchBar(!searchBar);
   }
 
   return (

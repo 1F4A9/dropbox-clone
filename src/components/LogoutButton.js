@@ -24,7 +24,7 @@ const LogoutButton = () => {
   return (
     <Container onClick={onClick}>
       <h3>Logout <i className="fa fa-sign-out" aria-hidden="true"></i></h3>
-      </Container>
+    </Container>
   )
 }
 
