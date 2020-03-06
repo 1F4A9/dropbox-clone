@@ -268,6 +268,3 @@ function NewFolder(props){
 }
 
 export default NewFolder;
-
-
-// INTE SLASH OCH INTE %20
