@@ -58,7 +58,11 @@ const PortalDelete = ({ displayDelete, file }) => {
 
   const deleteItem = () => {
     const token = localStorage.getItem("token");
-    toggleFavorite(file);
+    if (favorites$.value.find(x => x.id === file.id)) {
+      console.log("FAV DELETE")
+      toggleFavorite(file);
+
+    }
     deleteFilesAndFolders(file.path_lower, token)
       .then(() => displayDelete(false))  // closes notification window
   }

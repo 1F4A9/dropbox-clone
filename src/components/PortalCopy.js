@@ -7,7 +7,7 @@ import { Dropbox } from 'dropbox';
 
 import { filterOutIconsToRender } from "../utilities/FilterOutIconsToRender";
 import { filesListFolder, fetchDataFromUser } from "../api/API";
-import { token$, toggleFavorite } from '../Observables/Store';
+import { token$, toggleFavorite, favorites$ } from '../Observables/Store';
 
 import FileItem from "./FileItem";
 import LoadingCircle from "./LoadingCircle";
@@ -211,7 +211,10 @@ function CopyFile(props) {
     if (pathFix === "/") {
       pathFix = "";
     }
-    toggleFavorite(props.file);
+    if (favorites$.value.find(x => x.id === props.file.id)) {
+      toggleFavorite(props.file);
+      console.log("FAV MOVE")
+    }
     dbx.filesMove(
       {
         from_path: props.file.path_lower,
@@ -221,6 +224,7 @@ function CopyFile(props) {
     )
       .then((response) => {
         console.log(response);
+
 
       })
       .catch((error) => {
