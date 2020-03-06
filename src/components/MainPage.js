@@ -66,9 +66,11 @@ function MainPage({ location, ...props }) {
   const [value] = useDebounce(searchFile, 600);
   let searchItems = [];
 
+  let path= window.location.pathname.substring(5).replace(/%20/g, " ");
+
   useEffect(() => {
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
-    dbx.filesSearch({ path: window.location.pathname.substring(5), query: searchFile })
+    dbx.filesSearch({ path: path, query: searchFile })
       .then(res => {
 
         res.matches.map(data => searchItems.push(data.metadata));

@@ -174,7 +174,6 @@ function UploadFile(props){
   }
 
   const upload_Size_Limit = 150*1024*1024;
-  let maxBlob = 8 * 1000 * 1000;
 
   const handleItem= (e) =>{
     updateFile(e.target.files[0]);
@@ -185,58 +184,70 @@ function UploadFile(props){
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
     if(file === null) return;
     if(file.size < upload_Size_Limit){  // file is smaller then 150Mb- use filesUpload API
-      maxBlob = 8 * 10* 10;
-      };
-    let workItems = [];
-    let offset = 0;
-    updateLargeFileUpload(true);
-    setInfo({ name: file.name, size: file.size });
-      while (offset < file.size) {
-        let chunkSize = Math.min(maxBlob, file.size - offset);
-        workItems.push(file.slice(offset, offset + chunkSize));
-        offset += chunkSize;
-      }
+      dropbox.filesUpload({
+         contents: file,
+         path: usepath + '/' + file.name.replace(/%20/g, " "),
+         autorename: true,
+       })
+       .then((response) => {
+           props.toggleModal()
+           console.log(response);
+       })
+       .catch((error) => {
+         console.log(error);
+       });
+     } else {
+       const maxBlob = 8 * 1000 * 1000;
+       let workItems = [];
+       let offset = 0;
+       updateLargeFileUpload(true);
+       setInfo({ name: file.name, size: file.size });
+         while (offset < file.size) {
+           let chunkSize = Math.min(maxBlob, file.size - offset);
+           workItems.push(file.slice(offset, offset + chunkSize));
+           offset += chunkSize;
+         }
 
-      const task = workItems.reduce((acc, blob, idx, items) => {
-        if (idx === 0) {
-          return acc.then(() => {
-            return dropbox
-              .filesUploadSessionStart({ close: false, contents: blob })
-              .then((response) => {
-                setIdx(idx);
-                setItems(items.length);
+         const task = workItems.reduce((acc, blob, idx, items) => {
+           if (idx === 0) {
+             return acc.then(() => {
+               return dropbox
+                 .filesUploadSessionStart({ close: false, contents: blob })
+                 .then((response) => {
+                   setIdx(idx);
+                   setItems(items.length);
 
-                return response.session_id;
-              });
-          });
-        } else if (idx < items.length - 1) {
-          return acc.then((sessionId) => {
-            var cursor = { session_id: sessionId, offset: idx * maxBlob };
-            return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
-              .then(() => {
-                setIdx(idx);
-                setUploadedSize((idx * maxBlob * 0.001));
-                return sessionId;
-              });
-          });
-        } else {
-          return acc.then(function(sessionId) {
-            var cursor = { session_id: sessionId, offset: file.size - blob.size };
-            var commit = { path: usepath + '/' + file.name, mode: "add", autorename: true, mute: false };
-            return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob
-              })
-              .then((res) => {
-                setUploadDone(true);
-                setDisplayDone(true);
-              });
-          });
-        }
-      }, Promise.resolve());
+                   return response.session_id;
+                 });
+             });
+           } else if (idx < items.length - 1) {
+             return acc.then((sessionId) => {
+               var cursor = { session_id: sessionId, offset: idx * maxBlob };
+               return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
+                 .then(() => {
+                   setIdx(idx);
+                   setUploadedSize((idx * maxBlob * 0.000001));
+                   return sessionId;
+                 });
+             });
+           } else {
+             return acc.then(function(sessionId) {
+               var cursor = { session_id: sessionId, offset: file.size - blob.size };
+               var commit = { path: usepath + '/' + file.name.replace(/%20/g, " "), mode: "add", autorename: true, mute: false };
+               return dropbox.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob
+                 })
+                 .then((res) => {
+                   setUploadDone(true);
+                   setDisplayDone(true);
+                 });
+             });
+           }
+         }, Promise.resolve());
 
-      task.catch((error) => {
-        console.error(error);
-      });
-
+         task.catch((error) => {
+           console.error(error);
+         });
+     };
     return false;
   };
 

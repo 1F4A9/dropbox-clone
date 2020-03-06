@@ -47,7 +47,7 @@ const Container = styled.div`
 function UploadProgress(props) {
 
   let { name, size } = props.info;
-  size = Math.round(size * 0.001);
+  size = Math.round(size * 0.000001 );
   console.log("test", props.uploadedSize)
 
   function handleClose(){
@@ -59,7 +59,7 @@ function UploadProgress(props) {
       {!props.uploadDone ? <div className='progressContainer'>
         <LoadingCircle scale={0.3} />
         <span className='fileName'>Uploading  {name}</span>
-        <span className='fileSize'>{props.uploadedSize}/{size} KB</span>
+        <span className='fileSize'>{props.uploadedSize}/{size} MB</span>
       </div>: null}
       {props.displayDone ? <div className='progressContainer'>
         <i className="fa fa-check" aria-hidden="true"></i>
