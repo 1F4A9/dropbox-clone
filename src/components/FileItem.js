@@ -60,7 +60,6 @@ const Container = styled.div`
     .icon-container {
         display: flex;
         align-items: center;
-        width: 48px;
     }
 
     .data-format {
