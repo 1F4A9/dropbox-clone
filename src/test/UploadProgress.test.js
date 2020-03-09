@@ -1,4 +1,5 @@
 import React from 'react';
+import sinon from "sinon";
 import { render } from '@testing-library/react';
 import UploadProgress from '../components/UploadProgress';
 import { shallow, configure } from 'enzyme';
@@ -23,8 +24,12 @@ describe('UploadProgress', () => {
  });
 
  it('should update to false with onClick', () => {
-  const wrapper = shallow(<UploadProgress info={{name:'name', size: 1000}} setDisplayDone={false} displayDone={true} uploadDone={true}/>);
-  expect(wrapper.find('.closeBtn').simulate('click').toBe(null));
+   const setDisplayDoneSpy = sinon.spy();
+
+  const wrapper = shallow(<UploadProgress info={{name:'name', size: 1000}} setDisplayDone={setDisplayDoneSpy} displayDone={true} uploadDone={true}/>);
+  expect(setDisplayDoneSpy.calledWith(false)).toBe(false);
+  wrapper.find('.closeBtn').simulate('click')
+  expect(setDisplayDoneSpy.calledWith(false)).toBe(true);
 });
 
 });
