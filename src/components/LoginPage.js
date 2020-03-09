@@ -64,7 +64,7 @@ function LoginPage() {
         <span>
           Developed with &nbsp;
           <i className="fas fa-heart"></i>
-          &nbsp; love and  &nbsp;
+          &nbsp; and  &nbsp;
           <i className="fas fa-mug-hot"></i>
           &nbsp;
         </span>
