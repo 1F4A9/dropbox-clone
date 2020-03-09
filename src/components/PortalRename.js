@@ -8,19 +8,30 @@ import { favorites$, toggleFavorite } from "../Observables/Store";
 
 const Container = styled.div`
   position: fixed;
-  width: 370px;
-  height: 150px;
-  left: 50%;
-  margin-left: -185px;
-  top: 50%;
-  margin-top: -75px;
-  border-radius: 8px;
-  background-color: #fff;
-  text-align: center;
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(14, 37, 52, 0.15);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  left: 0;
+  top: 0;
+
+  .container {
+    position: fixed;
+    width: 370px;
+    height: 150px;
+    left: 50%;
+    margin-left: -185px;
+    top: 50%;
+    margin-top: -75px;
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
   footer {
     display: flex;
@@ -94,19 +105,20 @@ const PortalRename = ({ displayRename, file }) => {
 
   return ReactDOM.createPortal(
     <Container>
-      <GlobalStyle mask={true} />
-      <header>
-        <p>Rename the selected item</p>
-      </header>
-      <form onSubmit={onSubmit}>
-        <main>
-          <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input} />
-        </main>
-        <footer>
-          <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
-          <input type="button" className="btn rename" value="rename" onClick={onSubmit} />
-        </footer>
-      </form>
+      <div className="container">
+        <header>
+          <p>Rename the selected item</p>
+        </header>
+        <form onSubmit={onSubmit}>
+          <main>
+            <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input} />
+          </main>
+          <footer>
+            <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
+            <input type="button" className="btn rename" value="rename" onClick={onSubmit} />
+          </footer>
+        </form>
+      </div>
     </Container>,
     document.getElementById('portal-rename')
   )

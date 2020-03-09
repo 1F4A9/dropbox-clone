@@ -100,8 +100,9 @@ const Container = styled.div`
     }
 
     .star {
-        hover:
-        cursor: pointer;
+        :hover {
+            cursor: pointer;
+        }
     }
 
     .meny-container {
