@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useParams } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Dropbox } from 'dropbox';
 import { useDebounce } from 'use-debounce';
 import { Search } from '@material-ui/icons';
@@ -66,9 +66,11 @@ function MainPage({ location, ...props }) {
   const [value] = useDebounce(searchFile, 600);
   let searchItems = [];
 
+  let path= window.location.pathname.substring(5).replace(/%20/g, " ");
+
   useEffect(() => {
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
-    dbx.filesSearch({ path: window.location.pathname.substring(5), query: searchFile })
+    dbx.filesSearch({ path: path, query: searchFile })
       .then(res => {
 
         res.matches.map(data => searchItems.push(data.metadata));

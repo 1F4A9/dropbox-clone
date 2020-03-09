@@ -93,7 +93,7 @@ function FileList({ token, pathname, list }) {
                 })
         }
         longpoll();
-    }, [])
+   }, [])
 
     function handlePath(path) {
         setLoading(true);

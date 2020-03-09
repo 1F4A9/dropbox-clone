@@ -76,7 +76,10 @@ const PortalRename = ({ displayRename, file }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    if (favorites$.value.find(x => x.id === file.id)) {
+      toggleFavorite(file);
+      console.log("FAV RENAME");
+    }
     renameFiles(file.path_lower, input, token)
       .then(() => {
 
@@ -86,7 +89,7 @@ const PortalRename = ({ displayRename, file }) => {
         console.log(data);
         displayNotification(false);
       })
-    toggleFavorite(file);
+
   }
 
   return ReactDOM.createPortal(
