@@ -1,1 +1,6 @@
-/* /index.html 200
+/ /login
+/ /home
+/login /home
+/home /login
+/login /auth
+/auth /home
