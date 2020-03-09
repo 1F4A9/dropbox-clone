@@ -124,9 +124,7 @@ const Container = styled.aside`
 function UploadFile(props){
   const [file, updateFile] = useState(null);
   const [largeFileUpload, updateLargeFileUpload] = useState(false);
-  const [idx, setIdx] = useState(0);
   const [info, setInfo] = useState({name: '', size: ''});
-  const [items, setItems] = useState(0);
   const [uploadedSize, setUploadedSize] = useState(0);
   const [uploadDone, setUploadDone] = useState(false)
   const [displayDone, setDisplayDone] = useState(false);
@@ -183,7 +181,7 @@ function UploadFile(props){
   const handleUpload= (e) =>{
     const dropbox = new Dropbox({ accessToken: token$.value, fetch });
     if(file === null) return;
-    if(file.size < upload_Size_Limit){  
+    if(file.size < upload_Size_Limit){
       dropbox.filesUpload({
          contents: file,
          path: usepath + '/' + file.name.replace(/%20/g, " "),
@@ -214,9 +212,6 @@ function UploadFile(props){
                return dropbox
                  .filesUploadSessionStart({ close: false, contents: blob })
                  .then((response) => {
-                   setIdx(idx);
-                   setItems(items.length);
-
                    return response.session_id;
                  });
              });
@@ -225,7 +220,6 @@ function UploadFile(props){
                var cursor = { session_id: sessionId, offset: idx * maxBlob };
                return dropbox.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob })
                  .then(() => {
-                   setIdx(idx);
                    setUploadedSize((idx * maxBlob * 0.000001));
                    return sessionId;
                  });
@@ -291,14 +285,9 @@ function UploadFile(props){
   return (
     <Container width={window.innerWidth}>
       {largeFileUpload ? <UploadProgress
-        largeFileUpload={largeFileUpload}
         info={info}
-        idx={idx}
-        setIdx={setIdx}
-        items={items}
         uploadedSize={uploadedSize}
         uploadDone={uploadDone}
-        setUploadDone={setUploadDone}
         displayDone={displayDone}
         setDisplayDone={setDisplayDone}
         /> : <div className="shadow">

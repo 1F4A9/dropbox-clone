@@ -63,7 +63,7 @@ function UploadProgress(props) {
       {props.displayDone ? <div className='progressContainer'>
         <i className="fa fa-check" aria-hidden="true"></i>
         <span className='fileName'>Uploading  {name} complete!</span>
-        <span className='closeBtn' id='findSpan' onClick={handleClose}>Close</span>
+        <span className='closeBtn' onClick={handleClose}>Close</span>
       </div>: null}
 
     </Container>

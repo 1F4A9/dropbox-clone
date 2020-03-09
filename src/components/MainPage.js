@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useParams } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Dropbox } from 'dropbox';
 import { useDebounce } from 'use-debounce';
 import { Search } from '@material-ui/icons';

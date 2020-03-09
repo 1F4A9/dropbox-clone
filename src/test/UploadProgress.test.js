@@ -21,13 +21,10 @@ describe('UploadProgress', () => {
   const wrapper = shallow(<UploadProgress info={{name:'name', size: 1000}} />);
   expect(wrapper.find("span").length).toEqual(2);
  });
- /*it('onClick button', () => {
-  const wrapper = shallow(<UploadProgress info={{name:'name', size: 1000}} displayDone={true} />);
-  const toggle = wrapper.find('#findSpan');
-  expect(toggle).toBe()
 
-  toggle.simulate('click')
-  expect(toggle).toBe(false);
- });
-*/
+ it('should update to false with onClick', () => {
+  const wrapper = shallow(<UploadProgress info={{name:'name', size: 1000}} setDisplayDone={false} displayDone={true} uploadDone={true}/>);
+  expect(wrapper.find('.closeBtn').simulate('click').toBe(null));
+});
+
 });
