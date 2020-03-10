@@ -72,7 +72,6 @@ function MainPage({ location, ...props }) {
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
     dbx.filesSearch({ path: path, query: searchFile })
       .then(res => {
-
         res.matches.map(data => searchItems.push(data.metadata));
         updateList(searchItems)
       })
