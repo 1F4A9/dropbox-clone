@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 import MainPage from './components/MainPage';
 import LoginPage from './components/LoginPage';
-import Favorites from "./components/Favorites";
 import Auth from './components/Auth';
 import { GlobalStyle } from './utilities/GlobalStyle';
 

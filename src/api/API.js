@@ -7,7 +7,6 @@ export const fetchDataFromUser = (token) => {
 
   return dbx.filesListFolder({ path: '' })
     .then(function (response) {
-      console.log(response);
       return response.entries;
     });
 }
@@ -25,7 +24,6 @@ export const filesListFolder = (token, path) => {
   let dbx = new Dropbox({ accessToken: token, fetch: fetch });
   return dbx.filesListFolder({ path: newPath === "/" ? "" : newPath })
     .then((response) => {
-      console.log(response);
       return response;
     })
     .catch((err) => {
@@ -48,10 +46,9 @@ export function createFolder(path, token) {
   console.log(path);
   dbx.filesCreateFolder({ path: path })
     .then((response) => {
-      console.log(response);
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
     })
 }
 

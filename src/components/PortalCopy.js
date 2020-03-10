@@ -146,7 +146,6 @@ function CopyFile(props) {
     setLoading(true);
     fetchDataFromUser(token)
       .then((response) => {
-        /* console.log(response) */
         updateState({
           files: response,
         })
@@ -158,7 +157,6 @@ function CopyFile(props) {
   }, [])
 
   function handlePath(path) {
-    console.log("SHOULD LOAD")
     setLoading(true);
     filesListFolder(token, path)
       .then((response) => {
@@ -190,14 +188,10 @@ function CopyFile(props) {
         to_path: pathFix + "/" + props.file.name,
         autorename: true,
       }
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error)
-        setError(true);
-      })
+    ).catch((error) => {
+      console.error(error)
+      setError(true);
+    })
       .finally(() => {
         setLoading(false);
         displayCopy(false);
@@ -213,7 +207,6 @@ function CopyFile(props) {
     }
     if (favorites$.value.find(x => x.id === props.file.id)) {
       toggleFavorite(props.file);
-      console.log("FAV MOVE")
     }
     dbx.filesMove(
       {
@@ -222,13 +215,8 @@ function CopyFile(props) {
         autorename: true,
       }
     )
-      .then((response) => {
-        console.log(response);
-
-
-      })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         setError(true);
       })
       .finally(() => {
@@ -246,7 +234,6 @@ function CopyFile(props) {
         newPath += "/" + splittedPath[i];
       }
     }
-    console.log(newPath);
     handlePath(newPath)
     updatePath(newPath);
   }

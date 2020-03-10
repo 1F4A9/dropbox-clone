@@ -59,12 +59,11 @@ const PortalDelete = ({ displayDelete, file }) => {
   const deleteItem = () => {
     const token = localStorage.getItem("token");
     if (favorites$.value.find(x => x.id === file.id)) {
-      console.log("FAV DELETE")
       toggleFavorite(file);
-
     }
+
     deleteFilesAndFolders(file.path_lower, token)
-      .then(() => displayDelete(false))  // closes notification window
+      .then(() => displayDelete(false)).catch(err => console.error(err));  // closes notification window
   }
 
   return ReactDOM.createPortal(

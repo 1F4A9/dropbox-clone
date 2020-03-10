@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "react-router-dom";
 
-import { filesListFolder, checkChanges, getCursor } from "../api/API";
+import { filesListFolder, checkChanges, getCursor, } from "../api/API";
+import { lookForDiff, toggleManyFavorites } from "../utilities";
 import FileItem from "./FileItem";
 import BreadCrumbs from "./BreadCrumbs";
 import LoadingCircle from "./LoadingCircle";
 import styled from "styled-components";
+import { favorites$ } from "../Observables/Store";
 
 const Container = styled.aside`
     .center{
@@ -18,8 +20,6 @@ const Container = styled.aside`
         font-style: italic;
     }
 `
-// style på favorites, kolla margin o paddings.
-// Metadatabugg på favorites, ev props. oklart när det händer..
 function FileList({ token, pathname, list }) {
     const [state, updateState] = useState({
         files: [],
@@ -27,16 +27,12 @@ function FileList({ token, pathname, list }) {
     const [path, updatePath] = useState("");
     const [loading, setLoading] = useState(true);
     const [cursor, updateCursor] = useState("");
-    const [changes, updateChanges] = useState(false);
-
-    console.log('hela komponenten updateras!!!!!')
 
     useEffect(() => {
         setLoading(true);
 
         filesListFolder(token, pathname.substring(5))
             .then((response) => {
-                //  console.log("LOCATION ÄNDRADES", pathname.substring(5));
                 if (list.length > 0) {
                     updateState({
                         files: list
@@ -47,10 +43,8 @@ function FileList({ token, pathname, list }) {
                     })
                 }
                 updateCursor(response.cursor);
-
+                console.log(state.files);
                 updatePath(path)
-
-
             })
             .catch((err) => {
                 console.error(err);
@@ -64,7 +58,10 @@ function FileList({ token, pathname, list }) {
     }, [pathname, list]);
 
     useEffect(() => {
+
         const longpoll = () => {
+            let currentFiles = [];
+            filesListFolder(token, pathname.substring(5)).then(response => currentFiles = response.entries)
             getCursor(token, path)
                 .then((response) => {
                     updateCursor(response.cursor);
@@ -74,7 +71,6 @@ function FileList({ token, pathname, list }) {
                     checkChanges(cursor, 30, token)
                         .then((response) => {
                             if (response.changes) {
-                                console.log(path + '  <-- pathen!')
                                 return filesListFolder(token, window.location.pathname.substring(5));
                             } else {
                                 getCursor(token, path);
@@ -82,6 +78,8 @@ function FileList({ token, pathname, list }) {
                         })
                         .then(response => {
                             if (response) {
+                                console.log(lookForDiff(currentFiles, response.entries));
+                                toggleManyFavorites(lookForDiff(currentFiles, response.entries));
                                 updateCursor(response.cursor);
                                 updateState({ files: response.entries })
                                 longpoll()
@@ -89,11 +87,11 @@ function FileList({ token, pathname, list }) {
                                 longpoll()
                             }
                         })
-                        .catch(err => console.log(err))
+                        .catch(err => console.error(err))
                 })
         }
         longpoll();
-   }, [])
+    }, [])
 
     function handlePath(path) {
         setLoading(true);

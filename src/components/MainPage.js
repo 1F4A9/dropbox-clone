@@ -55,18 +55,14 @@ const Container = styled.div`
 
 `;
 
-/* let { path } = useParams();
-console.log(path); */
-
 function MainPage({ location, ...props }) {
-  //  console.log("NEW LOCATION", location.pathname);
   const [token, setToken] = useState(token$.value);
   const [searchFile, updateSearchFile] = useState('');
   const [list, updateList] = useState([]);
   const [value] = useDebounce(searchFile, 600);
   let searchItems = [];
 
-  let path= window.location.pathname.substring(5).replace(/%20/g, " ");
+  let path = window.location.pathname.substring(5).replace(/%20/g, " ");
 
   useEffect(() => {
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
@@ -94,10 +90,10 @@ function MainPage({ location, ...props }) {
       <main>
         <h1>xX:DRAGON-SLAYERS-53:Xx</h1>
         <div className='searchContainer'>
-           <Search className='searchIcon'></Search>
-           <input className='searchInput' type='search'  onChange={handleSearch} value={searchFile} placeholder='Search...'/>
+          <Search className='searchIcon'></Search>
+          <input className='searchInput' type='search' onChange={handleSearch} value={searchFile} placeholder='Search...' />
         </div>
-        <FileList token={token} pathname={location.pathname} list={list}/>
+        <FileList token={token} pathname={location.pathname} list={list} />
         <Favorites token={token} pathname={location.pathname} />
       </main>
     </Container>

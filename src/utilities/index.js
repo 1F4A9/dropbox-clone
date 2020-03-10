@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { PATH_BASENAME } from "../constants/constants";
 import { filesListFolder } from "../api/API";
-import { toggleFavorite, favorite$ } from "../Observables/Store";
+import { toggleFavorite, favorites$ } from "../Observables/Store";
 
 export function stringToArrBreadCrumbs(str) {
   str = PATH_BASENAME + str; //Gjort en konstant som kan användas för path basename.
@@ -51,7 +51,6 @@ export function addStarredItems(path, name, token) {
     .then((response) => {
 
       let newStar = response.entries.filter(file => file.name === name)
-      console.log(newStar)
       if (starred.find(x => x.name === newStar[0].name)) {
         starred = starred.filter(x => x.name !== name);
         toggleFavorite(newStar[0]);
@@ -60,7 +59,6 @@ export function addStarredItems(path, name, token) {
         starred.push(newStar[0])
         toggleFavorite(newStar[0]);
       }
-      console.log(starred);
     })
 }
 
@@ -69,21 +67,6 @@ export function firstLetterCapital(word) {
   let newWord = word.toUpperCase().slice(0, 1) + word.slice(1);
   return newWord;
 }
-
-
-
-
-
-/* // Ta bort?!
-export function removeStarredItem(name) {
-  let starItems = JSON.parse(localStorage.getItem("starred"));
-
-  starItems = starItems.filter(x => x.name !== name);
-
-  localStorage.setItem("starred", JSON.stringify(starItems));
-  // Detta ok? gör samma som RxJs nu, tror jag.
-  // Bättre att säga att starItems === favorites$?
-} */
 
 export function removeEndOfPathname(path) {
   let splittedPath = path.split("/");
@@ -94,4 +77,32 @@ export function removeEndOfPathname(path) {
     }
   }
   return newPath
+}
+
+
+export function lookForDiff(oldArr, newArr) {
+  console.log(oldArr, newArr);
+  let difference = [...oldArr];
+  first: for (let i = 0; i < difference.length; i++) {
+    for (let j = 0; j < newArr.length; j++) {
+      if (difference[i].id === newArr[j].id &&
+        difference[i].name === newArr[j].name &&
+        difference[i].path_lower === newArr[j].path_lower) {
+
+        difference.splice(i, 1);
+        i--;
+        continue first;
+      }
+    }
+  }
+  return difference;
+}
+
+export function toggleManyFavorites(arr) {
+  for (let file of arr) {
+    if (favorites$.value.find(x => x.id === file.id)) {
+      console.log(file);
+      toggleFavorite(file);
+    }
+  }
 }
