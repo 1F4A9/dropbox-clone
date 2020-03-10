@@ -13,7 +13,7 @@ export const fetchDataFromUser = (token) => {
 
 export const fetchAccessesTokenFromUser = () => {
   var dbx = new Dropbox({ clientId: CLIENT_ID, fetch: fetch });
-  const url = dbx.getAuthenticationUrl("http://localhost:3000/auth");
+  const url = dbx.getAuthenticationUrl("https://special-girls.surge.sh/auth");
 
   window.location.href = url;
 }

@@ -8,19 +8,30 @@ import { favorites$, toggleFavorite } from "../Observables/Store";
 
 const Container = styled.div`
   position: fixed;
-  width: 370px;
-  height: 150px;
-  left: 50%;
-  margin-left: -185px;
-  top: 50%;
-  margin-top: -75px;
-  border-radius: 8px;
-  background-color: #fff;
-  text-align: center;
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(14, 37, 52, 0.15);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  left: 0;
+  top: 0;
+
+  .container {
+    position: fixed;
+    width: 370px;
+    height: 150px;
+    left: 50%;
+    margin-left: -185px;
+    top: 50%;
+    margin-top: -75px;
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: center;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
   footer {
     display: flex;
@@ -68,14 +79,16 @@ const PortalDelete = ({ displayDelete, file }) => {
 
   return ReactDOM.createPortal(
     <Container>
-      <GlobalStyle mask={true} />
-      <header>
-        <p>Do you really want to remove the selected items?</p>
-      </header>
-      <footer>
-        <button className="btn delete" onClick={deleteItem}>Delete</button>
-        <button className="btn cancel" onClick={() => displayNotification(false)}>Cancel</button>
-      </footer>
+      <div className="container">
+        <header>
+          <p>Do you really want to remove the selected items?</p>
+        </header>
+        <footer>
+          <button className="btn delete" onClick={deleteItem}>Delete</button>
+          <button className="btn cancel" onClick={() => displayNotification(false)}>Cancel</button>
+        </footer>
+      </div>
+      {/* <GlobalStyle mask={true} /> */}
     </Container>,
     document.getElementById('portal-delete')
   )

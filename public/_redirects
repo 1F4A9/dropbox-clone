@@ -1,0 +1,6 @@
+/ /login
+/ /home
+/login /home
+/home /login
+/login /auth
+/auth /home
