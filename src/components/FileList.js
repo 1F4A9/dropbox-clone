@@ -28,6 +28,8 @@ function FileList({ token, pathname, list }) {
     const [loading, setLoading] = useState(true);
     const [cursor, updateCursor] = useState("");
 
+    const [favorites, updateFavorites] = useState(favorites$.value);
+
     useEffect(() => {
         setLoading(true);
 
@@ -93,6 +95,11 @@ function FileList({ token, pathname, list }) {
         longpoll();
     }, [])
 
+    useEffect(() => {
+        const subscription = favorites$.subscribe(updateFavorites);
+        return () => subscription.unsubscribe();
+    }, []);
+
     function handlePath(path) {
         setLoading(true);
         filesListFolder(token, path)
@@ -130,6 +137,7 @@ function FileList({ token, pathname, list }) {
                         name={x.name}
                         token={token}
                         changeURL={true}
+                        starState={!!favorites.find(f => f.id === x.id)}
                     >{x.name}
 
                     </FileItem>;

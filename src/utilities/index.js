@@ -81,7 +81,6 @@ export function removeEndOfPathname(path) {
 
 
 export function lookForDiff(oldArr, newArr) {
-  console.log(oldArr, newArr);
   let difference = [...oldArr];
   first: for (let i = 0; i < difference.length; i++) {
     for (let j = 0; j < newArr.length; j++) {
