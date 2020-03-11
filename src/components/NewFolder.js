@@ -14,7 +14,7 @@ const Container = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    width: ${props=>props.width + "px"};
+    width: ${props => props.width + "px"};
     height: 100%;
     background-color: rgba(14, 37, 52, 0.15);
     z-index: 1;
@@ -120,7 +120,7 @@ const Container = styled.aside`
   }
 `;
 
-function NewFolder(props){
+function NewFolder(props) {
   const [token, setToken] = useState(token$.value);
   const [inputName, setInputName] = useState("");
   const [state, updateState] = useState({
@@ -129,7 +129,6 @@ function NewFolder(props){
   const [loading, setLoading] = useState(true);
   const [path, updatePath] = useState("/");
   const [error, setError] = useState(false);
-  console.log("PATH! ", path);
   useEffect(() => {
     const subscription = token$.subscribe(setToken);
     return () => subscription.unsubscribe();
@@ -137,106 +136,101 @@ function NewFolder(props){
 
 
   useEffect(() => {
-      setLoading(true);
-      fetchDataFromUser(token)
-          .then((response) => {
-              /* console.log(response) */
-              updateState({
-                  files: response,
-              })
-              setLoading(false);
-          }).catch((err) => {
-              console.error(err);
-          })
+    setLoading(true);
+    fetchDataFromUser(token)
+      .then((response) => {
+        updateState({
+          files: response,
+        })
+        setLoading(false);
+      }).catch((err) => {
+        console.error(err);
+      })
   }, [])
 
   function handlePath(path) {
-      console.log("SHOULD LOAD")
-      setLoading(true);
-      filesListFolder(token, path)
-          .then((response) => {
-              updateState({
-                  files: response.entries
-              })
-              updatePath(path)
-          })
-          .catch((err) => {
-              console.error(err);
-          })
-          .finally(() => {
-            setLoading(false);
-          })
+    setLoading(true);
+    filesListFolder(token, path)
+      .then((response) => {
+        updateState({
+          files: response.entries
+        })
+        updatePath(path)
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
 
   }
 
-  function folderNameChange(e){
+  function folderNameChange(e) {
     setInputName(e.target.value);
   }
 
-  function onCreateFolder(){
+  function onCreateFolder() {
     setLoading(true);
-    console.log(path);
-    const dbx = new Dropbox({ accessToken: token, fetch});
-    console.log(path);
-    if(path === "/"){
-      dbx.filesCreateFolder({path : path + inputName})
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-      })
-      .finally(() => {
-        props.onClickToggle();
-      })
-    }else{
-      dbx.filesCreateFolder({path : path + "/" + inputName})
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-      })
-      .finally(() => {
-        props.onClickToggle();
-      })
+    const dbx = new Dropbox({ accessToken: token, fetch });
+    if (path === "/") {
+      dbx.filesCreateFolder({ path: path + inputName })
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+        })
+        .finally(() => {
+          props.onClickToggle();
+        })
+    } else {
+      dbx.filesCreateFolder({ path: path + "/" + inputName })
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+        })
+        .finally(() => {
+          props.onClickToggle();
+        })
     }
   }
 
-  function onReturn(path){
+  function onReturn(path) {
     let splittedPath = path.split("/");
     let newPath = "";
-    for(let i = 1; i < splittedPath.length - 1; i++){
-      if(i !== splittedPath.length || splittedPath !== ""){
+    for (let i = 1; i < splittedPath.length - 1; i++) {
+      if (i !== splittedPath.length || splittedPath !== "") {
         newPath += "/" + splittedPath[i];
       }
     }
-    console.log(newPath);
     handlePath(newPath)
     updatePath(newPath);
   }
   let loadingReturn;
-  if(loading){
+  if (loading) {
     loadingReturn = (<div className="center"><LoadingCircle scale={1} /></div>)
-  }else{
+  } else {
     loadingReturn = (<div className="overFlow">
-    {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
-          return <FileItem
-              files={state.files}
-              tag={x['.tag']}
-              getPath={handlePath}
-              path={x.path_lower}
-              file={x}
-              id={x.id}
-              key={x.id}
-              name={x.name}
-              token={token}
-              changeURL={false}
-          >{x.name}
+      {state.files.filter((file) => file[".tag"] === "folder").map((x) => {
+        return <FileItem
+          files={state.files}
+          tag={x['.tag']}
+          getPath={handlePath}
+          path={x.path_lower}
+          file={x}
+          id={x.id}
+          key={x.id}
+          name={x.name}
+          token={token}
+          changeURL={false}
+        >{x.name}
 
-          </FileItem>;
+        </FileItem>;
       })}
-  </div>)
+    </div>)
   }
   return (
     <Container width={window.innerWidth}>
@@ -252,7 +246,7 @@ function NewFolder(props){
               <input value={inputName} onChange={(e) => folderNameChange(e)} className="input" placeholder="Folder name" />
             </div>
             <div>
-              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g," ")}</p>
+              <p className="miniTitle">Location : Dropbox/home{path.replace(/%20/g, " ")}</p>
               {loadingReturn}
             </div>
           </div>

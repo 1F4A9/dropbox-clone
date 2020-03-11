@@ -89,7 +89,6 @@ const PortalRename = ({ displayRename, file }) => {
     e.preventDefault();
     if (favorites$.value.find(x => x.id === file.id)) {
       toggleFavorite(file);
-      console.log("FAV RENAME");
     }
     renameFiles(file.path_lower, input, token)
       .then(() => {
@@ -97,7 +96,7 @@ const PortalRename = ({ displayRename, file }) => {
         displayNotification(false);
       })
       .catch(data => {
-        console.log(data);
+        console.error(data);
         displayNotification(false);
       })
 
@@ -114,8 +113,8 @@ const PortalRename = ({ displayRename, file }) => {
             <input ref={inputRef} placeholder="new name..." type="text" onChange={onChange} value={input} />
           </main>
           <footer>
-            <input type="button" className="btn cancel" value="cancel" onClick={() => displayNotification(false)} />
-            <input type="button" className="btn rename" value="rename" onClick={onSubmit} />
+            <input type="button" className="btn cancel" value="Cancel" onClick={() => displayNotification(false)} />
+            <input type="button" className="btn rename" value="Rename" onClick={onSubmit} />
           </footer>
         </form>
       </div>

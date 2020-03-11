@@ -128,13 +128,10 @@ const Container = styled.div`
     }
 `
 
-function FileItem({ pathname, children, path, getPath, tag, name, file, token, changeURL }) {
-    const [starState, updateStarState] = useState(false);
+function FileItem({ pathname, children, path, getPath, tag, name, file, token, changeURL, starState }) {
     const [modified, setModified] = useState(0);
     const [size, setSize] = useState('');
     const [url, updateUrl] = useState('');
-    const [starred, updateStar] = useState('');
-
 
     useEffect(() => {
         let unmounted = false;
@@ -160,21 +157,10 @@ function FileItem({ pathname, children, path, getPath, tag, name, file, token, c
         }
     }, [])
 
-    useEffect(() => {
-        if (favorites$.value.find(x => x.id === file.id)) {
-            updateStarState(true);
-        }
-
-        const subscription = favorites$.subscribe(updateStar);
-        return () => subscription.unsubscribe();
-
-    }, [favorites$.value])
-
     let dataFormat = name.substring(name.lastIndexOf('.') + 1, name.length);
 
     function toggleCheck(file) {
         toggleFavorite(file); //Takes file from prop.
-        updateStarState(!starState);
     }
 
     function onClick(e) {

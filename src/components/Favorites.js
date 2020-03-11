@@ -37,16 +37,11 @@ h3 {
   font-style: italic;
 }
 `
-
-
-// Utan de ska kolla av från favorites$.value och se om den är med eller inte.
 export default function Favorites({ token, pathname }) {
 
   const [starItems, updateStarItems] = useState(favorites$.value);
   const [toggleStar, updateToggle] = useState(false);
   const [path, updatePath] = useState("");
-
-
 
   useEffect(() => {
     const subscription = favorites$.subscribe(updateStarItems);
@@ -54,19 +49,14 @@ export default function Favorites({ token, pathname }) {
     return () => subscription.unsubscribe();
   }, [])
 
-
-
   function handlePath(path) {
     filesListFolder(token, path)
       .then((response) => {
         updatePath(path)
-
-
       })
       .catch((err) => {
         console.error(err);
       })
-
   }
 
   return (
@@ -85,7 +75,6 @@ export default function Favorites({ token, pathname }) {
             starItems.map((x) => {
 
               return <FileItem
-                /* files={state.files} */
                 tag={x['.tag']}
                 getPath={handlePath}
                 path={x.path_lower}
@@ -95,6 +84,7 @@ export default function Favorites({ token, pathname }) {
                 name={x.name}
                 token={token}
                 changeURL={true}
+                starState={!!starItems.find(f => f.id === x.id)}
               >{x.name}
 
               </FileItem>;
