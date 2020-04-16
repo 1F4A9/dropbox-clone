@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Preview
+https://special-girls.surge.sh/
+
 ## Running
 Clone repository.
 Run npm install.
