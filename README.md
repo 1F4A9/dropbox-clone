@@ -3,7 +3,7 @@ A web application that uses the Dropbox API.<br/>
 Users can sign in and view/manage their files.<br/>
 I haven't work alone on this project, there is three other student github contributors.
 
-## Checkout website
+## Live demo
 https://special-girls.surge.sh/
 <br/>
 
