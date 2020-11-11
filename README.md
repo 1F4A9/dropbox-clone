@@ -1,7 +1,7 @@
 # Dropbox clone
 A web application that uses the Dropbox API.<br/>
 Users can sign in and view/manage their files.<br/>
-I haven't work alone in this project, there is three other student github contributors.
+I haven't work alone on this project, there is three other student github contributors.
 
 ## Checkout website
 https://special-girls.surge.sh/
